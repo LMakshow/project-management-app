@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from './layout.module.css'
-import utilStyles from '../styles/utils.module.css'
+import { Container, Row, Col } from '@nextui-org/react'
 import Link from 'next/link'
 import Navbar from './Navbar'
 import Footer from './Footer'
@@ -16,7 +16,7 @@ export default function Layout({
   home?: boolean
 }) {
   return (
-    <div className={styles.container}>
+    <Container>
       <Head>
         <meta
           name='description'
@@ -34,6 +34,6 @@ export default function Layout({
         </div>
       )}
       <Footer />
-    </div>
+    </Container>
   )
 }
