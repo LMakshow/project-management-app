@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import utilStyles from '../styles/utils.module.css'
+import { Button } from '@nextui-org/react';
 import Layout, { siteTitle } from '../components/layout'
 
 export default function Home() {
@@ -8,8 +8,9 @@ export default function Home() {
       <Head>
         <title>{siteTitle}</title>
       </Head>
-      <main className={utilStyles.headingMd}>
+      <main>
         <p>Project Management App</p>
+        <Button>Click me</Button>
       </main>
     </Layout>
   )
