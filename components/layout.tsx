@@ -24,7 +24,7 @@ export default function Layout({
         />
         <meta property='og:image' content='/favicon.png' />
         <meta name='og:title' content={siteTitle} />
-        <link rel='icon' href='/favicon.png' />
+        <link rel='icon' href='/favicon.svg' />
       </Head>
       <Navbar />
       <main>{children}</main>
