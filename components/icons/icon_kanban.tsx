@@ -14,7 +14,7 @@ export const IconKanban = ({
     height={size || height || 24}
     viewBox='0 0 512 512'>
     <g fill={fill}>
-      <path fill-rule='evenodd' clip-rule='evenodd'
+      <path fillRule='evenodd' clipRule='evenodd'
         d='M432,32H80c-17.7,0-32,14.3-32,32v384c0,17.7,14.3,32,32,32h352c17.7,0,32-14.3,32-32V64
 		C464,46.3,449.7,32,432,32z M80,0C44.6,0,16,28.6,16,64v384c0,35.4,28.6,64,64,64h352c35.4,0,64-28.6,64-64V64
 		c0-35.4-28.6-64-64-64H80z'

@@ -16,7 +16,7 @@ export default function Layout({
   home?: boolean
 }) {
   return (
-    <Container>
+    <div>
       <Head>
         <meta
           name='description'
@@ -34,6 +34,6 @@ export default function Layout({
         </div>
       )}
       <Footer />
-    </Container>
+    </div>
   )
 }
