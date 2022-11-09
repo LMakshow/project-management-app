@@ -8,15 +8,17 @@ import { IconSun } from './icons/icon_sun'
 import { IconMoon } from './icons/icon_moon'
 import Link from 'next/link'
 import { Key, useMemo, useState } from 'react'
+import { IconKanban } from './icons/icon_kanban'
+import { IconKanbanAdd } from './icons/icon_kanban_add'
 
 export default function Header() {
   const { setTheme } = useNextTheme()
-  const { isDark } = useTheme()
+  const { isDark, theme } = useTheme()
   const [lang, setLang] = useState('EN')
-  const [isSigned, setIsSigned] = useState(false)
+  const [isSigned, setIsSigned] = useState(true)
 
-  const languageHandler = (keys: "all" | Set<Key>) => {
-    setLang(String(...keys));
+  const languageHandler = (keys: 'all' | Set<Key>) => {
+    setLang(String(...keys))
   }
 
   return (
@@ -32,6 +34,20 @@ export default function Header() {
           CMA
         </Text>
       </Navbar.Brand>
+      <Navbar.Content>
+        {isSigned ? (
+          <Navbar.Content hideIn='xs'>
+            <Navbar.Link href='#'>
+              <IconKanban fill={theme?.colors?.primary?.value} />
+              <Text size='large'>Boards</Text>
+            </Navbar.Link>
+            <Navbar.Link href='#'>
+              <IconKanbanAdd fill={theme?.colors?.primary?.value}/>
+              <Text size='large'>Create Board</Text>
+            </Navbar.Link>
+          </Navbar.Content>
+        ) : null}
+      </Navbar.Content>
       <Navbar.Content>
         <Switch
           checked={isDark}
@@ -53,7 +69,11 @@ export default function Header() {
             <Dropdown.Item key='RU'>Русский</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
-        {isSigned ? null : (
+        {isSigned ? (
+          <Navbar.Link color='inherit' href='#'>
+            Sign Out
+          </Navbar.Link>
+        ) : (
           <>
             <Navbar.Link color='inherit' href='#'>
               Sign In
