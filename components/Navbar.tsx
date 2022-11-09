@@ -1,13 +1,12 @@
 import styles from './layout.module.css'
 import { useTheme as useNextTheme } from 'next-themes'
 import { Button, Dropdown, Switch, Text, useTheme } from '@nextui-org/react'
-import { Navbar } from '@nextui-org/react'
+import { Navbar, Link } from '@nextui-org/react'
 import logo_small from '../assets/logo/logo_small.svg'
 import Image from 'next/image'
 import { IconSun } from './icons/icon_sun'
 import { IconMoon } from './icons/icon_moon'
-import Link from 'next/link'
-import { Key, useMemo, useState } from 'react'
+import { Key, useState } from 'react'
 import { IconKanban } from './icons/icon_kanban'
 import { IconKanbanAdd } from './icons/icon_kanban_add'
 
@@ -24,15 +23,17 @@ export default function Header() {
   return (
     <Navbar shouldHideOnScroll variant='sticky'>
       <Navbar.Brand>
-        <Image
-          src={logo_small}
-          width='50'
-          style={{ marginRight: '10px' }}
-          alt=''
-        />
-        <Text b size='$2xl' color='inherit' hideIn='xs'>
-          CMA
-        </Text>
+        <Link href='/' color='text'>
+          <Image
+            src={logo_small}
+            width='50'
+            style={{ marginRight: '10px' }}
+            alt=''
+          />
+          <Text b size='$2xl' color='inherit' hideIn='xs'>
+            CMA
+          </Text>
+        </Link>
       </Navbar.Brand>
       <Navbar.Content>
         {isSigned ? (
@@ -42,7 +43,7 @@ export default function Header() {
               <Text size='large'>Boards</Text>
             </Navbar.Link>
             <Navbar.Link href='#'>
-              <IconKanbanAdd fill={theme?.colors?.primary?.value}/>
+              <IconKanbanAdd fill={theme?.colors?.primary?.value} />
               <Text size='large'>Create Board</Text>
             </Navbar.Link>
           </Navbar.Content>
