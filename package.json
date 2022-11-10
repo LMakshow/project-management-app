@@ -12,12 +12,15 @@
   },
   "dependencies": {
     "@nextui-org/react": "^1.0.0-beta.10",
+    "@reduxjs/toolkit": "^1.9.0",
     "next": "13.0.2",
     "next-themes": "^0.2.1",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-redux": "^8.0.5"
   },
   "devDependencies": {
+    "@redux-devtools/core": "^3.13.1",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.8",
