@@ -8,9 +8,12 @@
     "export": "next build && next export && echo . > out/.nojekyll",
     "start": "next start",
     "lint": "next lint",
-    "deploy": "gh-pages -d ./out --dotfiles true -m deploy_pms"
+    "deploy": "gh-pages -d ./out --dotfiles true -m deploy_pms",
+    "extract": "cross-env NODE_ENV=development lingui extract",
+    "compile": "lingui compile"
   },
   "dependencies": {
+    "@lingui/react": "^3.15.0",
     "@nextui-org/react": "^1.0.0-beta.10",
     "@reduxjs/toolkit": "^1.9.0",
     "next": "13.0.2",
@@ -20,10 +23,13 @@
     "react-redux": "^8.0.5"
   },
   "devDependencies": {
+    "@lingui/cli": "^3.15.0",
+    "@lingui/macro": "^3.15.0",
     "@redux-devtools/core": "^3.13.1",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.8",
+    "cross-env": "^7.0.3",
     "eslint": "8.27.0",
     "eslint-config-next": "13.0.2",
     "eslint-config-prettier": "^8.5.0",

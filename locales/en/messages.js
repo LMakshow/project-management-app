@@ -1,0 +1,1 @@
+/*eslint-disable*/module.exports={messages:{"Boards":"Boards","Create Board":"Create Board","Sign In":"Sign In","Sign Out":"Sign Out","Sign Up":"Sign Up"}};

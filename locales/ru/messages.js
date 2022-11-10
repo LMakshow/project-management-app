@@ -1,0 +1,1 @@
+/*eslint-disable*/module.exports={messages:{"Boards":"Доски","Create Board":"Создать Доску","Sign In":"Войти","Sign Out":"Выйти","Sign Up":"Регистрация"}};
