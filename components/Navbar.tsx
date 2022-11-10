@@ -1,8 +1,6 @@
-import styles from './layout.module.css'
 import { useTheme as useNextTheme } from 'next-themes'
 import {
   Button,
-  Container,
   Dropdown,
   Switch,
   Text,
@@ -16,15 +14,18 @@ import { IconMoon } from './icons/icon_moon'
 import { Key, useState } from 'react'
 import { IconKanban } from './icons/icon_kanban'
 import { IconKanbanAdd } from './icons/icon_kanban_add'
+import { useAppDispatch, useAppSelector } from '../features/hooks'
+import { changeLang, signIn, signOut } from '../features/userSlice';
 
 export default function Header() {
   const { setTheme } = useNextTheme()
   const { isDark, theme } = useTheme()
-  const [lang, setLang] = useState('EN')
-  const [isSigned, setIsSigned] = useState(true)
+  const dispatch = useAppDispatch();
+  const lang = useAppSelector((state) => state.user.lang);
+  const isSigned = useAppSelector((state) => state.user.isSigned);
 
   const languageHandler = (keys: 'all' | Set<Key>) => {
-    setLang(String(...keys))
+    dispatch(changeLang(String(...keys)))
   }
 
   return (
@@ -83,16 +84,16 @@ export default function Header() {
       </Navbar.Content>
       <Navbar.Content hideIn='xs'>
         {isSigned ? (
-          <Navbar.Link color='inherit' href='#'>
+          <Navbar.Link color='inherit' href='#' onClick={() => dispatch(signOut())}>
             Sign Out
           </Navbar.Link>
         ) : (
           <>
-            <Navbar.Link color='inherit' href='#'>
+            <Navbar.Link color='inherit' href='#' onClick={() => dispatch(signIn())}>
               Sign In
             </Navbar.Link>
-            <Navbar.Link color='inherit'>
-              <Button auto flat href='#'>
+            <Navbar.Link color='inherit' href='#'>
+              <Button auto flat onClick={() => dispatch(signIn())}>
                 <Text>Sign Up</Text>
               </Button>
             </Navbar.Link>
@@ -115,7 +116,7 @@ export default function Header() {
               </Link>
             </Navbar.CollapseItem>
             <Navbar.CollapseItem>
-              <Link color='error' css={{paddingLeft: '$12'}} href='#'>
+              <Link color='error' css={{paddingLeft: '$12'}} href='#'  onClick={() => dispatch(signOut())}>
                 Sign Out
               </Link>
             </Navbar.CollapseItem>
@@ -123,12 +124,12 @@ export default function Header() {
         ) : (
           <>
             <Navbar.CollapseItem>
-              <Link color='inherit' href='#' css={{paddingLeft: '$11'}}>
+              <Link color='inherit' href='#' css={{paddingLeft: '$11'}}  onClick={() => dispatch(signIn())}>
                 Sign In
               </Link>
             </Navbar.CollapseItem>
             <Navbar.CollapseItem>
-              <Link color='inherit' css={{paddingLeft: '$4'}}>
+              <Link color='inherit' css={{paddingLeft: '$4'}} onClick={() => dispatch(signIn())}>
                 <Button auto flat href='#' >
                   <Text>Sign Up</Text>
                 </Button>
