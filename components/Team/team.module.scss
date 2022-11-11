@@ -1,0 +1,25 @@
+.team {
+  padding: 0 0 120px;
+
+  &__list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 140px;
+  }
+  &__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    justify-content: baseline;
+    max-width: 220px;
+  }
+}
+
+@media (max-width: 960px) {
+  .team__list {
+    flex-direction: column;
+    gap: 70px;
+  }
+}
