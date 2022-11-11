@@ -12,8 +12,13 @@ const Benefits = () => {
     title: {
       marginBottom: '140px',
       textAlign: 'center',
+      fontFamily: '"Inter", cursive',
     },
-    text: { fontSize: '24px', lineHeight: '29px' },
+    text: {
+      fontSize: '24px',
+      lineHeight: '29px',
+      fontFamily: '"Inter", cursive',
+    },
     image: { width: '160px', height: '160px' },
   }
   return (
