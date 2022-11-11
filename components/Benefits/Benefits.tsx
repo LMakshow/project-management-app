@@ -35,7 +35,7 @@ const Benefits = () => {
         <div className={styles.benefits__item}>
           <Image
             src={noLimitsImg}
-            alt='interface'
+            alt='no lomots'
             style={benefitsStyles.image}
           />
           <Text span css={benefitsStyles.text}>
@@ -43,11 +43,7 @@ const Benefits = () => {
           </Text>
         </div>
         <div className={styles.benefits__item}>
-          <Image
-            src={editionImg}
-            alt='interface'
-            style={benefitsStyles.image}
-          />
+          <Image src={editionImg} alt='edition' style={benefitsStyles.image} />
           <Text span css={benefitsStyles.text}>
             Возможность редактирвоания
           </Text>
