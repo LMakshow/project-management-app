@@ -8,14 +8,18 @@ import { appWithTranslation } from 'next-i18next'
 const lightTheme = createTheme({
   type: 'light',
   theme: {
-    colors: {},
+    breakpoints: {
+      xl: '1400px'
+    }
   },
 })
 
 const darkTheme = createTheme({
   type: 'dark',
   theme: {
-    colors: {},
+    breakpoints: {
+      xl: '1400px'
+    }
   },
 })
 
