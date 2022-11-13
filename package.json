@@ -8,15 +8,19 @@
     "export": "next build && next export && echo . > out/.nojekyll",
     "start": "next start",
     "lint": "next lint",
-    "deploy": "gh-pages -d ./out --dotfiles true -m deploy_pms"
+    "parse": "i18next 'components/*.tsx' 'pages/*.tsx'",
+    "deploy": "gh-pages -d ./out --dotfiles true -m deploy_cma"
   },
   "dependencies": {
     "@nextui-org/react": "^1.0.0-beta.10",
     "@reduxjs/toolkit": "^1.9.0",
+    "i18next": "^22.0.5",
     "next": "13.0.2",
+    "next-i18next": "^12.1.0",
     "next-themes": "^0.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-i18next": "^12.0.0",
     "react-redux": "^8.0.5"
   },
   "devDependencies": {
@@ -28,6 +32,7 @@
     "eslint-config-next": "13.0.2",
     "eslint-config-prettier": "^8.5.0",
     "gh-pages": "^4.0.0",
+    "i18next-parser": "^6.6.0",
     "prettier": "^2.7.1",
     "sass": "^1.56.0",
     "typescript": "4.8.4"
