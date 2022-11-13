@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   isSigned: false,
-  lang: 'EN' as 'EN' | 'RU',
 }
 
 const userSlice = createSlice({
@@ -14,13 +13,10 @@ const userSlice = createSlice({
     },
     signOut: (state) => {
       state.isSigned = false
-    },
-    changeLang: (state, action) => {
-      state.lang = action.payload
-    },
+    }
   },
 })
 
-export const { signIn, signOut, changeLang } = userSlice.actions;
+export const { signIn, signOut } = userSlice.actions;
 
 export default userSlice.reducer

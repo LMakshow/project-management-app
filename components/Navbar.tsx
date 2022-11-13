@@ -1,32 +1,29 @@
 import { useTheme as useNextTheme } from 'next-themes'
-import {
-  Button,
-  Dropdown,
-  Switch,
-  Text,
-  useTheme,
-} from '@nextui-org/react'
+import { Button, Switch, Text, useTheme } from '@nextui-org/react'
 import { Navbar, Link } from '@nextui-org/react'
+import LangSwitcher from '../utils/LangSwitcher'
+
+// Import images
 import logo_small from '../assets/logo/logo_small.svg'
 import Image from 'next/image'
 import { IconSun } from './icons/icon_sun'
 import { IconMoon } from './icons/icon_moon'
-import { Key, useState } from 'react'
 import { IconKanban } from './icons/icon_kanban'
 import { IconKanbanAdd } from './icons/icon_kanban_add'
+
+// Import redux
 import { useAppDispatch, useAppSelector } from '../features/hooks'
-import { changeLang, signIn, signOut } from '../features/userSlice';
+import { signIn, signOut } from '../features/userSlice'
+
+// Import translations
+import { useTranslation } from 'next-i18next'
 
 export default function Header() {
   const { setTheme } = useNextTheme()
   const { isDark, theme } = useTheme()
-  const dispatch = useAppDispatch();
-  const lang = useAppSelector((state) => state.user.lang);
-  const isSigned = useAppSelector((state) => state.user.isSigned);
-
-  const languageHandler = (keys: 'all' | Set<Key>) => {
-    dispatch(changeLang(String(...keys)))
-  }
+  const dispatch = useAppDispatch()
+  const isSigned = useAppSelector((state) => state.user.isSigned)
+  const { t } = useTranslation('common');
 
   return (
     <Navbar shouldHideOnScroll variant='sticky'>
@@ -50,11 +47,11 @@ export default function Header() {
           hideIn='xs'>
           <Navbar.Link href='#'>
             <IconKanban fill={theme?.colors?.primary?.value} />
-            <Text size='large'>Boards</Text>
+            <Text size='large'>{t('Boards')}</Text>
           </Navbar.Link>
           <Navbar.Link href='#'>
             <IconKanbanAdd fill={theme?.colors?.primary?.value} />
-            <Text size='large'>Create Board</Text>
+            <Text size='large'>{t('Create Board')}</Text>
           </Navbar.Link>
         </Navbar.Content>
       ) : null}
@@ -67,34 +64,27 @@ export default function Header() {
           iconOn={<IconMoon />}
           onChange={(e) => setTheme(e.target.checked ? 'dark' : 'light')}
         />
-        <Dropdown>
-          <Dropdown.Button light css={{ '@sm': { marginRight: '$12' } }}>
-            {lang}
-          </Dropdown.Button>
-          <Dropdown.Menu
-            aria-label='Change Language'
-            disallowEmptySelection
-            selectionMode='single'
-            selectedKeys={lang}
-            onSelectionChange={languageHandler}>
-            <Dropdown.Item key='EN'>English</Dropdown.Item>
-            <Dropdown.Item key='RU'>Русский</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
+        <LangSwitcher />
       </Navbar.Content>
       <Navbar.Content hideIn='xs'>
         {isSigned ? (
-          <Navbar.Link color='inherit' href='#' onClick={() => dispatch(signOut())}>
-            Sign Out
+          <Navbar.Link
+            color='inherit'
+            href='#'
+            onClick={() => dispatch(signOut())}>
+            {t('Sign Out')}
           </Navbar.Link>
         ) : (
           <>
-            <Navbar.Link color='inherit' href='#' onClick={() => dispatch(signIn())}>
-              Sign In
+            <Navbar.Link
+              color='inherit'
+              href='#'
+              onClick={() => dispatch(signIn())}>
+              {t('Sign In')}
             </Navbar.Link>
             <Navbar.Link color='inherit' href='#'>
               <Button auto flat onClick={() => dispatch(signIn())}>
-                <Text>Sign Up</Text>
+                <Text>{t('Sign Up')}</Text>
               </Button>
             </Navbar.Link>
           </>
@@ -106,52 +96,50 @@ export default function Header() {
             <Navbar.CollapseItem>
               <Link href='#'>
                 <IconKanban fill={theme?.colors?.primary?.value} />
-                <Text size='large'>Boards</Text>
+                <Text size='large'>{t('Boards')}</Text>
               </Link>
             </Navbar.CollapseItem>
             <Navbar.CollapseItem>
               <Link href='#'>
                 <IconKanbanAdd fill={theme?.colors?.primary?.value} />
-                <Text size='large'>Create Board</Text>
+                <Text size='large'>{t('Create Board')}</Text>
               </Link>
             </Navbar.CollapseItem>
             <Navbar.CollapseItem>
-              <Link color='error' css={{paddingLeft: '$12'}} href='#'  onClick={() => dispatch(signOut())}>
-                Sign Out
+              <Link
+                color='error'
+                css={{ paddingLeft: '$12' }}
+                href='#'
+                onClick={() => dispatch(signOut())}>
+                {t('Sign Out')}
               </Link>
             </Navbar.CollapseItem>
           </>
         ) : (
           <>
             <Navbar.CollapseItem>
-              <Link color='inherit' href='#' css={{paddingLeft: '$11'}}  onClick={() => dispatch(signIn())}>
-                Sign In
+              <Link
+                color='inherit'
+                href='#'
+                css={{ paddingLeft: '$11' }}
+                onClick={() => dispatch(signIn())}>
+                {t('Sign In')}
               </Link>
             </Navbar.CollapseItem>
             <Navbar.CollapseItem>
-              <Link color='inherit' css={{paddingLeft: '$4'}} onClick={() => dispatch(signIn())}>
-                <Button auto flat href='#' >
-                  <Text>Sign Up</Text>
+              <Link
+                color='inherit'
+                css={{ paddingLeft: '$4' }}
+                onClick={() => dispatch(signIn())}>
+                <Button auto flat href='#'>
+                  <Text>{t('Sign Up')}</Text>
                 </Button>
               </Link>
             </Navbar.CollapseItem>
           </>
         )}
         <Navbar.CollapseItem>
-          <Dropdown>
-            <Dropdown.Button light>
-              {lang}
-            </Dropdown.Button>
-            <Dropdown.Menu
-              aria-label='Change Language'
-              disallowEmptySelection
-              selectionMode='single'
-              selectedKeys={lang}
-              onSelectionChange={languageHandler}>
-              <Dropdown.Item key='EN'>English</Dropdown.Item>
-              <Dropdown.Item key='RU'>Русский</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+          <LangSwitcher />
           <Switch
             checked={isDark}
             iconOff={<IconSun />}
