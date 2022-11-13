@@ -35,7 +35,7 @@ const Team = () => {
         <div className={styles.team__item}>
           <Image src={womanImage} alt='woman image' />
           <Text span css={teamStyles.itemTitle}>
-            Белла
+            Бэлла
           </Text>
           <Text span css={teamStyles.itemText}>
             текст-"рыба", часто используемый в печати и вэб-дизайне
