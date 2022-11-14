@@ -16,14 +16,14 @@ import { useAppDispatch, useAppSelector } from '../features/hooks'
 import { signIn, signOut } from '../features/userSlice'
 
 // Import translations
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from 'react-i18next'
 
 export default function Header() {
   const { setTheme } = useNextTheme()
   const { isDark, theme } = useTheme()
   const dispatch = useAppDispatch()
   const isSigned = useAppSelector((state) => state.user.isSigned)
-  const { t } = useTranslation('common');
+  const { t } = useTranslation('common')
 
   return (
     <Navbar shouldHideOnScroll variant='sticky'>
