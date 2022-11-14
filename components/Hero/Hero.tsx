@@ -51,6 +51,7 @@ const Hero = () => {
       <Image
         src={heroImg}
         alt='Hero Image'
+        priority
         style={{
           height: '100%',
         }}

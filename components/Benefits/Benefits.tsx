@@ -19,7 +19,7 @@ const Benefits = () => {
       lineHeight: '29px',
       fontFamily: '"Inter", cursive',
     },
-    image: { width: '160px', height: '160px' },
+    image: { width: '160px', height: 'auto' },
   }
   return (
     <section className={styles.benefits}>
@@ -40,7 +40,7 @@ const Benefits = () => {
         <div className={styles.benefits__item}>
           <Image
             src={noLimitsImg}
-            alt='no lomots'
+            alt='no limits'
             style={benefitsStyles.image}
           />
           <Text span css={benefitsStyles.text}>

@@ -1,5 +1,5 @@
 import { useTheme as useNextTheme } from 'next-themes'
-import { Button, Spacer, Switch, Text, useTheme } from '@nextui-org/react'
+import { Button, Switch, Text, useTheme } from '@nextui-org/react'
 import { Navbar, Link } from '@nextui-org/react'
 import LangSwitcher from '../utils/LangSwitcher'
 
@@ -55,7 +55,7 @@ export default function Header() {
   }
 
   return (
-    <Navbar shouldHideOnScroll variant='sticky'>
+    <Navbar variant='sticky'>
       <Navbar.Toggle showIn='xs' />
       <Navbar.Brand css={{ '@sm': { marginRight: '$12' } }}>
         <Link href='/' color='text'>
