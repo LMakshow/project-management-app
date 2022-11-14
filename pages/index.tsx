@@ -5,11 +5,11 @@ import Hero from '../components/Hero/Hero'
 import { Container } from '@nextui-org/react'
 import Benefits from '../components/Benefits/Benefits'
 import Team from '../components/Team/Team'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 export const getStaticProps = async ({ locale }: { locale: 'en' | 'ru' }) => ({
   props: {
-    ...(await serverSideTranslations(locale ?? 'en', ['common'])),
+    ...(await serverSideTranslations(locale ?? 'en', ['common', 'home-page'])),
   },
 })
 

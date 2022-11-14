@@ -2,11 +2,15 @@ import { Text } from '@nextui-org/react'
 import { Button } from '@nextui-org/react'
 import Image from 'next/image'
 
+import { useTranslation } from 'next-i18next'
+
 import heroImg from '../../assets/icon/hero-img.svg'
 
 import styles from './hero.module.scss'
 
 const Hero = () => {
+  const { t } = useTranslation('home-page')
+
   const heroStyles = {
     title: {
       fontSize: '42px',
@@ -39,14 +43,10 @@ const Hero = () => {
     <section className={styles.hero}>
       <div className={styles.hero__text}>
         <Text h1 css={heroStyles.title}>
-          Нажми. Управляй. Ускоряй
+          {t('heroTitle')}
         </Text>
-        <Text css={heroStyles.text}>
-          Цифровой инструмент управления проектами, предназначенный для
-          визуализации работы, ограничения незавершенной работы и максимизации
-          эффективности
-        </Text>
-        <Button css={heroStyles.button}>Начать</Button>
+        <Text css={heroStyles.text}>{t(`heroText`)}</Text>
+        <Button css={heroStyles.button}>{t('heroBtn')}</Button>
       </div>
       <Image
         src={heroImg}

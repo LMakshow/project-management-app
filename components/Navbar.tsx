@@ -72,6 +72,7 @@ export default function Header() {
     dispatch(setUser({ token: null, name: null, login: null, _id: null }))
   }
 
+
   return (
     <Navbar variant='sticky' isCompact={scroll} >
       <Navbar.Toggle showIn='xs' />
