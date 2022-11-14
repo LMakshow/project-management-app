@@ -10,8 +10,9 @@ const Footer = () => {
       <Grid.Container gap={2} justify="space-between" alignItems="center"
                       alignContent="center">
         <Grid css={{
-          padding: 0,
           flexBasis: 0,
+          paddingRight: 0,
+          paddingLeft: 0,
           '@xs': {
             flexBasis: 1,
           },
@@ -41,7 +42,13 @@ const Footer = () => {
           <Link href="https://github.com/krvknv" target="_blank">krvknv</Link>
         </Grid>
         <Grid alignItems="center" justify="flex-end"
-              css={{ gap: 10, padding: 0, display: 'flex', wrap: 'nowrap' }}>
+              css={{
+                display: 'flex',
+                gap: 10,
+                wrap: 'nowrap',
+                paddingRight: 0,
+                paddingLeft: 0,
+              }}>
           <Text>© 2022</Text>
           <Link href="https://rs.school/react/" target="_blank">
             <IconRSS fill={isDark ? 'white' : 'black'} width={120}/>
