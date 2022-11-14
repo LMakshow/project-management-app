@@ -18,6 +18,7 @@ import { useSignInMutation, useSignUpMutation } from '../features/auth/authApi'
 // Import translations
 import { useTranslation } from 'next-i18next'
 import { setUser } from '../features/auth/userSlice'
+import { useEffect, useState } from 'react'
 
 export default function Header() {
   const { setTheme } = useNextTheme()
@@ -28,6 +29,21 @@ export default function Header() {
   const isSigned = useAppSelector((state) => state.user.token)
   const userName = useAppSelector((state) => state.user.name)
   const { t } = useTranslation('common')
+  const [scroll, setScroll] = useState(false)
+
+  const listenScrollEvent = () => {
+    if (window.scrollY < 70) {
+      return setScroll(false)
+    } else if (window.scrollY > 70) {
+      return setScroll(true)
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll', listenScrollEvent)
+
+    return () => window.removeEventListener('scroll', listenScrollEvent)
+  }, [])
 
   const signInAction = async () => {
     try {
@@ -47,7 +63,9 @@ export default function Header() {
         password: 'TestUserPwd',
       })
       await signInAction()
-    } catch (err) { console.log(err) }
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   const signOutAction = () => {
@@ -55,13 +73,13 @@ export default function Header() {
   }
 
   return (
-    <Navbar variant='sticky'>
+    <Navbar variant='sticky' isCompact={scroll} >
       <Navbar.Toggle showIn='xs' />
       <Navbar.Brand css={{ '@sm': { marginRight: '$12' } }}>
         <Link href='/' color='text'>
           <Image
             src={logo_small}
-            width='50'
+            width='40'
             style={{ marginRight: '10px' }}
             alt=''
           />
@@ -97,11 +115,7 @@ export default function Header() {
       </Navbar.Content>
       <Navbar.Content hideIn='xs'>
         {isSigned ? (
-          <Navbar.Link
-            color='inherit'
-            href='#'
-            onClick={signOutAction}
-          >
+          <Navbar.Link color='inherit' href='#' onClick={signOutAction}>
             <Text>{t('Sign Out')}&nbsp;</Text>
             <Text as='span' hideIn='sm'>{`(${userName})`}</Text>
           </Navbar.Link>
@@ -138,8 +152,7 @@ export default function Header() {
                 color='error'
                 css={{ paddingLeft: '$12' }}
                 href='#'
-                onClick={signOutAction}
-              >
+                onClick={signOutAction}>
                 {`${t('Sign Out')} (${userName})`}\
               </Link>
             </Navbar.CollapseItem>
