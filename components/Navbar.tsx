@@ -38,6 +38,10 @@ export default function Header() {
     } catch {}
   }
 
+  const signOutAction = () => {
+    dispatch(setUser({ token: null, name: null, login: null, _id: null }))
+  }
+
   return (
     <Navbar shouldHideOnScroll variant='sticky'>
       <Navbar.Toggle showIn='xs' />
@@ -84,7 +88,7 @@ export default function Header() {
           <Navbar.Link
             color='inherit'
             href='#'
-            // onClick={() => dispatch(signOut())}
+            onClick={signOutAction}
           >
             <Text>{t('Sign Out')}&nbsp;</Text>
             <Text as='span' hideIn='sm'>{`(${userName})`}</Text>
@@ -122,7 +126,7 @@ export default function Header() {
                 color='error'
                 css={{ paddingLeft: '$12' }}
                 href='#'
-                // onClick={() => dispatch(signOut())}
+                onClick={signOutAction}
               >
                 {`${t('Sign Out')} (${userName})`}\
               </Link>

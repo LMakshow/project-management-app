@@ -17,4 +17,7 @@ export interface UserSignIn {
 
 export interface UserSignInResponse {
   token: string
+  name: string
+  login: string
+  _id: string
 }
