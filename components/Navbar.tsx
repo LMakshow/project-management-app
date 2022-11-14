@@ -13,7 +13,7 @@ import { IconKanbanAdd } from './icons/icon_kanban_add'
 
 // Import redux
 import { useAppDispatch, useAppSelector } from '../features/hooks'
-import { useSignInMutation } from '../features/auth/authApi'
+import { useSignInMutation, useSignUpMutation } from '../features/auth/authApi'
 
 // Import translations
 import { useTranslation } from 'next-i18next'
@@ -23,6 +23,7 @@ export default function Header() {
   const { setTheme } = useNextTheme()
   const { isDark, theme } = useTheme()
   const [login, { isLoading }] = useSignInMutation()
+  const [signUp] = useSignUpMutation()
   const dispatch = useAppDispatch()
   const isSigned = useAppSelector((state) => state.user.token)
   const userName = useAppSelector((state) => state.user.name)
@@ -36,6 +37,17 @@ export default function Header() {
       }).unwrap()
       dispatch(setUser(userData))
     } catch {}
+  }
+
+  const signUpAction = async () => {
+    try {
+      await signUp({
+        login: 'TestUser',
+        name: 'TestUser',
+        password: 'TestUserPwd',
+      })
+      await signInAction()
+    } catch (err) { console.log(err) }
   }
 
   const signOutAction = () => {
@@ -99,7 +111,7 @@ export default function Header() {
               {t('Sign In')}
             </Navbar.Link>
             <Navbar.Link color='inherit' href='#'>
-              <Button auto flat onClick={signInAction}>
+              <Button auto flat onClick={signUpAction}>
                 <Text>{t('Sign Up')}</Text>
               </Button>
             </Navbar.Link>
@@ -147,7 +159,7 @@ export default function Header() {
               <Link
                 color='inherit'
                 css={{ paddingLeft: '$4' }}
-                onClick={signInAction}>
+                onClick={signUpAction}>
                 <Button auto flat href='#'>
                   <Text>{t('Sign Up')}</Text>
                 </Button>
