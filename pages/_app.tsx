@@ -1,6 +1,9 @@
 import { createTheme, NextUIProvider } from '@nextui-org/react'
 import { ThemeProvider as NextThemesProvider } from 'next-themes'
 import type { AppProps } from 'next/app'
+import { store } from '../features/store'
+import { Provider } from 'react-redux'
+import { appWithTranslation } from 'next-i18next'
 
 const lightTheme = createTheme({
   type: 'light',
@@ -16,18 +19,22 @@ const darkTheme = createTheme({
   },
 })
 
-export default function App({ Component, pageProps }: AppProps) {
+const App = ({ Component, pageProps }: AppProps) => {
   return (
-    <NextThemesProvider
-      defaultTheme='system'
-      attribute='class'
-      value={{
-        light: lightTheme.className,
-        dark: darkTheme.className,
-      }}>
-      <NextUIProvider>
-        <Component {...pageProps} />
-      </NextUIProvider>
-    </NextThemesProvider>
+    <Provider store={store}>
+      <NextThemesProvider
+        defaultTheme='system'
+        attribute='class'
+        value={{
+          light: lightTheme.className,
+          dark: darkTheme.className,
+        }}>
+        <NextUIProvider>
+          <Component {...pageProps} />
+        </NextUIProvider>
+      </NextThemesProvider>
+    </Provider>
   )
 }
+
+export default appWithTranslation(App);
