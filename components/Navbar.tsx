@@ -16,7 +16,7 @@ import { useAppDispatch, useAppSelector } from '../features/hooks'
 import { signIn, signOut } from '../features/userSlice'
 
 // Import translations
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 
 export default function Header() {
   const { setTheme } = useNextTheme()
