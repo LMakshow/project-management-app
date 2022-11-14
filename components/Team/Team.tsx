@@ -1,12 +1,16 @@
 import { Text } from '@nextui-org/react'
 import Image from 'next/image'
 
+import { useTranslation } from 'next-i18next'
+
 import styles from './team.module.scss'
 
 import womanImage from '../../assets/icon/person-woman.svg'
 import manImage from '../../assets/icon/person-man.svg'
 
 const Team = () => {
+  const { t } = useTranslation('home-page')
+
   const teamStyles = {
     title: {
       marginBottom: '140px',
@@ -29,34 +33,34 @@ const Team = () => {
   return (
     <section className={styles.team}>
       <Text h2 css={teamStyles.title}>
-        Наша команда
+        {t('teamTitle')}
       </Text>
       <div className={styles.team__list}>
         <div className={styles.team__item}>
           <Image src={womanImage} alt='woman image' />
           <Text span css={teamStyles.itemTitle}>
-            Бэлла
+            {t('teamBella')}
           </Text>
           <Text span css={teamStyles.itemText}>
-            текст-"рыба", часто используемый в печати и вэб-дизайне
+            {t('teamBellaText')}
           </Text>
         </div>
         <div className={styles.team__item}>
           <Image src={manImage} alt='man image' />
           <Text span css={teamStyles.itemTitle}>
-            Максим
+            {t('teamMaxim')}
           </Text>
           <Text span css={teamStyles.itemText}>
-            текст-"рыба", часто используемый в печати и вэб-дизайне
+            {t('teamMaximText')}
           </Text>
         </div>
         <div className={styles.team__item}>
           <Image src={womanImage} alt='woman image' />
           <Text span css={teamStyles.itemTitle}>
-            Кристина
+            {t('teamChristina')}
           </Text>
           <Text span css={teamStyles.itemText}>
-            текст-"рыба", часто используемый в печати и вэб-дизайне
+            {t('teamChristinaText')}
           </Text>
         </div>
       </div>
