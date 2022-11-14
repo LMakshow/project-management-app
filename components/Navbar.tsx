@@ -23,7 +23,7 @@ export default function Header() {
   const { isDark, theme } = useTheme()
   const dispatch = useAppDispatch()
   const isSigned = useAppSelector((state) => state.user.isSigned)
-  const { t } = useTranslation('common');
+  const { t } = useTranslation('common')
 
   return (
     <Navbar shouldHideOnScroll variant='sticky'>

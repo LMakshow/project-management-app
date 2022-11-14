@@ -8,7 +8,7 @@
     "export": "next build && next export && echo . > out/.nojekyll",
     "start": "next start",
     "lint": "next lint",
-    "parse": "i18next 'components/*.tsx' 'pages/*.tsx'",
+    "parse": "i18next 'components/**/*.tsx' 'pages/*.tsx'",
     "deploy": "gh-pages -d ./out --dotfiles true -m deploy_cma"
   },
   "dependencies": {
