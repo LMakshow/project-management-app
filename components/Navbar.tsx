@@ -1,5 +1,5 @@
 import { useTheme as useNextTheme } from 'next-themes'
-import { Button, Switch, Text, useTheme } from '@nextui-org/react'
+import { Button, Spacer, Switch, Text, useTheme } from '@nextui-org/react'
 import { Navbar, Link } from '@nextui-org/react'
 import LangSwitcher from '../utils/LangSwitcher'
 
@@ -13,17 +13,30 @@ import { IconKanbanAdd } from './icons/icon_kanban_add'
 
 // Import redux
 import { useAppDispatch, useAppSelector } from '../features/hooks'
-import { signIn, signOut } from '../features/userSlice'
+import { useSignInMutation } from '../features/auth/authApi'
 
 // Import translations
 import { useTranslation } from 'next-i18next'
+import { setUser } from '../features/auth/userSlice'
 
 export default function Header() {
   const { setTheme } = useNextTheme()
   const { isDark, theme } = useTheme()
+  const [login, { isLoading }] = useSignInMutation()
   const dispatch = useAppDispatch()
-  const isSigned = useAppSelector((state) => state.user.isSigned)
-  const { t } = useTranslation('common');
+  const isSigned = useAppSelector((state) => state.user.token)
+  const userName = useAppSelector((state) => state.user.name)
+  const { t } = useTranslation('common')
+
+  const signInAction = async () => {
+    try {
+      const userData = await login({
+        login: 'TestUser',
+        password: 'TestUserPwd',
+      }).unwrap()
+      dispatch(setUser(userData))
+    } catch {}
+  }
 
   return (
     <Navbar shouldHideOnScroll variant='sticky'>
@@ -71,19 +84,18 @@ export default function Header() {
           <Navbar.Link
             color='inherit'
             href='#'
-            onClick={() => dispatch(signOut())}>
-            {t('Sign Out')}
+            // onClick={() => dispatch(signOut())}
+          >
+            <Text>{t('Sign Out')}&nbsp;</Text>
+            <Text as='span' hideIn='sm'>{`(${userName})`}</Text>
           </Navbar.Link>
         ) : (
           <>
-            <Navbar.Link
-              color='inherit'
-              href='#'
-              onClick={() => dispatch(signIn())}>
+            <Navbar.Link color='inherit' href='#' onClick={signInAction}>
               {t('Sign In')}
             </Navbar.Link>
             <Navbar.Link color='inherit' href='#'>
-              <Button auto flat onClick={() => dispatch(signIn())}>
+              <Button auto flat onClick={signInAction}>
                 <Text>{t('Sign Up')}</Text>
               </Button>
             </Navbar.Link>
@@ -110,8 +122,9 @@ export default function Header() {
                 color='error'
                 css={{ paddingLeft: '$12' }}
                 href='#'
-                onClick={() => dispatch(signOut())}>
-                {t('Sign Out')}
+                // onClick={() => dispatch(signOut())}
+              >
+                {`${t('Sign Out')} (${userName})`}\
               </Link>
             </Navbar.CollapseItem>
           </>
@@ -122,7 +135,7 @@ export default function Header() {
                 color='inherit'
                 href='#'
                 css={{ paddingLeft: '$11' }}
-                onClick={() => dispatch(signIn())}>
+                onClick={signInAction}>
                 {t('Sign In')}
               </Link>
             </Navbar.CollapseItem>
@@ -130,7 +143,7 @@ export default function Header() {
               <Link
                 color='inherit'
                 css={{ paddingLeft: '$4' }}
-                onClick={() => dispatch(signIn())}>
+                onClick={signInAction}>
                 <Button auto flat href='#'>
                   <Text>{t('Sign Up')}</Text>
                 </Button>
