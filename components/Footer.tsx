@@ -34,11 +34,11 @@ const Footer = () => {
             display: 'flex',
           },
         }}>
+          <Link href="https://github.com/rgvder" target="_blank">rgvder</Link>
+          <Spacer/>
           <Link href="https://github.com/LMakshow" target="_blank">LMakshow</Link>
           <Spacer/>
           <Link href="https://github.com/krvknv" target="_blank">krvknv</Link>
-          <Spacer/>
-          <Link href="https://github.com/rgvder" target="_blank">rgvder</Link>
         </Grid>
         <Grid alignItems="center" justify="flex-end"
               css={{ gap: 10, padding: 0, display: 'flex', wrap: 'nowrap' }}>
