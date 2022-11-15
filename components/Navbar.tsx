@@ -17,6 +17,7 @@ import { signIn, signOut } from '../features/userSlice'
 
 // Import translations
 import { useTranslation } from 'next-i18next'
+
 import ModalWindow from './Modal-window/Modal-window'
 import { useState } from 'react'
 
@@ -28,6 +29,7 @@ export default function Header() {
   const { t } = useTranslation('common')
   const { isShowing, toggle } = useModal()
   const [action, setAction] = useState('')
+
   return (
     <>
       <Navbar shouldHideOnScroll variant='sticky'>
@@ -97,7 +99,6 @@ export default function Header() {
                   onClick={() => {
                     // dispatch(signIn())
                     setAction('signUp')
-
                     toggle()
                   }}>
                   <Text>{t('Sign Up')}</Text>

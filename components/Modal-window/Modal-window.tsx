@@ -6,7 +6,11 @@ import { Mail } from './Mail'
 import { Password } from './Password'
 import { TModalProps } from './type-modal-window'
 
+import { useTranslation } from 'next-i18next'
+
 const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
+  const { t } = useTranslation('modal-window')
+
   return (
     isShowing &&
     ReactDOM.createPortal(
@@ -19,7 +23,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
           onClose={hide}>
           <Modal.Header>
             <Text id='modal-title' size={18}>
-              {action === 'signIn' ? 'Welcome to' : 'Join'}
+              {t(action)}
               <Text b size={18}>
                 {' '}
                 CMA
@@ -33,7 +37,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
               fullWidth
               color='primary'
               size='lg'
-              placeholder='Email'
+              placeholder={t('Email')}
               contentLeft={<Mail fill='currentColor' />}
             />
             <Input
@@ -42,17 +46,23 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
               fullWidth
               color='primary'
               size='lg'
-              placeholder='Password'
+              placeholder={t('Password')}
               contentLeft={<Password fill='currentColor' />}
             />
           </Modal.Body>
           <Modal.Footer>
             <Button auto flat color='error' onClick={hide}>
-              Close
+              {t('Close')}
             </Button>
-            <Button auto onClick={hide}>
-              {action === 'signIn' ? 'Sign in' : 'Sign up'}
-            </Button>
+            {action === 'signIn' ? (
+              <Button auto onClick={hide}>
+                {t('btnSignIn')}
+              </Button>
+            ) : (
+              <Button auto onClick={hide}>
+                {t('btnSignUp')}
+              </Button>
+            )}
           </Modal.Footer>
         </Modal>
       </div>,
