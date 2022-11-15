@@ -20,6 +20,7 @@ import { useTranslation } from 'next-i18next'
 
 import ModalWindow from './Modal-window/Modal-window'
 import { useState } from 'react'
+import ReactDOM from 'react-dom'
 
 export default function Header() {
   const { setTheme } = useNextTheme()
@@ -166,7 +167,11 @@ export default function Header() {
           </Navbar.CollapseItem>
         </Navbar.Collapse>
       </Navbar>
-      <ModalWindow isShowing={isShowing} hide={toggle} action={action} />
+      {isShowing &&
+        ReactDOM.createPortal(
+          <ModalWindow isShowing={isShowing} hide={toggle} action={action} />,
+          document.body
+        )}
     </>
   )
 }
