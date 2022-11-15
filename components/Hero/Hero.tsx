@@ -13,7 +13,7 @@ const Hero = () => {
 
   const heroStyles = {
     title: {
-      fontSize: '42px',
+      fontSize: '39px',
       fontFamily: '"Comfortaa", sans-serif',
       fontWeight: '400',
       lineHeight: '47px',
@@ -36,6 +36,9 @@ const Hero = () => {
       lineHeight: '29px',
       '&:hover': {
         background: '#346aa8',
+      },
+      '@smMax': {
+        margin: '0 auto',
       },
     },
   }
