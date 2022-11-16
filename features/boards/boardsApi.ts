@@ -1,13 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { SERVER } from '../../utils/constants'
-import {
-  BoardRequest,
-  BoardResponse,
-  UserSignIn,
-  UserSignInResponse,
-  UserSignUp,
-  UserSignUpResponse,
-} from '../../utils/interfaces'
+import { BoardRequest, BoardResponse } from '../../utils/interfaces'
 import { RootState } from '../store'
 
 export const boardsApi = createApi({
@@ -22,13 +15,19 @@ export const boardsApi = createApi({
       return headers
     },
   }),
+  tagTypes: ['BoardList'],
   endpoints: (builder) => ({
+    getBoards: builder.query({
+      query: (userId) => `/boardsSet/${userId}`,
+      providesTags: ['BoardList'],
+    }),
     createBoard: builder.mutation<BoardResponse, BoardRequest>({
-      query: (params) => ({
+      query: (payload) => ({
         url: 'boards',
         method: 'POST',
-        body: params,
+        body: payload,
       }),
+      invalidatesTags: ['BoardList'],
     }),
     updateBoard: builder.mutation<BoardResponse, BoardResponse>({
       query: ({ _id, title, owner, users }) => ({
@@ -36,13 +35,15 @@ export const boardsApi = createApi({
         method: 'PUT',
         body: { title, owner, users },
       }),
+      invalidatesTags: ['BoardList'],
     }),
-    signUp: builder.mutation<UserSignUpResponse, UserSignUp>({
-      query: (credentials) => ({
-        url: 'auth/signup',
-        method: 'POST',
-        body: credentials,
+    deleteBoard: builder.mutation<BoardResponse, BoardResponse>({
+      query: ({ _id, title, owner, users }) => ({
+        url: `boards/${_id}`,
+        method: 'DELETE',
+        body: { title, owner, users },
       }),
+      invalidatesTags: ['BoardList'],
     }),
   }),
 })
