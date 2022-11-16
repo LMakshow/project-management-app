@@ -10,3 +10,9 @@ export type TModalProps = {
   hide: () => void
   action: string
 }
+
+export type TFormData = {
+  name: string
+  email: string
+  password: string
+}

@@ -1,15 +1,67 @@
-import React from 'react'
-import { Modal, Input, Button, Text } from '@nextui-org/react'
+import React, { useState } from 'react'
+import {
+  Modal,
+  Input,
+  Button,
+  Text,
+  useInput,
+  NormalColors,
+} from '@nextui-org/react'
 
 import { Mail } from './Mail'
 import { Password } from './Password'
-import { Name } from './Name'
-import { TModalProps } from './type-modal-window'
+import { TFormData, TModalProps } from './type-modal-window'
 
 import { useTranslation } from 'next-i18next'
+import { useSignInMutation } from '../../features/auth/authApi'
+
+import { useAppDispatch } from '../../features/hooks'
+import { setUser } from '../../features/auth/userSlice'
 
 const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
+  const dispatch = useAppDispatch()
+
   const { t } = useTranslation('modal-window')
+
+  const { value: nameValue, reset, bindings: nameBindings } = useInput('')
+  const { value: emailValue, bindings: emailBindings } = useInput('')
+  const { value: passwordValue, bindings: passwordBindings } = useInput('')
+
+  const [login, { isLoading }] = useSignInMutation()
+
+  const [isError, setIsError] = useState(false)
+
+  const validateEmail = (emailValue: string) => {
+    return emailValue.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i)
+  }
+
+  const helper = React.useMemo(() => {
+    if (!emailValue)
+      return {
+        text: '',
+        color: '',
+      }
+
+    const isValid = validateEmail(emailValue)
+
+    return {
+      text: isValid ? '' : 'Enter a valid email',
+      color: isValid ? 'primary' : 'error',
+    }
+  }, [emailValue])
+
+  const handleSignIn = async () => {
+    try {
+      const userData = await login({
+        login: emailValue,
+        password: passwordValue,
+      }).unwrap()
+      dispatch(setUser(userData))
+      hide()
+    } catch (error) {
+      setIsError(true)
+    }
+  }
 
   return (
     <div>
@@ -28,26 +80,38 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
             </Text>
           </Text>
         </Modal.Header>
-        <Modal.Body>
+
+        <Modal.Body css={{ gap: '10px' }}>
+          {action === 'signUp' && (
+            <Input
+              {...nameBindings}
+              aria-labelledby='modal-name'
+              clearable
+              bordered
+              fullWidth
+              color='primary'
+              size='lg'
+              placeholder={t('Name')}
+              contentLeft={<Mail fill='currentColor' />}
+            />
+          )}
           <Input
-            clearable
-            bordered
-            fullWidth
-            color='primary'
-            size='lg'
-            placeholder={t('Name')}
-            contentLeft={<Name fill='currentColor' />}
-          />
-          <Input
+            {...emailBindings}
+            aria-labelledby='modal-email'
             clearable
             bordered
             fullWidth
             color='primary'
             size='lg'
             placeholder={t('Email')}
+            helperColor={helper.color}
+            helperText={helper.text}
             contentLeft={<Mail fill='currentColor' />}
           />
-          <Input
+          <Input.Password
+            {...passwordBindings}
+            aria-labelledby='modal-password'
+            type='password'
             clearable
             bordered
             fullWidth
@@ -56,17 +120,30 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
             placeholder={t('Password')}
             contentLeft={<Password fill='currentColor' />}
           />
+          {isError && <span style={{ color: 'red' }}> {t('error')}</span>}
         </Modal.Body>
+
         <Modal.Footer>
           <Button auto flat color='error' onClick={hide}>
             {t('Close')}
           </Button>
           {action === 'signIn' ? (
-            <Button auto onClick={hide}>
+            <Button
+              auto
+              type='submit'
+              onClick={handleSignIn}
+              disabled={
+                validateEmail(emailValue) && passwordValue ? false : true
+              }>
               {t('btnSignIn')}
             </Button>
           ) : (
-            <Button auto onClick={hide}>
+            <Button
+              auto
+              type='submit'
+              disabled={
+                validateEmail(emailValue) && passwordValue ? false : true
+              }>
               {t('btnSignUp')}
             </Button>
           )}

@@ -9,5 +9,7 @@
 
   "Password": "Password",
   "Email": "Email",
-  "Name": "Name"
+  "Name": "Name",
+
+  "error": "Incorrect value"
 }
