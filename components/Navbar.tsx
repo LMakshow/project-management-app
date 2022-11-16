@@ -52,29 +52,6 @@ export default function Header() {
     return () => window.removeEventListener('scroll', listenScrollEvent)
   }, [])
 
-  const signInAction = async () => {
-    try {
-      const userData = await login({
-        login: 'TestUser',
-        password: 'TestUserPwd',
-      }).unwrap()
-      dispatch(setUser(userData))
-    } catch {}
-  }
-
-  const signUpAction = async () => {
-    try {
-      await signUp({
-        login: 'TestUser',
-        name: 'TestUser',
-        password: 'TestUserPwd',
-      })
-      await signInAction()
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
   const signOutAction = () => {
     dispatch(setUser({ token: null, name: null, login: null, _id: null }))
   }
@@ -133,7 +110,6 @@ export default function Header() {
                 color='inherit'
                 href='#'
                 onClick={() => {
-                  // signInAction
                   setAction('signIn')
                   toggle()
                 }}>
@@ -144,7 +120,6 @@ export default function Header() {
                   auto
                   flat
                   onClick={() => {
-                    // signUpAction
                     setAction('signUp')
                     toggle()
                   }}>
@@ -186,7 +161,10 @@ export default function Header() {
                   color='inherit'
                   href='#'
                   css={{ paddingLeft: '$11' }}
-                  onClick={signInAction}>
+                  onClick={() => {
+                    setAction('signIn')
+                    toggle()
+                  }}>
                   {t('Sign In')}
                 </Link>
               </Navbar.CollapseItem>
@@ -194,7 +172,10 @@ export default function Header() {
                 <Link
                   color='inherit'
                   css={{ paddingLeft: '$4' }}
-                  onClick={signUpAction}>
+                  onClick={() => {
+                    setAction('signUp')
+                    toggle()
+                  }}>
                   <Button auto flat href='#'>
                     <Text>{t('Sign Up')}</Text>
                   </Button>
