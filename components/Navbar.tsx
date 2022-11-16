@@ -1,4 +1,5 @@
 import { useTheme as useNextTheme } from 'next-themes'
+import NextLink from 'next/link'
 import { Button, Switch, Text, useTheme } from '@nextui-org/react'
 import { Navbar, Link } from '@nextui-org/react'
 import LangSwitcher from '../utils/LangSwitcher'
@@ -72,35 +73,34 @@ export default function Header() {
     dispatch(setUser({ token: null, name: null, login: null, _id: null }))
   }
 
-
   return (
-    <Navbar variant='sticky' isCompact={scroll} >
+    <Navbar variant='sticky' isCompact={scroll}>
       <Navbar.Toggle showIn='xs' />
       <Navbar.Brand css={{ '@sm': { marginRight: '$12' } }}>
-        <Link href='/' color='text'>
+        <NextLink href='/' color='text'>
           <Image
             src={logo_small}
             width='40'
             style={{ marginRight: '10px' }}
             alt=''
           />
-          <Text b size='$2xl' color='inherit'>
+          <Text b size='$2xl'>
             CMA
           </Text>
-        </Link>
+        </NextLink>
       </Navbar.Brand>
       {isSigned ? (
         <Navbar.Content
           css={{ '@sm': { marginLeft: 'auto', marginRight: '$12' } }}
           hideIn='xs'>
-          <Navbar.Link href='#'>
-            <IconKanban fill={theme?.colors?.primary?.value} />
-            <Text size='large'>{t('Boards')}</Text>
-          </Navbar.Link>
-          <Navbar.Link href='#'>
+            <NextLink href='/boards'>
+              <IconKanban fill={theme?.colors?.primary?.value} />
+              <Text size='large'>{t('Boards')}</Text>
+            </NextLink>
+            <NextLink href='/boards'>
             <IconKanbanAdd fill={theme?.colors?.primary?.value} />
             <Text size='large'>{t('Create Board')}</Text>
-          </Navbar.Link>
+            </NextLink>
         </Navbar.Content>
       ) : null}
       <Navbar.Content
@@ -137,10 +137,12 @@ export default function Header() {
         {isSigned ? (
           <>
             <Navbar.CollapseItem>
-              <Link href='#'>
-                <IconKanban fill={theme?.colors?.primary?.value} />
-                <Text size='large'>{t('Boards')}</Text>
-              </Link>
+              <NextLink href='/boards'>
+                <Link>
+                  <IconKanban fill={theme?.colors?.primary?.value} />
+                  <Text size='large'>{t('Boards')}</Text>
+                </Link>
+              </NextLink>
             </Navbar.CollapseItem>
             <Navbar.CollapseItem>
               <Link href='#'>

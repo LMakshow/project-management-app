@@ -4,6 +4,7 @@ import { UserSignIn, UserSignInResponse, UserSignUp, UserSignUpResponse } from '
 import { RootState } from '../store'
 
 export const authApi = createApi({
+  reducerPath: 'authApi',
   baseQuery: fetchBaseQuery({
     baseUrl: SERVER,
     prepareHeaders: (headers, { getState }) => {
