@@ -1,17 +1,15 @@
 {
+  "unvalid-email": "Enter a valid email",
+  "unvalid-password": "Enter a valid passwod",
   "signIn": "Welcome to",
   "signUp": "Join",
-
-  "btnSignIn": "Sign In",
-  "btnSignUp": "Sign Up",
-
-  "Close": "Close",
-
-  "Password": "Password",
-  "Email": "Email",
   "Name": "Name",
-
+  "Email": "Email",
+  "Password": "Password",
   "error": "Incorrect value",
-  "unvalid-email": "Enter a valid email",
-  "unvalid-password": "Enter a valid passwod"
+  "demo-tooltip": "Sign in as TestUser to check the app",
+  "Demo": "Demo",
+  "Close": "Close",
+  "btnSignIn": "Sign In",
+  "btnSignUp": "Sign Up"
 }

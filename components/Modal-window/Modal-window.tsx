@@ -137,7 +137,10 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
         onClose={hide}>
         <Modal.Header>
           <Text id='modal-title' size={18}>
-            {t(action)}
+            {
+              // t('signIn')  t('signUp')
+              t(action)
+            }
             <Text b size={18}>
               {' '}
               CMA
@@ -191,12 +194,9 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
 
         <Modal.Footer>
           <Tooltip
-            content={t('Sign in as TestUser to check the app')}
+            content={t('demo-tooltip')}
             css={{ zIndex: 9999 }}>
-            <Button
-              auto
-              flat
-              onClick={handleSignInDemo}>
+            <Button auto flat onClick={handleSignInDemo}>
               {t('Demo')}
             </Button>
           </Tooltip>
