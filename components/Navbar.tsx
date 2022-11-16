@@ -1,7 +1,7 @@
 import { useTheme as useNextTheme } from 'next-themes'
-import NextLink from 'next/link'
+import Link from 'next/link'
 import { Button, Switch, Text, useTheme } from '@nextui-org/react'
-import { Navbar, Link } from '@nextui-org/react'
+import { Navbar } from '@nextui-org/react'
 import LangSwitcher from '../utils/LangSwitcher'
 
 // Import images
@@ -77,7 +77,7 @@ export default function Header() {
     <Navbar variant='sticky' isCompact={scroll}>
       <Navbar.Toggle showIn='xs' />
       <Navbar.Brand css={{ '@sm': { marginRight: '$12' } }}>
-        <NextLink href='/' color='text'>
+        <Link href='/' color='text'>
           <Image
             src={logo_small}
             width='40'
@@ -87,20 +87,22 @@ export default function Header() {
           <Text b size='$2xl'>
             CMA
           </Text>
-        </NextLink>
+        </Link>
       </Navbar.Brand>
       {isSigned ? (
         <Navbar.Content
           css={{ '@sm': { marginLeft: 'auto', marginRight: '$12' } }}
           hideIn='xs'>
-            <NextLink href='/boards'>
+          <Navbar.Item>
+            <Link href='/boards'>
               <IconKanban fill={theme?.colors?.primary?.value} />
               <Text size='large'>{t('Boards')}</Text>
-            </NextLink>
-            <NextLink href='/boards'>
+            </Link>
+          </Navbar.Item>
+          <Link href='/boards'>
             <IconKanbanAdd fill={theme?.colors?.primary?.value} />
             <Text size='large'>{t('Create Board')}</Text>
-            </NextLink>
+          </Link>
         </Navbar.Content>
       ) : null}
       <Navbar.Content
@@ -116,20 +118,20 @@ export default function Header() {
       </Navbar.Content>
       <Navbar.Content hideIn='xs'>
         {isSigned ? (
-          <Navbar.Link color='inherit' href='#' onClick={signOutAction}>
+          <Link color='inherit' href='#' onClick={signOutAction}>
             <Text>{t('Sign Out')}&nbsp;</Text>
             <Text as='span' hideIn='sm'>{`(${userName})`}</Text>
-          </Navbar.Link>
+          </Link>
         ) : (
           <>
-            <Navbar.Link color='inherit' href='#' onClick={signInAction}>
+            <Link color='inherit' href='#' onClick={signInAction}>
               {t('Sign In')}
-            </Navbar.Link>
-            <Navbar.Link color='inherit' href='#'>
+            </Link>
+            <Link color='inherit' href='#'>
               <Button auto flat onClick={signUpAction}>
                 <Text>{t('Sign Up')}</Text>
               </Button>
-            </Navbar.Link>
+            </Link>
           </>
         )}
       </Navbar.Content>
@@ -137,12 +139,10 @@ export default function Header() {
         {isSigned ? (
           <>
             <Navbar.CollapseItem>
-              <NextLink href='/boards'>
-                <Link>
-                  <IconKanban fill={theme?.colors?.primary?.value} />
-                  <Text size='large'>{t('Boards')}</Text>
-                </Link>
-              </NextLink>
+              <Link href='/boards'>
+                <IconKanban fill={theme?.colors?.primary?.value} />
+                <Text size='large'>{t('Boards')}</Text>
+              </Link>
             </Navbar.CollapseItem>
             <Navbar.CollapseItem>
               <Link href='#'>
@@ -153,7 +153,7 @@ export default function Header() {
             <Navbar.CollapseItem>
               <Link
                 color='error'
-                css={{ paddingLeft: '$12' }}
+                style={{ paddingLeft: '$12' }}
                 href='#'
                 onClick={signOutAction}>
                 {`${t('Sign Out')} (${userName})`}\
@@ -166,17 +166,18 @@ export default function Header() {
               <Link
                 color='inherit'
                 href='#'
-                css={{ paddingLeft: '$11' }}
+                style={{ paddingLeft: '$11' }}
                 onClick={signInAction}>
                 {t('Sign In')}
               </Link>
             </Navbar.CollapseItem>
             <Navbar.CollapseItem>
               <Link
+                href='#'
                 color='inherit'
-                css={{ paddingLeft: '$4' }}
+                style={{ paddingLeft: '$4' }}
                 onClick={signUpAction}>
-                <Button auto flat href='#'>
+                <Button auto flat>
                   <Text>{t('Sign Up')}</Text>
                 </Button>
               </Link>
