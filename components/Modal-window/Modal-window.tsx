@@ -13,13 +13,14 @@ import {
 
 import { useAppDispatch } from '../../features/hooks'
 import { setUser } from '../../features/auth/userSlice'
+import { validateEmail, validatePassword } from './validation'
 
 const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
   const dispatch = useAppDispatch()
 
   const { t } = useTranslation('modal-window')
 
-  const { value: nameValue, reset, bindings: nameBindings } = useInput('')
+  const { value: nameValue, bindings: nameBindings } = useInput('')
   const { value: emailValue, bindings: emailBindings } = useInput('')
   const { value: passwordValue, bindings: passwordBindings } = useInput('')
 
@@ -28,11 +29,10 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
 
   const [isError, setIsError] = useState(false)
 
-  const validateEmail = (emailValue: string) => {
-    return emailValue.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i)
-  }
-
-  const helper = React.useMemo((): { text: string; color: helperColor } => {
+  const emailHelper = React.useMemo((): {
+    text: string
+    color: helperColor
+  } => {
     if (!emailValue)
       return {
         text: '',
@@ -40,12 +40,29 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
       }
 
     const isValid = validateEmail(emailValue)
-
     return {
-      text: isValid ? '' : 'Enter a valid email',
+      text: isValid ? '' : `${t('unvalid-email')}`,
       color: isValid ? 'primary' : 'error',
     }
   }, [emailValue])
+
+  const passwordHelper = React.useMemo((): {
+    text: string
+    color: helperColor
+  } => {
+    if (!passwordValue)
+      return {
+        text: '',
+        color: 'success',
+      }
+
+    const isValid = validatePassword(passwordValue)
+
+    return {
+      text: isValid ? '' : `${t('unvalid-password')}`,
+      color: isValid ? 'primary' : 'error',
+    }
+  }, [passwordValue])
 
   // Handlers
   const handleSignIn = async () => {
@@ -97,7 +114,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
           </Text>
         </Modal.Header>
 
-        <Modal.Body css={{ gap: '10px' }}>
+        <Modal.Body css={{ gap: '10px', overflow: 'visible' }}>
           {action === 'signUp' && (
             <Input
               {...nameBindings}
@@ -120,8 +137,8 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
             color='primary'
             size='lg'
             placeholder={t('Email')}
-            helperColor={helper.color}
-            helperText={helper.text}
+            helperColor={emailHelper.color}
+            helperText={emailHelper.text}
             contentLeft={<Mail fill='currentColor' />}
           />
           <Input.Password
@@ -134,6 +151,8 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
             color='primary'
             size='lg'
             placeholder={t('Password')}
+            helperColor={passwordHelper.color}
+            helperText={passwordHelper.text}
             contentLeft={<Password fill='currentColor' />}
           />
           {isError && <span style={{ color: 'red' }}> {t('error')}</span>}
@@ -149,7 +168,9 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
               type='submit'
               onClick={handleSignIn}
               disabled={
-                validateEmail(emailValue) && passwordValue ? false : true
+                validateEmail(emailValue) && validatePassword(passwordValue)
+                  ? false
+                  : true
               }>
               {t('btnSignIn')}
             </Button>
@@ -159,7 +180,9 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
               type='submit'
               onClick={handleSignUp}
               disabled={
-                validateEmail(emailValue) && passwordValue ? false : true
+                validateEmail(emailValue) && validatePassword(passwordValue)
+                  ? false
+                  : true
               }>
               {t('btnSignUp')}
             </Button>

@@ -11,5 +11,7 @@
   "Email": "Email",
   "Name": "Name",
 
-  "error": "Incorrect value"
+  "error": "Incorrect value",
+  "unvalid-email": "Enter a valid email",
+  "unvalid-password": "Enter a valid passwod"
 }
