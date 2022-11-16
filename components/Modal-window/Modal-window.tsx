@@ -1,5 +1,13 @@
 import React, { useState } from 'react'
-import { Modal, Input, Button, Text, useInput } from '@nextui-org/react'
+import {
+  Modal,
+  Input,
+  Button,
+  Text,
+  useInput,
+  Spacer,
+  Tooltip,
+} from '@nextui-org/react'
 
 import { Mail } from './Mail'
 import { Password } from './Password'
@@ -21,8 +29,16 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
   const { t } = useTranslation('modal-window')
 
   const { value: nameValue, bindings: nameBindings } = useInput('')
-  const { value: emailValue, bindings: emailBindings } = useInput('')
-  const { value: passwordValue, bindings: passwordBindings } = useInput('')
+  const {
+    value: emailValue,
+    setValue: setEmail,
+    bindings: emailBindings,
+  } = useInput('')
+  const {
+    value: passwordValue,
+    setValue: setPwd,
+    bindings: passwordBindings,
+  } = useInput('')
 
   const [login, { isLoading }] = useSignInMutation()
   const [signUp] = useSignUpMutation()
@@ -44,7 +60,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
       text: isValid ? '' : `${t('unvalid-email')}`,
       color: isValid ? 'primary' : 'error',
     }
-  }, [emailValue])
+  }, [emailValue, t])
 
   const passwordHelper = React.useMemo((): {
     text: string
@@ -62,7 +78,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
       text: isValid ? '' : `${t('unvalid-password')}`,
       color: isValid ? 'primary' : 'error',
     }
-  }, [passwordValue])
+  }, [passwordValue, t])
 
   // Handlers
   const handleSignIn = async () => {
@@ -89,6 +105,21 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
       })
 
       await handleSignIn()
+
+      hide()
+    } catch (error) {
+      setIsError(true)
+    }
+  }
+
+  const handleSignInDemo = async () => {
+    try {
+      const userData = await login({
+        login: 'TestUser',
+        password: 'TestUserPwd',
+      }).unwrap()
+
+      dispatch(setUser(userData))
 
       hide()
     } catch (error) {
@@ -159,6 +190,17 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
         </Modal.Body>
 
         <Modal.Footer>
+          <Tooltip
+            content={t('Sign in as TestUser to check the app')}
+            css={{ zIndex: 9999 }}>
+            <Button
+              auto
+              flat
+              onClick={handleSignInDemo}>
+              {t('Demo')}
+            </Button>
+          </Tooltip>
+          <Spacer css={{ fg: 1 }} />
           <Button auto flat color='error' onClick={hide}>
             {t('Close')}
           </Button>
