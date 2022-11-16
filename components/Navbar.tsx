@@ -1,4 +1,5 @@
 import { useTheme as useNextTheme } from 'next-themes'
+import NextLink from 'next/link'
 import { Button, Switch, Text, useTheme } from '@nextui-org/react'
 import { Navbar, Link } from '@nextui-org/react'
 import LangSwitcher from '../utils/LangSwitcher'

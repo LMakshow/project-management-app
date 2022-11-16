@@ -4,6 +4,7 @@ import { BoardRequest, BoardResponse } from '../../utils/interfaces'
 import { RootState } from '../store'
 
 export const boardsApi = createApi({
+  reducerPath: 'boardsApi',
   baseQuery: fetchBaseQuery({
     baseUrl: SERVER,
     prepareHeaders: (headers, { getState }) => {
@@ -17,7 +18,7 @@ export const boardsApi = createApi({
   }),
   tagTypes: ['BoardList'],
   endpoints: (builder) => ({
-    getBoards: builder.query({
+    getBoards: builder.query<BoardResponse[], string>({
       query: (userId) => `/boardsSet/${userId}`,
       providesTags: ['BoardList'],
     }),
@@ -48,4 +49,4 @@ export const boardsApi = createApi({
   }),
 })
 
-export const { useCreateBoardMutation, useUpdateBoardMutation } = boardsApi
+export const { useGetBoardsQuery, useCreateBoardMutation, useUpdateBoardMutation, useDeleteBoardMutation } = boardsApi
