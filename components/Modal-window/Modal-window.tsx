@@ -13,7 +13,10 @@ import { Password } from './Password'
 import { TFormData, TModalProps } from './type-modal-window'
 
 import { useTranslation } from 'next-i18next'
-import { useSignInMutation } from '../../features/auth/authApi'
+import {
+  useSignInMutation,
+  useSignUpMutation,
+} from '../../features/auth/authApi'
 
 import { useAppDispatch } from '../../features/hooks'
 import { setUser } from '../../features/auth/userSlice'
@@ -28,6 +31,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
   const { value: passwordValue, bindings: passwordBindings } = useInput('')
 
   const [login, { isLoading }] = useSignInMutation()
+  const [signUp] = useSignUpMutation()
 
   const [isError, setIsError] = useState(false)
 
@@ -56,7 +60,25 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
         login: emailValue,
         password: passwordValue,
       }).unwrap()
+
       dispatch(setUser(userData))
+
+      hide()
+    } catch (error) {
+      setIsError(true)
+    }
+  }
+
+  const handleSignUp = async () => {
+    try {
+      await signUp({
+        login: emailValue,
+        name: nameValue,
+        password: passwordValue,
+      })
+
+      await handleSignIn()
+
       hide()
     } catch (error) {
       setIsError(true)
@@ -141,6 +163,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
             <Button
               auto
               type='submit'
+              onClick={handleSignUp}
               disabled={
                 validateEmail(emailValue) && passwordValue ? false : true
               }>
