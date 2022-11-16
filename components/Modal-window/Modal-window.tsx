@@ -9,8 +9,8 @@ import {
   Tooltip,
 } from '@nextui-org/react'
 
-import { Mail } from './Mail'
-import { Password } from './Password'
+import { Mail } from '../icons/modal/icon_mail'
+import { Password } from '../icons/modal/icon_password'
 import { helperColor, TModalProps } from './type-modal-window'
 
 import { useTranslation } from 'next-i18next'
@@ -22,6 +22,7 @@ import {
 import { useAppDispatch } from '../../features/hooks'
 import { setUser } from '../../features/auth/userSlice'
 import { validateEmail, validatePassword } from './validation'
+import { User } from '../icons/modal/icon_user'
 
 const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
   const dispatch = useAppDispatch()
@@ -159,7 +160,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
               color='primary'
               size='lg'
               placeholder={t('Name')}
-              contentLeft={<Mail fill='currentColor' />}
+              contentLeft={<User fill='currentColor' />}
             />
           )}
           <Input

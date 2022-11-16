@@ -1,4 +1,4 @@
-import { TChildComponentProps } from './type-modal-window'
+import { TChildComponentProps } from '../../Modal-window/type-modal-window'
 
 export const Password = ({
   fill,
