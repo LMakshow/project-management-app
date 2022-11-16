@@ -129,11 +129,25 @@ export default function Header() {
             </Navbar.Link>
           ) : (
             <>
-              <Navbar.Link color='inherit' href='#' onClick={signInAction}>
+              <Navbar.Link
+                color='inherit'
+                href='#'
+                onClick={() => {
+                  // signInAction
+                  setAction('signIn')
+                  toggle()
+                }}>
                 {t('Sign In')}
               </Navbar.Link>
               <Navbar.Link color='inherit' href='#'>
-                <Button auto flat onClick={signUpAction}>
+                <Button
+                  auto
+                  flat
+                  onClick={() => {
+                    // signUpAction
+                    setAction('signUp')
+                    toggle()
+                  }}>
                   <Text>{t('Sign Up')}</Text>
                 </Button>
               </Navbar.Link>
