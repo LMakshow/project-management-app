@@ -1,16 +1,9 @@
 import React, { useState } from 'react'
-import {
-  Modal,
-  Input,
-  Button,
-  Text,
-  useInput,
-  NormalColors,
-} from '@nextui-org/react'
+import { Modal, Input, Button, Text, useInput } from '@nextui-org/react'
 
 import { Mail } from './Mail'
 import { Password } from './Password'
-import { TFormData, TModalProps } from './type-modal-window'
+import { helperColor, TModalProps } from './type-modal-window'
 
 import { useTranslation } from 'next-i18next'
 import {
@@ -39,11 +32,11 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
     return emailValue.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i)
   }
 
-  const helper = React.useMemo(() => {
+  const helper = React.useMemo((): { text: string; color: helperColor } => {
     if (!emailValue)
       return {
         text: '',
-        color: '',
+        color: 'success',
       }
 
     const isValid = validateEmail(emailValue)
@@ -54,6 +47,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
     }
   }, [emailValue])
 
+  // Handlers
   const handleSignIn = async () => {
     try {
       const userData = await login({

@@ -11,8 +11,10 @@ export type TModalProps = {
   action: string
 }
 
-export type TFormData = {
-  name: string
-  email: string
-  password: string
-}
+export type helperColor =
+  | 'default'
+  | 'primary'
+  | 'secondary'
+  | 'success'
+  | 'warning'
+  | 'error'
