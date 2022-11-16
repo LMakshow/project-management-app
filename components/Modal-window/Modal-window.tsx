@@ -1,9 +1,9 @@
 import React from 'react'
 import { Modal, Input, Button, Text } from '@nextui-org/react'
 
-import ReactDOM from 'react-dom'
 import { Mail } from './Mail'
 import { Password } from './Password'
+import { Name } from './Name'
 import { TModalProps } from './type-modal-window'
 
 import { useTranslation } from 'next-i18next'
@@ -29,6 +29,15 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
           </Text>
         </Modal.Header>
         <Modal.Body>
+          <Input
+            clearable
+            bordered
+            fullWidth
+            color='primary'
+            size='lg'
+            placeholder={t('Name')}
+            contentLeft={<Name fill='currentColor' />}
+          />
           <Input
             clearable
             bordered
