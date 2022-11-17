@@ -95,12 +95,10 @@ export default function Header() {
                 <Text size='large'>{t('Boards')}</Text>
               </Link>
             </NextLink>
-            <NextLink passHref legacyBehavior href='#'>
-              <Link onClick={handleCreateBoard}>
+            <Button auto light onClick={handleCreateBoard}>
                 <IconKanbanAdd fill={theme?.colors?.primary?.value} />
                 <Text size='large'>{t('Create Board')}</Text>
-              </Link>
-            </NextLink>
+            </Button>
           </Navbar.Content>
         ) : null}
         <Navbar.Content
