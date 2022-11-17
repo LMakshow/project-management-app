@@ -20,4 +20,8 @@ export interface UserSignInResponse {
   name: string
   login: string
   _id: string
+  error: {
+    data: { statusCode: number; message: string }
+    status: number
+  }
 }

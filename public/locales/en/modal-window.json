@@ -1,0 +1,15 @@
+{
+  "unvalid-email": "Enter a valid email",
+  "unvalid-password": "Enter a valid passwod",
+  "signIn": "Welcome to",
+  "signUp": "Join",
+  "Name": "Name",
+  "Email": "Email",
+  "Password": "Password",
+  "error": "Incorrect value",
+  "demo-tooltip": "Sign in as TestUser to check the app",
+  "Demo": "Demo",
+  "Close": "Close",
+  "btnSignIn": "Sign In",
+  "btnSignUp": "Sign Up"
+}
