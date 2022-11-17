@@ -28,7 +28,7 @@ const BoardCardTitle: FC<{ title: string }> = (props) => {
           type="text"
           size="xl"
           color="primary"
-          width='306px'
+          animated={false}
         />
           <Tooltip
             content={t('Save new title')}

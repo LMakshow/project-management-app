@@ -1,4 +1,4 @@
-import { Button, Card, Text, Tooltip } from '@nextui-org/react';
+import { Avatar, Button, Card } from '@nextui-org/react';
 import { BoardResponse } from '../../utils/interfaces';
 import { FC } from 'react';
 
@@ -27,10 +27,14 @@ const BoardCard: FC<BoardResponse> = (board) => {
         alignItems: 'center',
         justifyContent: 'space-between',
       }}>
-
         <Button flat color="primary" auto>
           {t('Delete')}
         </Button>
+        <Avatar
+          squared
+          src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
+          size="lg"
+        />
       </Card.Footer>
     </Card>
   )

@@ -32,7 +32,6 @@ const BoardCardDescription = () => {
             width='306px'
             status="primary"
             initialValue={description}
-            placeholder={description}
             css={{
               display: 'flex',
               justifyContent: 'flex-start',
@@ -40,7 +39,7 @@ const BoardCardDescription = () => {
           />
 
           <Tooltip
-            content={t('Save new title')}
+            content={t('Save new description')}
             css={{ zIndex: 10 }}>
             <SaveButton onClick={handleClick}/>
           </Tooltip></>
@@ -56,7 +55,7 @@ const BoardCardDescription = () => {
               {description}</Text>
           </Container>
           <Tooltip
-          content={t('Edit title')}
+          content={t('Edit description')}
           css={{ zIndex: 10 }}>
           <EditButton onClick={handleClick}/>
         </Tooltip> </>}
