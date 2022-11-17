@@ -3,5 +3,9 @@
   "Create Board": "Создать Доску",
   "Sign Out": "Выйти",
   "Sign In": "Логин",
-  "Sign Up": "Регистрация"
+  "Sign Up": "Регистрация",
+  "createBoard": "Создать доску",
+  "Close": "Закрыть",
+  "Create": "Создать",
+  "boardName": "Название доски"
 }

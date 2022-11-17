@@ -3,5 +3,9 @@
   "Create Board": "Create Board",
   "Sign Out": "Sign Out",
   "Sign In": "Sign In",
-  "Sign Up": "Sign Up"
+  "Sign Up": "Sign Up",
+  "createBoard": "Create board",
+  "Close": "Close",
+  "Create": "Create",
+  "boardName": "Board's name"
 }
