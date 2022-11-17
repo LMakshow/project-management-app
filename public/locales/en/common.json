@@ -3,5 +3,10 @@
   "Create Board": "Create Board",
   "Sign Out": "Sign Out",
   "Sign In": "Sign In",
-  "Sign Up": "Sign Up"
+  "Sign Up": "Sign Up",
+  "Delete": "Delete",
+  "Edit title": "Edit title",
+  "Edit description": "Edit description",
+  "Save new title": "Save new title",
+  "Save new description": "Save new description"
 }

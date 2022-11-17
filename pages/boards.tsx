@@ -1,9 +1,9 @@
 import { Container } from '@nextui-org/react'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { Card, Text } from '@nextui-org/react'
 import Layout from '../components/layout'
 import { useGetBoardsQuery } from '../features/boards/boardsApi'
 import { useAppSelector } from '../features/hooks'
+import BoardCard from '../components/board-list-page/BoardCard';
 
 export const getStaticProps = async ({ locale }: { locale: 'en' | 'ru' }) => ({
   props: {
@@ -21,16 +21,20 @@ export default function Boards() {
 
   return (
     <Layout>
-      <Container>
+      <Container display="flex" css={{
+        gap: '32px',
+        padding: '32px',
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+      }}>
         {boardList &&
           boardList.map((board) => (
-            <Card key={board._id} css={{ mw: '400px' }}>
-              <Card.Body>
-                <Text>Title: {board.title}</Text>
-                <Text>Owner: {board.owner}</Text>
-                <Text>Users: {board.users}</Text>
-              </Card.Body>
-            </Card>
+            <BoardCard
+              key={board._id}
+              title={board.title}
+              owner={board.owner}
+              users={board.users}
+             _id={board._id}/>
           ))}
       </Container>
     </Layout>
