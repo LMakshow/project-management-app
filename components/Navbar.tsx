@@ -1,35 +1,30 @@
+import { Button, Link, Navbar, Switch, Text, useTheme } from '@nextui-org/react'
 import { useTheme as useNextTheme } from 'next-themes'
-import { Button, Switch, Text, useTheme } from '@nextui-org/react'
-import { Navbar, Link } from '@nextui-org/react'
 import NextLink from 'next/link'
 import LangSwitcher from '../utils/LangSwitcher'
 
 // Import images
-import logo_small from '../assets/logo/logo_small.svg'
 import Image from 'next/image'
-import { IconSun } from './icons/icon_sun'
-import { IconMoon } from './icons/icon_moon'
-import { IconKanban } from './icons/icon_kanban'
-import { IconKanbanAdd } from './icons/icon_kanban_add'
+import logo_small from '../assets/logo/logo_small.svg'
+import { IconKanban } from './icons/navbar/icon_kanban'
+import { IconKanbanAdd } from './icons/navbar/icon_kanban_add'
+import { IconMoon } from './icons/navbar/icon_moon'
+import { IconSun } from './icons/navbar/icon_sun'
 
 // Import redux
 import { useAppDispatch, useAppSelector, useModal } from '../features/hooks'
-// import { signIn, signOut } from '../features/userSlice'
-import { useSignInMutation, useSignUpMutation } from '../features/auth/authApi'
+import { setUser } from '../features/auth/userSlice'
 
 // Import translations
 import { useTranslation } from 'next-i18next'
-import { setUser } from '../features/auth/userSlice'
 
-import ModalWindow from './Modal-window/Modal-window'
 import { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
+import ModalWindow from './Modal-window/Modal-window'
 
 export default function Header() {
   const { setTheme } = useNextTheme()
   const { isDark, theme } = useTheme()
-  const [login, { isLoading }] = useSignInMutation()
-  const [signUp] = useSignUpMutation()
   const dispatch = useAppDispatch()
   const isSigned = useAppSelector((state) => state.user.token)
   const userName = useAppSelector((state) => state.user.name)
