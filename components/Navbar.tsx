@@ -1,6 +1,7 @@
 import { Button, Link, Navbar, Switch, Text, useTheme } from '@nextui-org/react'
 import { useTheme as useNextTheme } from 'next-themes'
 import NextLink from 'next/link'
+import { useRouter } from 'next/router'
 import LangSwitcher from '../utils/LangSwitcher'
 
 // Import images
@@ -21,13 +22,16 @@ import { useTranslation } from 'next-i18next'
 import { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import ModalWindow from './Modal-window/Modal-window'
+import { useCreateBoardMutation } from '../features/boards/boardsApi'
 
 export default function Header() {
   const { setTheme } = useNextTheme()
   const { isDark, theme } = useTheme()
+  const router = useRouter()
   const dispatch = useAppDispatch()
   const isSigned = useAppSelector((state) => state.user.token)
   const userName = useAppSelector((state) => state.user.name)
+  const userId = useAppSelector((state) => state.user._id) as string
   const { t } = useTranslation('common')
 
   const { isShowing, toggle } = useModal()
@@ -50,6 +54,16 @@ export default function Header() {
 
   const signOutAction = () => {
     dispatch(setUser({ token: null, name: null, login: null, _id: null }))
+  }
+
+  const [createBoard] = useCreateBoardMutation()
+  const handleCreateBoard = async () => {
+    await createBoard({
+      title: 'New Board',
+      owner: userId,
+      users: [userId]
+    })
+    router.push('/boards')
   }
 
   return (
@@ -82,7 +96,7 @@ export default function Header() {
               </Link>
             </NextLink>
             <NextLink passHref legacyBehavior href='#'>
-              <Link>
+              <Link onClick={handleCreateBoard}>
                 <IconKanbanAdd fill={theme?.colors?.primary?.value} />
                 <Text size='large'>{t('Create Board')}</Text>
               </Link>
@@ -142,7 +156,7 @@ export default function Header() {
               </Navbar.CollapseItem>
               <Navbar.CollapseItem>
                 <NextLink passHref legacyBehavior href='#'>
-                  <Link>
+                  <Link onClick={handleCreateBoard}>
                     <IconKanbanAdd fill={theme?.colors?.primary?.value} />
                     <Text size='large'>{t('Create Board')}</Text>
                   </Link>

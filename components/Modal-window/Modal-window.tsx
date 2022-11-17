@@ -194,9 +194,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
         </Modal.Body>
 
         <Modal.Footer>
-          <Tooltip
-            content={t('demo-tooltip')}
-            css={{ zIndex: 9999 }}>
+          <Tooltip content={t('demo-tooltip')} css={{ zIndex: 9999 }}>
             <Button auto flat onClick={handleSignInDemo}>
               {t('Demo')}
             </Button>
