@@ -4,6 +4,7 @@ import { FC } from 'react';
 
 import { useTranslation } from 'next-i18next';
 import BoardCardTitle from './BoardCardTitle';
+import BoardCardDescription from './BoardCardDescription';
 
 const BoardCard: FC<BoardResponse> = (board) => {
   const { t } = useTranslation('common');
@@ -13,18 +14,13 @@ const BoardCard: FC<BoardResponse> = (board) => {
       mw: '400px',
       pl: '10px',
       pr: '10px',
+      pb: '15px'
     }}>
-      <Card.Header css={{
-        minHeight: '76px',
-      }}>
+      <Card.Header>
         <BoardCardTitle title={board.title}/>
       </Card.Header>
       <Card.Body>
-        <Text>Owner: {board.owner}</Text>
-        <Text>Users: {board.users}</Text>
-        <Tooltip content={t('Edit description')} css={{ zIndex: 10 }}>
-          {/*<EditButton/>*/}
-        </Tooltip>
+        <BoardCardDescription />
       </Card.Body>
       <Card.Footer css={{
         display: 'flex',
