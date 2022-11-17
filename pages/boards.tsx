@@ -7,7 +7,10 @@ import { useAppSelector } from '../features/hooks'
 
 export const getStaticProps = async ({ locale }: { locale: 'en' | 'ru' }) => ({
   props: {
-    ...(await serverSideTranslations(locale ?? 'en', ['common'])),
+    ...(await serverSideTranslations(locale ?? 'en', [
+      'common',
+      'modal-window',
+    ])),
   },
 })
 
@@ -19,13 +22,16 @@ export default function Boards() {
   return (
     <Layout>
       <Container>
-        {boardList && boardList.map((board) => (<Card key={board._id} css={{ mw: '400px' }}>
-          <Card.Body>
-            <Text>Title: {board.title}</Text>
-            <Text>Owner: {board.owner}</Text>
-            <Text>Users: {board.users}</Text>
-          </Card.Body>
-        </Card>))}
+        {boardList &&
+          boardList.map((board) => (
+            <Card key={board._id} css={{ mw: '400px' }}>
+              <Card.Body>
+                <Text>Title: {board.title}</Text>
+                <Text>Owner: {board.owner}</Text>
+                <Text>Users: {board.users}</Text>
+              </Card.Body>
+            </Card>
+          ))}
       </Container>
     </Layout>
   )
