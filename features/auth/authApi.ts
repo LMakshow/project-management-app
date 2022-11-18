@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { SERVER } from '../../utils/constants'
 import { UserSignIn, UserSignInResponse, UserSignUp, UserSignUpResponse } from '../../utils/interfaces'
 import { RootState } from '../store'
+import { setUser } from './userSlice'
 
 export const authApi = createApi({
   reducerPath: 'authApi',
@@ -23,6 +24,12 @@ export const authApi = createApi({
         method: 'POST',
         body: credentials,
       }),
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(setUser(data));
+        } catch (error) {}
+      },
     }),
     signUp: builder.mutation<UserSignUpResponse, UserSignUp>({
       query: (credentials) => ({

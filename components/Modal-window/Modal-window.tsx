@@ -87,9 +87,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
       const userData = await login({
         login: emailValue,
         password: passwordValue,
-      }).unwrap()
-
-      dispatch(setUser(userData))
+      })
 
       hide()
     } catch (error) {
@@ -118,9 +116,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
       const userData = await login({
         login: 'TestUser',
         password: 'TestUserPwd',
-      }).unwrap()
-
-      dispatch(setUser(userData))
+      })
 
       hide()
     } catch (error) {
