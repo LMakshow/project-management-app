@@ -221,7 +221,9 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
               type='submit'
               onClick={handleSignUp}
               disabled={
-                validateEmail(emailValue) && validatePassword(passwordValue)
+                validateEmail(emailValue) &&
+                validatePassword(passwordValue) &&
+                nameValue
                   ? false
                   : true
               }>

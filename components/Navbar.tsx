@@ -1,37 +1,38 @@
-import { Button, Link, Navbar, Switch, Text, useTheme } from '@nextui-org/react'
 import { useTheme as useNextTheme } from 'next-themes'
-import NextLink from 'next/link'
-import { useRouter } from 'next/router'
+import { Button, Popover, Switch, Text, useTheme } from '@nextui-org/react'
+import { Navbar, Link } from '@nextui-org/react'
 import LangSwitcher from '../utils/LangSwitcher'
 
 // Import images
-import Image from 'next/image'
 import logo_small from '../assets/logo/logo_small.svg'
-import { IconKanban } from './icons/navbar/icon_kanban'
-import { IconKanbanAdd } from './icons/navbar/icon_kanban_add'
-import { IconMoon } from './icons/navbar/icon_moon'
-import { IconSun } from './icons/navbar/icon_sun'
+import Image from 'next/image'
+import { IconSun } from './icons/icon_sun'
+import { IconMoon } from './icons/icon_moon'
+import { IconKanban } from './icons/icon_kanban'
+import { IconKanbanAdd } from './icons/icon_kanban_add'
 
 // Import redux
 import { useAppDispatch, useAppSelector, useModal } from '../features/hooks'
-import { setUser } from '../features/auth/userSlice'
+// import { signIn, signOut } from '../features/userSlice'
+import { useSignInMutation, useSignUpMutation } from '../features/auth/authApi'
 
 // Import translations
 import { useTranslation } from 'next-i18next'
+import { setUser } from '../features/auth/userSlice'
 
+import ModalWindow from './Modal-window/Modal-window'
 import { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
-import ModalWindow from './Modal-window/Modal-window'
-import { useCreateBoardMutation } from '../features/boards/boardsApi'
+import PopoverAddBoard from './Popover-add-board'
 
 export default function Header() {
   const { setTheme } = useNextTheme()
   const { isDark, theme } = useTheme()
-  const router = useRouter()
+  const [login, { isLoading }] = useSignInMutation()
+  const [signUp] = useSignUpMutation()
   const dispatch = useAppDispatch()
   const isSigned = useAppSelector((state) => state.user.token)
   const userName = useAppSelector((state) => state.user.name)
-  const userId = useAppSelector((state) => state.user._id) as string
   const { t } = useTranslation('common')
 
   const { isShowing, toggle } = useModal()
@@ -56,49 +57,42 @@ export default function Header() {
     dispatch(setUser({ token: null, name: null, login: null, _id: null }))
   }
 
-  const [createBoard] = useCreateBoardMutation()
-  const handleCreateBoard = async () => {
-    await createBoard({
-      title: 'New Board',
-      owner: userId,
-      users: [userId]
-    })
-    router.push('/boards')
-  }
-
   return (
     <>
       <Navbar variant='sticky' isCompact={scroll}>
         <Navbar.Toggle showIn='xs' />
         <Navbar.Brand css={{ '@sm': { marginRight: '$12' } }}>
-          <NextLink passHref legacyBehavior href='/'>
-            <Link color='text'>
-              <Image
-                src={logo_small}
-                width='40'
-                style={{ marginRight: '10px' }}
-                alt=''
-              />
-              <Text b size='$2xl' color='inherit'>
-                CMA
-              </Text>
-            </Link>
-          </NextLink>
+          <Link href='/' color='text'>
+            <Image
+              src={logo_small}
+              width='40'
+              style={{ marginRight: '10px' }}
+              alt=''
+            />
+            <Text b size='$2xl' color='inherit'>
+              CMA
+            </Text>
+          </Link>
         </Navbar.Brand>
         {isSigned ? (
           <Navbar.Content
             css={{ '@sm': { marginLeft: 'auto', marginRight: '$12' } }}
             hideIn='xs'>
-            <NextLink passHref legacyBehavior href='/boards'>
-              <Link>
-                <IconKanban fill={theme?.colors?.primary?.value} />
-                <Text size='large'>{t('Boards')}</Text>
-              </Link>
-            </NextLink>
-            <Button auto light onClick={handleCreateBoard}>
-                <IconKanbanAdd fill={theme?.colors?.primary?.value} />
-                <Text size='large'>{t('Create Board')}</Text>
-            </Button>
+            <Navbar.Link href='#'>
+              <IconKanban fill={theme?.colors?.primary?.value} />
+              <Text size='large'>{t('Boards')}</Text>
+            </Navbar.Link>
+            <Popover>
+              <Popover.Trigger>
+                <Navbar.Link href='#'>
+                  <IconKanbanAdd fill={theme?.colors?.primary?.value} />
+                  <Text size='large'>{t('Create Board')}</Text>
+                </Navbar.Link>
+              </Popover.Trigger>
+              <Popover.Content>
+                <PopoverAddBoard />
+              </Popover.Content>
+            </Popover>
           </Navbar.Content>
         ) : null}
         <Navbar.Content
@@ -114,30 +108,32 @@ export default function Header() {
         </Navbar.Content>
         <Navbar.Content hideIn='xs'>
           {isSigned ? (
-            <Link color='inherit' href='#' onClick={signOutAction}>
+            <Navbar.Link color='inherit' href='#' onClick={signOutAction}>
               <Text>{t('Sign Out')}&nbsp;</Text>
               <Text as='span' hideIn='sm'>{`(${userName})`}</Text>
-            </Link>
+            </Navbar.Link>
           ) : (
             <>
-              <Button
-                auto
-                light
+              <Navbar.Link
+                color='inherit'
+                href='#'
                 onClick={() => {
                   setAction('signIn')
                   toggle()
                 }}>
-                <Text>{t('Sign In')}</Text>
-              </Button>
-              <Button
-                auto
-                flat
-                onClick={() => {
-                  setAction('signUp')
-                  toggle()
-                }}>
-                <Text>{t('Sign Up')}</Text>
-              </Button>
+                {t('Sign In')}
+              </Navbar.Link>
+              <Navbar.Link color='inherit' href='#'>
+                <Button
+                  auto
+                  flat
+                  onClick={() => {
+                    setAction('signUp')
+                    toggle()
+                  }}>
+                  <Text>{t('Sign Up')}</Text>
+                </Button>
+              </Navbar.Link>
             </>
           )}
         </Navbar.Content>
@@ -145,20 +141,16 @@ export default function Header() {
           {isSigned ? (
             <>
               <Navbar.CollapseItem>
-                <NextLink passHref legacyBehavior href='/boards'>
-                  <Link>
-                    <IconKanban fill={theme?.colors?.primary?.value} />
-                    <Text size='large'>{t('Boards')}</Text>
-                  </Link>
-                </NextLink>
+                <Link href='#'>
+                  <IconKanban fill={theme?.colors?.primary?.value} />
+                  <Text size='large'>{t('Boards')}</Text>
+                </Link>
               </Navbar.CollapseItem>
               <Navbar.CollapseItem>
-                <NextLink passHref legacyBehavior href='#'>
-                  <Link onClick={handleCreateBoard}>
-                    <IconKanbanAdd fill={theme?.colors?.primary?.value} />
-                    <Text size='large'>{t('Create Board')}</Text>
-                  </Link>
-                </NextLink>
+                <Link href='#'>
+                  <IconKanbanAdd fill={theme?.colors?.primary?.value} />
+                  <Text size='large'>{t('Create Board')}</Text>
+                </Link>
               </Navbar.CollapseItem>
               <Navbar.CollapseItem>
                 <Link
@@ -166,23 +158,23 @@ export default function Header() {
                   css={{ paddingLeft: '$12' }}
                   href='#'
                   onClick={signOutAction}>
-                  {`${t('Sign Out')} (${userName})`}
+                  {`${t('Sign Out')} (${userName})`}\
                 </Link>
               </Navbar.CollapseItem>
             </>
           ) : (
             <>
               <Navbar.CollapseItem>
-                <Button
-                  auto
-                  light
-                  css={{ ml: '$11' }}
+                <Link
+                  color='inherit'
+                  href='#'
+                  css={{ paddingLeft: '$11' }}
                   onClick={() => {
                     setAction('signIn')
                     toggle()
                   }}>
-                  <Text>{t('Sign In')}</Text>
-                </Button>
+                  {t('Sign In')}
+                </Link>
               </Navbar.CollapseItem>
               <Navbar.CollapseItem>
                 <Button

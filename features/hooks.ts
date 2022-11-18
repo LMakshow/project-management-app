@@ -12,6 +12,7 @@ export const useModal = () => {
 
   function toggle() {
     setIsShowing(!isShowing)
+    document.body.style.overflow = 'visible'
   }
 
   return {

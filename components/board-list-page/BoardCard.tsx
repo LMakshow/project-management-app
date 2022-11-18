@@ -5,6 +5,7 @@ import { FC } from 'react';
 import { useTranslation } from 'next-i18next';
 import BoardCardTitle from './BoardCardTitle';
 import BoardCardDescription from './BoardCardDescription';
+import PopoverDeleteBoard from './PopoverDeleteBoard';
 
 const BoardCard: FC<BoardResponse> = (board) => {
   const { t } = useTranslation('common');
@@ -27,9 +28,7 @@ const BoardCard: FC<BoardResponse> = (board) => {
         alignItems: 'center',
         justifyContent: 'space-between',
       }}>
-        <Button flat color="primary" auto>
-          {t('Delete')}
-        </Button>
+        <PopoverDeleteBoard />
         <Avatar
           squared
           src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
