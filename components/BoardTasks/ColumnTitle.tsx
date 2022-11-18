@@ -1,9 +1,10 @@
-import { Container, Input, Text, Tooltip } from '@nextui-org/react'
+import { Container, Input, Spacer, Text, Tooltip } from '@nextui-org/react'
 import SaveButton from '../board-list-page/SaveButton'
 import EditButton from '../board-list-page/EditButton'
 import { FC, useState } from 'react'
 
 import { useTranslation } from 'next-i18next'
+import CancelButton from '../Buttons/CancelButton'
 
 const ColumnTitle = ({ title }: { title: string }) => {
   const { t } = useTranslation('common')
@@ -23,10 +24,15 @@ const ColumnTitle = ({ title }: { title: string }) => {
             value={title}
             type='text'
             size='lg'
-            width='120px'
+            width='auto'
             color='primary'
             animated={false}
           />
+          <Spacer x={0.5} />
+          <Tooltip content={t('Cancel')} css={{ zIndex: 10 }}>
+            <CancelButton onClick={handleClick} />
+          </Tooltip>
+          <Spacer x={0.5} />
           <Tooltip content={t('Save new title')} css={{ zIndex: 10 }}>
             <SaveButton onClick={handleClick} />
           </Tooltip>

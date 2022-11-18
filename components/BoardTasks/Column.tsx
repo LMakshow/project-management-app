@@ -8,7 +8,6 @@ const Column = (props: ColumnResponse) => {
 
   return (
     <Card
-      isPressable
       isHoverable
       css={{
         mw: '300px',

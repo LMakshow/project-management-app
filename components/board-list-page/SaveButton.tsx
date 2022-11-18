@@ -10,8 +10,7 @@ const SaveButton:FC<{onClick: () => void}> = ({ onClick: onClick }) => {
     light
     aria-label='save'
     css={{
-      pl: '6px',
-      pr: '6px',
+      px: '0'
     }}
   onClick={onClick}>
     <IconDone fill={theme?.colors?.success?.value}/>
