@@ -1,8 +1,35 @@
-import { Button, Grid, Input, Row, Text } from '@nextui-org/react'
+import { Button, Grid, Input, Row, Text, useInput } from '@nextui-org/react'
 import { useTranslation } from 'next-i18next'
+import { useRouter } from 'next/router'
+import { useCreateBoardMutation } from '../features/boards/boardsApi'
+import { useAppSelector } from '../features/hooks'
 
-const PopoverAddBoard = () => {
+const PopoverAddBoard = (props: {
+  isOpen: boolean
+  setIsOpen: (isOpen: boolean) => void
+}) => {
+  const { isOpen, setIsOpen } = props
+
   const { t } = useTranslation('common')
+
+  const { value: nameValue, bindings: nameBindings } = useInput('')
+  const { value: descriptValue, bindings: descripBindings } = useInput('')
+
+  const router = useRouter()
+
+  const [createBoard] = useCreateBoardMutation()
+
+  const userId = useAppSelector((state) => state.user._id) as string
+
+  const handlerCreateBoard = async () => {
+    await createBoard({
+      title: nameValue,
+      description: descriptValue,
+      owner: userId,
+      users: [userId],
+    })
+    // router.push('/boards')
+  }
 
   return (
     <Grid.Container
@@ -11,26 +38,35 @@ const PopoverAddBoard = () => {
         <Text b>{t('createBoard')}</Text>
       </Row>
       <Row>
-        {/* <Text>
-          Are you sure you want to delete this user ? By doing this, you will
-          not be able to recover the data.
-        </Text> */}
         <Input
+          {...nameBindings}
           clearable
           bordered
           placeholder={t('boardName')}
           width='100%'
+          css={{ margin: '15px 0 0' }}
+          aria-labelledby="board's name"
+        />
+      </Row>
+      <Row>
+        <Input
+          {...descripBindings}
+          clearable
+          bordered
+          placeholder={t('boardDiscript')}
+          width='100%'
           css={{ margin: '15px 0' }}
+          aria-labelledby="board's description"
         />
       </Row>
       <Grid.Container justify='space-between' alignContent='center'>
         <Grid>
-          <Button size='sm' light>
+          <Button size='sm' light onClick={() => setIsOpen(!isOpen)}>
             {t('Close')}
           </Button>
         </Grid>
         <Grid>
-          <Button size='sm' shadow color='default'>
+          <Button size='sm' shadow color='default' onClick={handlerCreateBoard}>
             {t('Create')}
           </Button>
         </Grid>

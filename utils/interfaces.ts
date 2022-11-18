@@ -41,6 +41,7 @@ export interface BoardResponse {
 
 export interface BoardRequest {
   title: string
+  description: string
   owner: string
   users: string[]
 }

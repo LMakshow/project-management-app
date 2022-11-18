@@ -39,6 +39,8 @@ export default function Header() {
   const [action, setAction] = useState('')
   const [scroll, setScroll] = useState(false)
 
+  const [isOpen, setIsOpen] = useState(false)
+
   const listenScrollEvent = () => {
     if (window.scrollY < 70) {
       return setScroll(false)
@@ -82,15 +84,16 @@ export default function Header() {
               <IconKanban fill={theme?.colors?.primary?.value} />
               <Text size='large'>{t('Boards')}</Text>
             </Navbar.Link>
-            <Popover>
+            {/* <PopoverAddBoard /> */}
+            <Popover isBordered isOpen={isOpen} onOpenChange={setIsOpen}>
               <Popover.Trigger>
-                <Navbar.Link href='#'>
+                <Button auto light>
                   <IconKanbanAdd fill={theme?.colors?.primary?.value} />
                   <Text size='large'>{t('Create Board')}</Text>
-                </Navbar.Link>
+                </Button>
               </Popover.Trigger>
               <Popover.Content>
-                <PopoverAddBoard />
+                <PopoverAddBoard isOpen={isOpen} setIsOpen={setIsOpen} />
               </Popover.Content>
             </Popover>
           </Navbar.Content>
