@@ -3,7 +3,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Layout from '../components/layout'
 import { useGetBoardsQuery } from '../features/boards/boardsApi'
 import { useAppSelector } from '../features/hooks'
-import BoardCard from '../components/board-list-page/BoardCard';
+import BoardCard from '../components/board-list-page/BoardCard'
 
 export const getStaticProps = async ({ locale }: { locale: 'en' | 'ru' }) => ({
   props: {
@@ -21,20 +21,24 @@ export default function Boards() {
 
   return (
     <Layout>
-      <Container display="flex" css={{
-        gap: '32px',
-        padding: '32px',
-        justifyContent: 'flex-start',
-        alignItems: 'center'
-      }}>
+      <Container
+        display='flex'
+        css={{
+          gap: '32px',
+          padding: '32px',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+        }}>
         {boardList &&
           boardList.map((board) => (
             <BoardCard
               key={board._id}
+              description={board.description}
               title={board.title}
               owner={board.owner}
               users={board.users}
-             _id={board._id}/>
+              _id={board._id}
+            />
           ))}
       </Container>
     </Layout>
