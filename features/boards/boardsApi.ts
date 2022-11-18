@@ -3,6 +3,7 @@ import { SERVER } from '../../utils/constants'
 import {
   BoardRequest,
   BoardResponse,
+  ColumnOrderRequest,
   ColumnRequest,
   ColumnResponse,
   CreateColumnRequest,
@@ -71,6 +72,14 @@ export const boardsApi = createApi({
         url: `/boards/${boardId}/columns/${columnId}`,
         method: 'PUT',
         body: { title, order },
+      }),
+      invalidatesTags: ['ColumnList'],
+    }),
+    changeColumnOrder: builder.mutation<ColumnResponse[], ColumnOrderRequest[]>({
+      query: (payload) => ({
+        url: `/columnsSet`,
+        method: 'PATCH',
+        body: payload,
       }),
       invalidatesTags: ['ColumnList'],
     }),

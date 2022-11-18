@@ -53,6 +53,11 @@ export interface ColumnRequest {
   columnId: string
 }
 
+export interface ColumnOrderRequest {
+  _id: string
+  order: number
+}
+
 export interface ColumnResponse {
   _id: string
   title: string
