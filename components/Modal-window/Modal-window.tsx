@@ -84,7 +84,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
   // Handlers
   const handleSignIn = async () => {
     try {
-      const userData = await login({
+      await login({
         login: emailValue,
         password: passwordValue,
       })
@@ -113,7 +113,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
 
   const handleSignInDemo = async () => {
     try {
-      const userData = await login({
+      await login({
         login: 'TestUser',
         password: 'TestUserPwd',
       })
