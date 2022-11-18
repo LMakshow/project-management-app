@@ -28,19 +28,6 @@ export interface UserSignInResponse {
 
 export interface BoardRequest {
   title: string
-  owner: string
-  users: string[]
-}
-
-export interface BoardResponse {
-  _id: string
-  title: string
-  owner: string
-  users: string[]
-}
-
-export interface BoardRequest {
-  title: string
   description: string
   owner: string
   users: string[]
@@ -49,6 +36,29 @@ export interface BoardRequest {
 export interface BoardResponse {
   _id: string
   title: string
+  description: string
   owner: string
   users: string[]
 }
+
+export interface CreateColumnRequest {
+  boardId?: string
+  columnId?: string
+  title: string
+  order: number
+}
+
+export interface ColumnRequest {
+  boardId: string
+  columnId: string
+}
+
+export interface ColumnResponse {
+  _id: string
+  title: string
+  order: number
+  boardId: string
+}
+
+
+
