@@ -8,6 +8,8 @@ import { useAppDispatch, useAppSelector } from '../../features/hooks'
 import { setUser } from '../../features/auth/userSlice'
 import { BoardResponse } from '../../utils/interfaces'
 import { skipToken } from '@reduxjs/toolkit/dist/query'
+import ColumnTitle from '../../components/BoardTasks/ColumnTitle'
+import Column from '../../components/BoardTasks/Column'
 
 export default function Board() {
   const router = useRouter()
@@ -42,8 +44,7 @@ export default function Board() {
         }}>
         {columnsList &&
           columnsList.map((column) => (
-            <div
-              key={column._id}>Title: {column.title} </div>
+            <Column key={column._id} {...column} />
           ))}
       </Container>
     </Layout>

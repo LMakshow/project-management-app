@@ -8,6 +8,7 @@ const SaveButton:FC<{onClick: () => void}> = ({ onClick: onClick }) => {
   return <Button
     auto
     light
+    aria-label='save'
     css={{
       pl: '6px',
       pr: '6px',
