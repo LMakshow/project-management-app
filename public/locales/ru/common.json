@@ -8,5 +8,12 @@
   "Close": "Закрыть",
   "Create": "Создать",
   "boardName": "Название доски",
+  "Delete board": "Удалить доску",
+  "Delete": "Удалить",
+  "Popover delete board": "Вы уверены, что хотите удалить доску?",
+  "Edit title": "Редактировать наименование",
+  "Edit description": "Редактировать описание",
+  "Save new title": "Сохранить новое наименование",
+  "Save new description": "Сохранить новое описание",
   "boardDiscript": "Описание доски"
 }

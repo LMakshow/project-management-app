@@ -1,6 +1,14 @@
 {
   "extends": ["next/core-web-vitals", "prettier"],
   "rules": {
-    "react/no-unescaped-entities": "off"
+    "react/no-unescaped-entities": "off",
+    "import/named": "off",
+    "import/namespace": "off",
+    "import/default": "off",
+    "import/no-named-as-default-member": "off",
+    "import/no-named-as-default": "off",
+    "import/no-cycle": "off",
+    "import/no-unused-modules": "off",
+    "import/no-deprecated": "off"
   }
 }

@@ -8,5 +8,12 @@
   "Close": "Close",
   "Create": "Create",
   "boardName": "Board's name",
+  "Delete board": "Delete board",
+  "Delete": "Delete",
+  "Popover delete board": "Are you sure you want to delete this board?",
+  "Edit title": "Edit title",
+  "Edit description": "Edit description",
+  "Save new title": "Save new title",
+  "Save new description": "Save new description",
   "boardDiscript": "Board's description"
 }
