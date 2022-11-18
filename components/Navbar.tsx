@@ -82,7 +82,7 @@ export default function Header() {
               <IconKanban fill={theme?.colors?.primary?.value} />
               <Text size='large'>{t('Boards')}</Text>
             </Navbar.Link>
-            <PopoverAddBoard theme={theme} />
+            <PopoverAddBoard />
           </Navbar.Content>
         ) : null}
         <Navbar.Content

@@ -3,11 +3,11 @@ import {
   Grid,
   Input,
   Navbar,
-  NextUITheme,
   Popover,
   Row,
   Text,
   useInput,
+  useTheme,
 } from '@nextui-org/react'
 import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
@@ -16,8 +16,9 @@ import { useCreateBoardMutation } from '../features/boards/boardsApi'
 import { useAppSelector } from '../features/hooks'
 import { IconKanbanAdd } from './icons/icon_kanban_add'
 
-const PopoverAddBoard = (props: { theme: NextUITheme }) => {
-  const { theme } = props
+const PopoverAddBoard = () => {
+  const { theme } = useTheme()
+
   const { t } = useTranslation('common')
 
   const { value: nameValue, bindings: nameBindings } = useInput('')
