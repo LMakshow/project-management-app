@@ -82,17 +82,7 @@ export default function Header() {
               <IconKanban fill={theme?.colors?.primary?.value} />
               <Text size='large'>{t('Boards')}</Text>
             </Navbar.Link>
-            <Popover isBordered>
-              <Popover.Trigger>
-                <Navbar.Link href='#'>
-                  <IconKanbanAdd fill={theme?.colors?.primary?.value} />
-                  <Text size='large'>{t('Create Board')}</Text>
-                </Navbar.Link>
-              </Popover.Trigger>
-              <Popover.Content>
-                <PopoverAddBoard />
-              </Popover.Content>
-            </Popover>
+            <PopoverAddBoard theme={theme} />
           </Navbar.Content>
         ) : null}
         <Navbar.Content
