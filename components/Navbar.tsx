@@ -1,5 +1,5 @@
 import { useTheme as useNextTheme } from 'next-themes'
-import { Button, Switch, Text, useTheme } from '@nextui-org/react'
+import { Button, Popover, Switch, Text, useTheme } from '@nextui-org/react'
 import { Navbar, Link } from '@nextui-org/react'
 import LangSwitcher from '../utils/LangSwitcher'
 
@@ -23,6 +23,7 @@ import { setUser } from '../features/auth/userSlice'
 import ModalWindow from './Modal-window/Modal-window'
 import { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
+import PopoverAddBoard from './Popover-add-board'
 
 export default function Header() {
   const { setTheme } = useNextTheme()
@@ -37,6 +38,8 @@ export default function Header() {
   const { isShowing, toggle } = useModal()
   const [action, setAction] = useState('')
   const [scroll, setScroll] = useState(false)
+
+  const [isOpen, setIsOpen] = useState(false)
 
   const listenScrollEvent = () => {
     if (window.scrollY < 70) {
@@ -81,10 +84,18 @@ export default function Header() {
               <IconKanban fill={theme?.colors?.primary?.value} />
               <Text size='large'>{t('Boards')}</Text>
             </Navbar.Link>
-            <Navbar.Link href='#'>
-              <IconKanbanAdd fill={theme?.colors?.primary?.value} />
-              <Text size='large'>{t('Create Board')}</Text>
-            </Navbar.Link>
+            {/* <PopoverAddBoard /> */}
+            <Popover isBordered isOpen={isOpen} onOpenChange={setIsOpen}>
+              <Popover.Trigger>
+                <Button auto light>
+                  <IconKanbanAdd fill={theme?.colors?.primary?.value} />
+                  <Text size='large'>{t('Create Board')}</Text>
+                </Button>
+              </Popover.Trigger>
+              <Popover.Content>
+                <PopoverAddBoard isOpen={isOpen} setIsOpen={setIsOpen} />
+              </Popover.Content>
+            </Popover>
           </Navbar.Content>
         ) : null}
         <Navbar.Content
