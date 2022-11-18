@@ -7,5 +7,6 @@
   "createBoard": "Create board",
   "Close": "Close",
   "Create": "Create",
-  "boardName": "Board's name"
+  "boardName": "Board's name",
+  "boardDiscript": "Board's description"
 }

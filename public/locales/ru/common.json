@@ -7,5 +7,6 @@
   "createBoard": "Создать доску",
   "Close": "Закрыть",
   "Create": "Создать",
-  "boardName": "Название доски"
+  "boardName": "Название доски",
+  "boardDiscript": "Описание доски"
 }
