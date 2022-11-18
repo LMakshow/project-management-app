@@ -1,6 +1,7 @@
 import { useTheme as useNextTheme } from 'next-themes'
 import { Button, Popover, Switch, Text, useTheme } from '@nextui-org/react'
 import { Navbar, Link } from '@nextui-org/react'
+import NextLink from 'next/link'
 import LangSwitcher from '../utils/LangSwitcher'
 
 // Import images
@@ -13,8 +14,6 @@ import { IconKanbanAdd } from './icons/icon_kanban_add'
 
 // Import redux
 import { useAppDispatch, useAppSelector, useModal } from '../features/hooks'
-// import { signIn, signOut } from '../features/userSlice'
-import { useSignInMutation, useSignUpMutation } from '../features/auth/authApi'
 
 // Import translations
 import { useTranslation } from 'next-i18next'
@@ -28,18 +27,17 @@ import PopoverAddBoard from './Popover-add-board'
 export default function Header() {
   const { setTheme } = useNextTheme()
   const { isDark, theme } = useTheme()
-  const [login, { isLoading }] = useSignInMutation()
-  const [signUp] = useSignUpMutation()
   const dispatch = useAppDispatch()
   const isSigned = useAppSelector((state) => state.user.token)
   const userName = useAppSelector((state) => state.user.name)
   const { t } = useTranslation('common')
 
-  const { isShowing, toggle } = useModal()
-  const [action, setAction] = useState('')
+  const { isShowing: isModalShowing, toggle: toggleModal } = useModal()
+  const [signUserAction, setSignUserAction] = useState('')
   const [scroll, setScroll] = useState(false)
 
-  const [isOpen, setIsOpen] = useState(false)
+  const [isCreateBoardOpen, setIsCreateBoardOpen] = useState(false)
+  const [isCreateBoardSmOpen, setIsCreateBoardSmOpen] = useState(false)
 
   const listenScrollEvent = () => {
     if (window.scrollY < 70) {
@@ -64,36 +62,39 @@ export default function Header() {
       <Navbar variant='sticky' isCompact={scroll}>
         <Navbar.Toggle showIn='xs' />
         <Navbar.Brand css={{ '@sm': { marginRight: '$12' } }}>
-          <Link href='/' color='text'>
-            <Image
-              src={logo_small}
-              width='40'
-              style={{ marginRight: '10px' }}
-              alt=''
-            />
-            <Text b size='$2xl' color='inherit'>
-              CMA
-            </Text>
-          </Link>
+          <NextLink passHref legacyBehavior href='/'>
+            <Link color='text'>
+              <Image
+                src={logo_small}
+                width='40'
+                style={{ marginRight: '10px' }}
+                alt=''
+              />
+              <Text b size='$2xl' color='inherit'>
+                CMA
+              </Text>
+            </Link>
+          </NextLink>
         </Navbar.Brand>
         {isSigned ? (
           <Navbar.Content
             css={{ '@sm': { marginLeft: 'auto', marginRight: '$12' } }}
             hideIn='xs'>
-            <Navbar.Link href='#'>
-              <IconKanban fill={theme?.colors?.primary?.value} />
-              <Text size='large'>{t('Boards')}</Text>
-            </Navbar.Link>
-            {/* <PopoverAddBoard /> */}
-            <Popover isBordered isOpen={isOpen} onOpenChange={setIsOpen}>
+            <NextLink passHref legacyBehavior href='/boards'>
+              <Link css={{ px: 5 }}>
+                <IconKanban fill={theme?.colors?.primary?.value} />
+                <Text size='large'>{t('Boards')}</Text>
+              </Link>
+            </NextLink>
+            <Popover isBordered isOpen={isCreateBoardOpen} onOpenChange={setIsCreateBoardOpen}>
               <Popover.Trigger>
-                <Button auto light>
+                <Button auto light css={{ px: 5 }}>
                   <IconKanbanAdd fill={theme?.colors?.primary?.value} />
                   <Text size='large'>{t('Create Board')}</Text>
                 </Button>
               </Popover.Trigger>
               <Popover.Content>
-                <PopoverAddBoard isOpen={isOpen} setIsOpen={setIsOpen} />
+                <PopoverAddBoard isOpen={isCreateBoardOpen} setIsOpen={setIsCreateBoardOpen} />
               </Popover.Content>
             </Popover>
           </Navbar.Content>
@@ -111,32 +112,30 @@ export default function Header() {
         </Navbar.Content>
         <Navbar.Content hideIn='xs'>
           {isSigned ? (
-            <Navbar.Link color='inherit' href='#' onClick={signOutAction}>
+            <Link color='inherit' href='#' onClick={signOutAction}>
               <Text>{t('Sign Out')}&nbsp;</Text>
               <Text as='span' hideIn='sm'>{`(${userName})`}</Text>
-            </Navbar.Link>
+            </Link>
           ) : (
             <>
-              <Navbar.Link
-                color='inherit'
-                href='#'
+              <Button
+                auto
+                light
                 onClick={() => {
-                  setAction('signIn')
-                  toggle()
+                  setSignUserAction('signIn')
+                  toggleModal()
                 }}>
-                {t('Sign In')}
-              </Navbar.Link>
-              <Navbar.Link color='inherit' href='#'>
-                <Button
-                  auto
-                  flat
-                  onClick={() => {
-                    setAction('signUp')
-                    toggle()
-                  }}>
-                  <Text>{t('Sign Up')}</Text>
-                </Button>
-              </Navbar.Link>
+                <Text>{t('Sign In')}</Text>
+              </Button>
+              <Button
+                auto
+                flat
+                onClick={() => {
+                  setSignUserAction('signUp')
+                  toggleModal()
+                }}>
+                <Text>{t('Sign Up')}</Text>
+              </Button>
             </>
           )}
         </Navbar.Content>
@@ -144,16 +143,25 @@ export default function Header() {
           {isSigned ? (
             <>
               <Navbar.CollapseItem>
-                <Link href='#'>
-                  <IconKanban fill={theme?.colors?.primary?.value} />
-                  <Text size='large'>{t('Boards')}</Text>
-                </Link>
+                <NextLink passHref legacyBehavior href='/boards'>
+                  <Link css={{ px: 5 }}>
+                    <IconKanban fill={theme?.colors?.primary?.value} />
+                    <Text size='large'>{t('Boards')}</Text>
+                  </Link>
+                </NextLink>
               </Navbar.CollapseItem>
               <Navbar.CollapseItem>
-                <Link href='#'>
-                  <IconKanbanAdd fill={theme?.colors?.primary?.value} />
-                  <Text size='large'>{t('Create Board')}</Text>
-                </Link>
+                <Popover isBordered isOpen={isCreateBoardSmOpen} onOpenChange={setIsCreateBoardSmOpen}>
+                  <Popover.Trigger>
+                    <Button auto light css={{ px: 5 }}>
+                      <IconKanbanAdd fill={theme?.colors?.primary?.value} />
+                      <Text size='large'>{t('Create Board')}</Text>
+                    </Button>
+                  </Popover.Trigger>
+                  <Popover.Content>
+                    <PopoverAddBoard isOpen={isCreateBoardSmOpen} setIsOpen={setIsCreateBoardSmOpen} />
+                  </Popover.Content>
+                </Popover>
               </Navbar.CollapseItem>
               <Navbar.CollapseItem>
                 <Link
@@ -161,23 +169,23 @@ export default function Header() {
                   css={{ paddingLeft: '$12' }}
                   href='#'
                   onClick={signOutAction}>
-                  {`${t('Sign Out')} (${userName})`}\
+                  {`${t('Sign Out')} (${userName})`}
                 </Link>
               </Navbar.CollapseItem>
             </>
           ) : (
             <>
               <Navbar.CollapseItem>
-                <Link
-                  color='inherit'
-                  href='#'
-                  css={{ paddingLeft: '$11' }}
+                <Button
+                  auto
+                  light
+                  css={{ ml: '$11' }}
                   onClick={() => {
-                    setAction('signIn')
-                    toggle()
+                    setSignUserAction('signIn')
+                    toggleModal()
                   }}>
-                  {t('Sign In')}
-                </Link>
+                  <Text>{t('Sign In')}</Text>
+                </Button>
               </Navbar.CollapseItem>
               <Navbar.CollapseItem>
                 <Button
@@ -185,8 +193,8 @@ export default function Header() {
                   flat
                   css={{ ml: '$10' }}
                   onClick={() => {
-                    setAction('signUp')
-                    toggle()
+                    setSignUserAction('signUp')
+                    toggleModal()
                   }}>
                   <Text>{t('Sign Up')}</Text>
                 </Button>
@@ -204,9 +212,9 @@ export default function Header() {
           </Navbar.CollapseItem>
         </Navbar.Collapse>
       </Navbar>
-      {isShowing &&
+      {isModalShowing &&
         ReactDOM.createPortal(
-          <ModalWindow isShowing={isShowing} hide={toggle} action={action} />,
+          <ModalWindow isShowing={isModalShowing} hide={toggleModal} action={signUserAction} />,
           document.body
         )}
     </>
