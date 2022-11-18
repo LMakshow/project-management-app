@@ -45,10 +45,10 @@ const PopoverAddBoard = () => {
   return (
     <Popover isBordered isOpen={isOpen} onOpenChange={setIsOpen}>
       <Popover.Trigger>
-        <Navbar.Link href='#'>
+        <Button auto light>
           <IconKanbanAdd fill={theme?.colors?.primary?.value} />
           <Text size='large'>{t('Create Board')}</Text>
-        </Navbar.Link>
+        </Button>
       </Popover.Trigger>
       <Popover.Content>
         <Grid.Container
