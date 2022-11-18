@@ -1,5 +1,8 @@
 import { Button, Grid, Input, Row, Text, useInput } from '@nextui-org/react'
 import { useTranslation } from 'next-i18next'
+import { useRouter } from 'next/router'
+import { useCreateBoardMutation } from '../features/boards/boardsApi'
+import { useAppSelector } from '../features/hooks'
 
 const PopoverAddBoard = () => {
   const { t } = useTranslation('common')
@@ -7,8 +10,20 @@ const PopoverAddBoard = () => {
   const { value: nameValue, bindings: nameBindings } = useInput('')
   const { value: descriptValue, bindings: descripBindings } = useInput('')
 
-  const handlerCreate = () => {
-    console.log(nameValue, descriptValue)
+  const router = useRouter()
+
+  const [createBoard] = useCreateBoardMutation()
+
+  const userId = useAppSelector((state) => state.user._id) as string
+
+  const handlerCreateBoard = async () => {
+    await createBoard({
+      title: nameValue,
+      description: descriptValue,
+      owner: userId,
+      users: [userId],
+    })
+    // router.push('/boards')
   }
 
   return (
@@ -40,19 +55,8 @@ const PopoverAddBoard = () => {
         />
       </Row>
       <Grid.Container justify='space-between' alignContent='center'>
-        {/* <Grid>
-          <Button
-            size='sm'
-            light
-            onClick={() => {
-              console.log('click', document.body)
-              document.body.click()
-            }}>
-            {t('Close')}
-          </Button>
-        </Grid> */}
         <Grid>
-          <Button size='sm' shadow color='default' onClick={handlerCreate}>
+          <Button size='sm' shadow color='default' onClick={handlerCreateBoard}>
             {t('Create')}
           </Button>
         </Grid>
