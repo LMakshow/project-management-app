@@ -1,10 +1,12 @@
 import { Button, Grid, Input, Row, Text, useInput } from '@nextui-org/react'
 import { useTranslation } from 'next-i18next'
-import { useRouter } from 'next/router'
-import { useCreateBoardMutation } from '../features/boards/boardsApi'
-import { useAppSelector } from '../features/hooks'
+import { useCreateTaskMutation } from '../../features/boards/boardsApi'
+import { useAppSelector } from '../../features/hooks'
 
-const PopoverAddBoard = (props: {
+const PopoverAddTask = (props: {
+  boardId: string,
+  columnId: string,
+  nextOrder: number
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
 }) => {
@@ -14,38 +16,38 @@ const PopoverAddBoard = (props: {
 
   const { value: nameValue, bindings: nameBindings } = useInput('')
   const { value: descriptValue, bindings: descripBindings } = useInput('')
-
-  const router = useRouter()
-
-  const [createBoard] = useCreateBoardMutation()
+  const [createTask] = useCreateTaskMutation()
 
   const userId = useAppSelector((state) => state.user._id) as string
 
   const handlerCreateBoard = async () => {
-    await createBoard({
+    await createTask({
       title: nameValue,
-      description: descriptValue,
-      owner: userId,
+      description: descriptValue || '',
+      userId: userId,
       users: [userId],
+      boardId: props.boardId,
+      columnId: props.columnId,
+      order: props.nextOrder
     })
-    router.push('/boards')
+    setIsOpen(!isOpen)
   }
 
   return (
     <Grid.Container
       css={{ borderRadius: '14px', padding: '0.75rem', maxWidth: '330px' }}>
       <Row justify='center' align='center'>
-        <Text b>{t('createBoard')}</Text>
+        <Text b>{t('Create New Task')}</Text>
       </Row>
       <Row>
         <Input
           {...nameBindings}
           clearable
           bordered
-          placeholder={t('boardName')}
+          placeholder={t('Task name')}
           width='100%'
           css={{ margin: '15px 0 0' }}
-          aria-labelledby="board's name"
+          aria-labelledby="Task name"
         />
       </Row>
       <Row>
@@ -53,10 +55,10 @@ const PopoverAddBoard = (props: {
           {...descripBindings}
           clearable
           bordered
-          placeholder={t('boardDiscript')}
+          placeholder={t('Task description')}
           width='100%'
           css={{ margin: '15px 0' }}
-          aria-labelledby="board's description"
+          aria-labelledby="Task description"
         />
       </Row>
       <Grid.Container justify='space-between' alignContent='center'>
@@ -74,4 +76,4 @@ const PopoverAddBoard = (props: {
     </Grid.Container>
   )
 }
-export default PopoverAddBoard
+export default PopoverAddTask

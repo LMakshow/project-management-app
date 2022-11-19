@@ -119,9 +119,7 @@ export const boardsApi = createApi({
         method: 'POST',
         body: { title, order, description, userId, users },
       }),
-      invalidatesTags: (result, error, arg) => [
-        { type: 'TaskList', id: arg.columnId },
-      ],
+      invalidatesTags: ['TaskList'],
     }),
     updateTask: builder.mutation<TaskResponse, CreateTaskRequest>({
       query: ({
@@ -139,10 +137,7 @@ export const boardsApi = createApi({
         method: 'PUT',
         body: { title, order, description, columnId, userId, users },
       }),
-      invalidatesTags: (result, error, arg) => [
-        { type: 'TaskList', id: arg.columnId },
-        { type: 'TaskList', id: arg.newColumnId },
-      ],
+      invalidatesTags: ['TaskList'],
     }),
     changeTaskOrder: builder.mutation<TaskResponse[], TaskOrderRequest[]>({
       query: (payload) => ({
@@ -157,9 +152,7 @@ export const boardsApi = createApi({
         url: `/boards/${boardId}/columns/${columnId}/tasks/${taskId}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, error, arg) => [
-        { type: 'TaskList', id: arg.columnId },
-      ],
+      invalidatesTags: ['TaskList'],
     }),
   }),
 })

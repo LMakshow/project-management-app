@@ -3,31 +3,36 @@ import {
   Container,
   Grid,
   Row,
-  Spacer,
-  Text,
-  useTheme,
+  Spacer, useTheme
 } from '@nextui-org/react'
+import { skipToken } from '@reduxjs/toolkit/dist/query'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import BoardDescription from '../../components/BoardTasks/BoardDescription'
+import BoardTitle from '../../components/BoardTasks/BoardTitle'
+import Column from '../../components/BoardTasks/Column'
+import { IconDelete } from '../../components/icons/boardCard/icon_delete'
+import { IconPlus } from '../../components/icons/boardCard/icon_plus'
 import Layout, { siteTitle } from '../../components/layout'
 import { useSignInMutation } from '../../features/auth/authApi'
 import {
   useGetColumnsQuery,
   useGetSingleBoardQuery,
-  useGetTasksQuery,
+  useGetTasksQuery
 } from '../../features/boards/boardsApi'
-import { useAppDispatch, useAppSelector } from '../../features/hooks'
-import { setUser } from '../../features/auth/userSlice'
-import { BoardResponse } from '../../utils/interfaces'
-import { skipToken } from '@reduxjs/toolkit/dist/query'
-import ColumnTitle from '../../components/BoardTasks/ColumnTitle'
-import Column from '../../components/BoardTasks/Column'
-import Head from 'next/head'
-import { wrap } from 'module'
-import { IconPlus } from '../../components/icons/boardCard/icon_plus'
-import { IconDelete } from '../../components/icons/boardCard/icon_delete'
-import BoardTitle from '../../components/BoardTasks/BoardTitle'
-import BoardDescription from '../../components/BoardTasks/BoardDescription'
+import { useAppSelector } from '../../features/hooks'
+
+export const getServerSideProps = async ({ locale }: { locale: 'en' | 'ru' }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? 'en', [
+      'common',
+      'home-page',
+      'modal-window'
+    ])),
+  },
+})
 
 export default function Board() {
   const router = useRouter()
@@ -43,7 +48,7 @@ export default function Board() {
       })
     }
     fetch()
-  }, [])
+  }, [login])
 
   const userId = useAppSelector((state) => state.user._id) as string
   const { data: columnsList, isSuccess: isColumnFetched } = useGetColumnsQuery(
@@ -67,6 +72,7 @@ export default function Board() {
           py: '$8',
           alignItems: 'center',
         }}>
+        
         <Row align='flex-end' wrap='wrap'>
           {boardData ? (
             <>
@@ -77,7 +83,9 @@ export default function Board() {
           ) : (
             'Loading'
           )}
+          
           <Spacer x={1} css={{ mr: 'auto' }} />
+         
           <Button
             color='primary'
             css={{ my: '6px' }}
@@ -86,7 +94,9 @@ export default function Board() {
             icon={<IconPlus fill='currentColor' />}>
             Add New Column
           </Button>
+          
           <Spacer x={1} />
+          
           <Button
             color='error'
             css={{ my: '6px' }}
@@ -94,7 +104,9 @@ export default function Board() {
             flat
             icon={<IconDelete fill='currentColor' />}></Button>
         </Row>
+        
         <Spacer y={1} />
+        
         <Grid.Container
           justify='flex-start'
           gap={1}
