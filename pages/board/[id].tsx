@@ -1,4 +1,12 @@
-import { Container, Grid, Row, Spacer, Text, useTheme } from '@nextui-org/react'
+import {
+  Button,
+  Container,
+  Grid,
+  Row,
+  Spacer,
+  Text,
+  useTheme,
+} from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Layout, { siteTitle } from '../../components/layout'
@@ -16,6 +24,8 @@ import ColumnTitle from '../../components/BoardTasks/ColumnTitle'
 import Column from '../../components/BoardTasks/Column'
 import Head from 'next/head'
 import { wrap } from 'module'
+import { IconPlus } from '../../components/icons/boardCard/icon_plus'
+import { IconDelete } from '../../components/icons/boardCard/icon_delete'
 
 export default function Board() {
   const router = useRouter()
@@ -40,9 +50,7 @@ export default function Board() {
   const { data: boardData } = useGetSingleBoardQuery(
     userId ? boardId : skipToken
   )
-  const { data: tasksList } = useGetTasksQuery(
-    userId ? boardId : skipToken
-  )
+  const { data: tasksList } = useGetTasksQuery(userId ? boardId : skipToken)
   console.log('taskList: ', tasksList)
 
   return (
@@ -65,6 +73,23 @@ export default function Board() {
           <Text h3 css={{ mb: '$5' }} color={theme?.colors?.gray800?.value}>
             {boardData?.description}
           </Text>
+          <Spacer x={1} css={{ mr: 'auto' }} />
+          <Button
+            color='primary'
+            css={{ my: '6px' }}
+            auto
+            flat
+            icon={<IconPlus fill='currentColor' />}>
+            Add New Column
+          </Button>
+          <Spacer x={1} />
+          <Button
+            color='error'
+            css={{ my: '6px' }}
+            auto
+            flat
+            icon={<IconDelete fill='currentColor' />}>
+          </Button>
         </Row>
         <Spacer y={1} />
         <Grid.Container
@@ -80,8 +105,13 @@ export default function Board() {
           }}>
           {columnsList &&
             columnsList.map((column) => (
-              <Grid key={column._id} sm={3}>
-                <Column tasks={tasksList?.filter(task => task.columnId === column._id)} {...column} />
+              <Grid key={column._id} sm={3} css={{ display: 'inherit' }}>
+                <Column
+                  tasks={tasksList?.filter(
+                    (task) => task.columnId === column._id
+                  )}
+                  {...column}
+                />
               </Grid>
             ))}
         </Grid.Container>
