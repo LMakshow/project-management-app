@@ -26,6 +26,8 @@ import Head from 'next/head'
 import { wrap } from 'module'
 import { IconPlus } from '../../components/icons/boardCard/icon_plus'
 import { IconDelete } from '../../components/icons/boardCard/icon_delete'
+import BoardTitle from '../../components/BoardTasks/BoardTitle'
+import BoardDescription from '../../components/BoardTasks/BoardDescription'
 
 export default function Board() {
   const router = useRouter()
@@ -66,13 +68,15 @@ export default function Board() {
           alignItems: 'center',
         }}>
         <Row align='flex-end' wrap='wrap'>
-          <Text h2 css={{ mb: '$4' }}>
-            {boardData?.title}
-          </Text>
-          <Spacer x={1} />
-          <Text h3 css={{ mb: '$5' }} color={theme?.colors?.gray800?.value}>
-            {boardData?.description}
-          </Text>
+          {boardData ? (
+            <>
+              <BoardTitle boardData={boardData} />
+              <Spacer x={1} />
+              <BoardDescription description={boardData.description} />
+            </>
+          ) : (
+            'Loading'
+          )}
           <Spacer x={1} css={{ mr: 'auto' }} />
           <Button
             color='primary'
@@ -88,8 +92,7 @@ export default function Board() {
             css={{ my: '6px' }}
             auto
             flat
-            icon={<IconDelete fill='currentColor' />}>
-          </Button>
+            icon={<IconDelete fill='currentColor' />}></Button>
         </Row>
         <Spacer y={1} />
         <Grid.Container

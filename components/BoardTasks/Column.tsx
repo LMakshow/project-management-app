@@ -16,11 +16,11 @@ const Column = (props: { title: string; tasks: TaskResponse[] | undefined }) => 
       css={{
         minWidth: '200px',
         mw: '300px',
-        p: '10px',
-        pr: '5px',
+        p: '5px',
+        pl: '10px',
         overflowY: 'auto',
       }}>
-      <Card.Header css={{ pt: '$3' }}>
+      <Card.Header css={{ p: '$4' }}>
         <ColumnTitle title={props.title} />
       </Card.Header>
       <Card.Divider />

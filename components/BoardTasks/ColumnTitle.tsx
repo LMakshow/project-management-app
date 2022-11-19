@@ -4,6 +4,7 @@ import SaveButton from '../board-list-page/SaveButton'
 
 import { useTranslation } from 'next-i18next'
 import CancelButton from '../Buttons/CancelButton'
+import InputEdit from '../Utilities/InputEdit'
 
 const ColumnTitle = ({ title }: { title: string }) => {
   const { t } = useTranslation('common')
@@ -16,26 +17,7 @@ const ColumnTitle = ({ title }: { title: string }) => {
   return (
     <>
       {isEdit ? (
-        <>
-          <Input
-            aria-label='Edit title'
-            underlined
-            value={title}
-            type='text'
-            size='lg'
-            width='auto'
-            color='primary'
-            animated={false}
-          />
-          <Spacer x={0.5} />
-          <Tooltip content={t('Cancel')} css={{ zIndex: 10 }}>
-            <CancelButton onClick={handleClick} />
-          </Tooltip>
-          <Spacer x={0.5} />
-          <Tooltip content={t('Save new title')} css={{ zIndex: 10 }}>
-            <SaveButton onClick={handleClick} />
-          </Tooltip>
-        </>
+        <InputEdit editValue={title} onClick={handleClick} />
       ) : (
         <>
           <Tooltip content={t('Edit title')} css={{ zIndex: 10 }}>
