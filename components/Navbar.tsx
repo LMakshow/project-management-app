@@ -1,5 +1,5 @@
 import { useTheme as useNextTheme } from 'next-themes'
-import { Button, Popover, Switch, Text, useTheme } from '@nextui-org/react'
+import { Button, Popover, Row, Switch, Text, useTheme } from '@nextui-org/react'
 import { Navbar, Link } from '@nextui-org/react'
 import NextLink from 'next/link'
 import LangSwitcher from '../utils/LangSwitcher'
@@ -86,7 +86,10 @@ export default function Header() {
                 <Text size='large'>{t('Boards')}</Text>
               </Link>
             </NextLink>
-            <Popover isBordered isOpen={isCreateBoardOpen} onOpenChange={setIsCreateBoardOpen}>
+            <Popover
+              isBordered
+              isOpen={isCreateBoardOpen}
+              onOpenChange={setIsCreateBoardOpen}>
               <Popover.Trigger>
                 <Button auto light css={{ px: 5 }}>
                   <IconKanbanAdd fill={theme?.colors?.primary?.value} />
@@ -94,7 +97,10 @@ export default function Header() {
                 </Button>
               </Popover.Trigger>
               <Popover.Content>
-                <PopoverAddBoard isOpen={isCreateBoardOpen} setIsOpen={setIsCreateBoardOpen} />
+                <PopoverAddBoard
+                  isOpen={isCreateBoardOpen}
+                  setIsOpen={setIsCreateBoardOpen}
+                />
               </Popover.Content>
             </Popover>
           </Navbar.Content>
@@ -112,10 +118,32 @@ export default function Header() {
         </Navbar.Content>
         <Navbar.Content hideIn='xs'>
           {isSigned ? (
-            <Link color='inherit' href='#' onClick={signOutAction}>
-              <Text>{t('Sign Out')}&nbsp;</Text>
-              <Text as='span' hideIn='sm'>{`(${userName})`}</Text>
-            </Link>
+            <>
+              <Link color='inherit' href='#' onClick={signOutAction}>
+                <Text>{t('Sign Out')}&nbsp;</Text>
+                <Text as='span' hideIn='sm'>{`(${userName})`}</Text>
+              </Link>
+
+              <NextLink passHref legacyBehavior href='/profile'>
+                <Link>
+                  <Text
+                    size='$2xl'
+                    css={{
+                      width: '40px',
+                      height: '40px',
+                      marginRight: '5px',
+                      border: '1px solid #000',
+                      borderRadius: '100%',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    {userName!.slice(0, 2)}
+                  </Text>
+                  <Text size='large'>{userName}</Text>
+                </Link>
+              </NextLink>
+            </>
           ) : (
             <>
               <Button
@@ -151,7 +179,10 @@ export default function Header() {
                 </NextLink>
               </Navbar.CollapseItem>
               <Navbar.CollapseItem>
-                <Popover isBordered isOpen={isCreateBoardSmOpen} onOpenChange={setIsCreateBoardSmOpen}>
+                <Popover
+                  isBordered
+                  isOpen={isCreateBoardSmOpen}
+                  onOpenChange={setIsCreateBoardSmOpen}>
                   <Popover.Trigger>
                     <Button auto light css={{ px: 5 }}>
                       <IconKanbanAdd fill={theme?.colors?.primary?.value} />
@@ -159,7 +190,10 @@ export default function Header() {
                     </Button>
                   </Popover.Trigger>
                   <Popover.Content>
-                    <PopoverAddBoard isOpen={isCreateBoardSmOpen} setIsOpen={setIsCreateBoardSmOpen} />
+                    <PopoverAddBoard
+                      isOpen={isCreateBoardSmOpen}
+                      setIsOpen={setIsCreateBoardSmOpen}
+                    />
                   </Popover.Content>
                 </Popover>
               </Navbar.CollapseItem>
@@ -171,6 +205,28 @@ export default function Header() {
                   onClick={signOutAction}>
                   {`${t('Sign Out')} (${userName})`}
                 </Link>
+              </Navbar.CollapseItem>
+
+              <Navbar.CollapseItem>
+                <NextLink passHref legacyBehavior href='/profile'>
+                  <Link>
+                    <Text
+                      size='$2xl'
+                      css={{
+                        width: '45px',
+                        height: '45px',
+                        marginRight: '5px',
+                        border: '1px solid #000',
+                        borderRadius: '100%',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      {userName!.slice(0, 2)}
+                    </Text>
+                    <Text size='large'>{userName}</Text>
+                  </Link>
+                </NextLink>
               </Navbar.CollapseItem>
             </>
           ) : (
@@ -214,7 +270,11 @@ export default function Header() {
       </Navbar>
       {isModalShowing &&
         ReactDOM.createPortal(
-          <ModalWindow isShowing={isModalShowing} hide={toggleModal} action={signUserAction} />,
+          <ModalWindow
+            isShowing={isModalShowing}
+            hide={toggleModal}
+            action={signUserAction}
+          />,
           document.body
         )}
     </>
