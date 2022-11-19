@@ -54,11 +54,11 @@ const ColumnTask = (props: TaskResponse) => {
           </Tooltip>
         )}
       </Card.Header>
-      <Card.Body css={{ pt: '$2', pb: '$6', px: '$8' }}>
+      {props.description && <Card.Body css={{ pt: '$2', pb: '$6', px: '$8' }}>
         <Text css={{ lh: '1.3rem', mh: '43px', overflow: 'hidden' }}>
           {props.description}
         </Text>
-      </Card.Body>
+      </Card.Body>}
     </Card>
   )
 }

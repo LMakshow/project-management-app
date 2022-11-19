@@ -17,9 +17,8 @@ export default function InputEdit(props: {
         value={props.editValue}
         type='text'
         size='lg'
-        width='auto'
+        width='100%'
         color='primary'
-        animated={false}
       />
       <Spacer x={0.5} />
       <Tooltip content={t('Cancel')}>
