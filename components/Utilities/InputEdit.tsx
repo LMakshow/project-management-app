@@ -6,7 +6,7 @@ import CancelButton from '../Buttons/CancelButton'
 export default function InputEdit(props: {
   editValue: string | number | readonly string[] | undefined
   fullWidth?: boolean
-  onClick: { (): void; (): void }
+  onClick: () => void
 }) {
   const { t } = useTranslation('common')
 
@@ -21,11 +21,9 @@ export default function InputEdit(props: {
         width={props.fullWidth ? '100%' : 'auto'}
         color='primary'
       />
-      <Spacer x={0.5} />
       <Tooltip content={t('Cancel')}>
         <CancelButton onClick={props.onClick} />
       </Tooltip>
-      <Spacer x={0.5} />
       <Tooltip content={t('Save')}>
         <SaveButton onClick={props.onClick} />
       </Tooltip>
