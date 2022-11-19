@@ -9,7 +9,9 @@ const Column = (props: ColumnResponse) => {
   return (
     <Card
       isHoverable
+      variant='flat'
       css={{
+        minWidth: '200px',
         mw: '300px',
         p: '10px',
       }}>

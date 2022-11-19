@@ -43,6 +43,7 @@ const ColumnTitle = ({ title }: { title: string }) => {
             <Text b
               size='$lg'
               css={{
+                br: '5px',
                 px: '10px',
                 '&:hover': {
                   background: '$primaryLight',

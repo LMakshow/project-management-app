@@ -26,6 +26,9 @@ export const boardsApi = createApi({
   tagTypes: ['BoardList', 'ColumnList'],
   endpoints: (builder) => ({
     // Boards
+    getSingleBoard: builder.query<BoardResponse, string>({
+      query: (boardId) => `/boards/${boardId}`,
+    }),
     getBoards: builder.query<BoardResponse[], string>({
       query: (userId) => `/boardsSet/${userId}`,
       providesTags: ['BoardList'],
@@ -94,6 +97,7 @@ export const boardsApi = createApi({
 })
 
 export const {
+  useGetSingleBoardQuery,
   useGetBoardsQuery,
   useCreateBoardMutation,
   useUpdateBoardMutation,
