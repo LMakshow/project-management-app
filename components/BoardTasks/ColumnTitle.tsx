@@ -17,7 +17,7 @@ const ColumnTitle = ({ title }: { title: string }) => {
   return (
     <>
       {isEdit ? (
-        <InputEdit editValue={title} onClick={handleClick} />
+        <InputEdit fullWidth editValue={title} onClick={handleClick} />
       ) : (
         <>
           <Tooltip content={t('Edit title')} css={{ zIndex: 10 }}>

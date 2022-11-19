@@ -5,6 +5,7 @@ import CancelButton from '../Buttons/CancelButton'
 
 export default function InputEdit(props: {
   editValue: string | number | readonly string[] | undefined
+  fullWidth?: boolean
   onClick: { (): void; (): void }
 }) {
   const { t } = useTranslation('common')
@@ -17,7 +18,7 @@ export default function InputEdit(props: {
         value={props.editValue}
         type='text'
         size='lg'
-        width='100%'
+        width={props.fullWidth ? '100%' : 'auto'}
         color='primary'
       />
       <Spacer x={0.5} />

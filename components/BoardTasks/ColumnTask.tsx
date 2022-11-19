@@ -5,6 +5,7 @@ import SaveButton from '../board-list-page/SaveButton'
 import { useTranslation } from 'next-i18next'
 import CancelButton from '../Buttons/CancelButton'
 import { TaskResponse } from '../../utils/interfaces'
+import InputEdit from '../Utilities/InputEdit'
 
 const ColumnTask = (props: TaskResponse) => {
   const { t } = useTranslation('common')
@@ -18,24 +19,7 @@ const ColumnTask = (props: TaskResponse) => {
     <Card variant='bordered' css={{ flexShrink: '0' }}>
       <Card.Header css={{ p: '$3' }}>
         {isEdit ? (
-          <>
-            <Input
-              aria-label='Edit title'
-              underlined
-              value={props.title}
-              type='text'
-              width='auto'
-              color='primary'
-            />
-            <Spacer x={0.5} />
-            <Tooltip content={t('Cancel')} css={{ zIndex: 10 }}>
-              <CancelButton onClick={handleClick} />
-            </Tooltip>
-            <Spacer x={0.5} />
-            <Tooltip content={t('Save new title')} css={{ zIndex: 10 }}>
-              <SaveButton onClick={handleClick} />
-            </Tooltip>
-          </>
+          <InputEdit fullWidth editValue={props.title} onClick={handleClick} />
         ) : (
           <Tooltip content={t('Edit title')} css={{ zIndex: 10 }}>
             <Text
