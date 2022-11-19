@@ -2,10 +2,12 @@ import {
   Button,
   Container,
   Grid,
+  Loading,
   Row,
-  Spacer, useTheme
+  Spacer
 } from '@nextui-org/react'
 import { skipToken } from '@reduxjs/toolkit/dist/query'
+import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -36,7 +38,7 @@ export const getServerSideProps = async ({ locale }: { locale: 'en' | 'ru' }) =>
 
 export default function Board() {
   const router = useRouter()
-  const { theme } = useTheme()
+  const { t } = useTranslation('common')
   const boardId = String(router.query.id)
   const [login, { isSuccess: isSigned }] = useSignInMutation()
 
@@ -81,7 +83,7 @@ export default function Board() {
               <BoardDescription description={boardData.description} />
             </>
           ) : (
-            'Loading'
+            <Loading size='lg'> Loading </Loading>
           )}
           
           <Spacer x={1} css={{ mr: 'auto' }} />
@@ -92,7 +94,7 @@ export default function Board() {
             auto
             flat
             icon={<IconPlus fill='currentColor' />}>
-            Add New Column
+            {t('Add New Column')}
           </Button>
           
           <Spacer x={1} />

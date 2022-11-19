@@ -49,7 +49,7 @@ const Column = (
               flat
               icon={<IconPlus fill='currentColor' />}
               css={{ flexShrink: '0' }}>
-              Add New Task
+              {t('Add New Task')}
             </Button>
           </Popover.Trigger>
           <Popover.Content>
