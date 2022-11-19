@@ -16,7 +16,7 @@ const Column = (
   const { t } = useTranslation('common')
   const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false)
   const { tasks } = props
-  const nextOrder = tasks ? tasks?.reduce((a, b) => Math.max(a, b.order), 1) : 0
+  const nextTaskOrder = tasks ? tasks?.reduce((a, b) => Math.max(a, b.order), 1) : 0
 
   return (
     <Card
@@ -56,7 +56,7 @@ const Column = (
             <PopoverAddTask
               boardId={props.boardId}
               columnId={props._id}
-              nextOrder={nextOrder}
+              nextOrder={nextTaskOrder}
               isOpen={isCreateTaskOpen}
               setIsOpen={setIsCreateTaskOpen}
             />

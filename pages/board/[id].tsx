@@ -3,18 +3,20 @@ import {
   Container,
   Grid,
   Loading,
+  Popover,
   Row,
-  Spacer
+  Spacer,
 } from '@nextui-org/react'
 import { skipToken } from '@reduxjs/toolkit/dist/query'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import BoardDescription from '../../components/BoardTasks/BoardDescription'
 import BoardTitle from '../../components/BoardTasks/BoardTitle'
 import Column from '../../components/BoardTasks/Column'
+import PopoverAddColumn from '../../components/BoardTasks/PopoverAddColumn'
 import { IconDelete } from '../../components/icons/boardCard/icon_delete'
 import { IconPlus } from '../../components/icons/boardCard/icon_plus'
 import Layout, { siteTitle } from '../../components/layout'
@@ -22,16 +24,20 @@ import { useSignInMutation } from '../../features/auth/authApi'
 import {
   useGetColumnsQuery,
   useGetSingleBoardQuery,
-  useGetTasksQuery
+  useGetTasksQuery,
 } from '../../features/boards/boardsApi'
 import { useAppSelector } from '../../features/hooks'
 
-export const getServerSideProps = async ({ locale }: { locale: 'en' | 'ru' }) => ({
+export const getServerSideProps = async ({
+  locale,
+}: {
+  locale: 'en' | 'ru'
+}) => ({
   props: {
     ...(await serverSideTranslations(locale ?? 'en', [
       'common',
       'home-page',
-      'modal-window'
+      'modal-window',
     ])),
   },
 })
@@ -52,6 +58,7 @@ export default function Board() {
     fetch()
   }, [login])
 
+  const [isCreateColumnOpen, setIsCreateColumnOpen] = useState(false)
   const userId = useAppSelector((state) => state.user._id) as string
   const { data: columnsList, isSuccess: isColumnFetched } = useGetColumnsQuery(
     userId ? boardId : skipToken
@@ -60,7 +67,7 @@ export default function Board() {
     userId ? boardId : skipToken
   )
   const { data: tasksList } = useGetTasksQuery(userId ? boardId : skipToken)
-  console.log('taskList: ', tasksList)
+  const nextColumnOrder = columnsList ? columnsList?.reduce((a, b) => Math.max(a, b.order), 1) : 0
 
   return (
     <Layout>
@@ -74,7 +81,6 @@ export default function Board() {
           py: '$8',
           alignItems: 'center',
         }}>
-        
         <Row align='flex-end' wrap='wrap'>
           {boardData ? (
             <>
@@ -85,20 +91,35 @@ export default function Board() {
           ) : (
             <Loading size='lg'> Loading </Loading>
           )}
-          
+
           <Spacer x={1} css={{ mr: 'auto' }} />
-         
-          <Button
-            color='primary'
-            css={{ my: '6px' }}
-            auto
-            flat
-            icon={<IconPlus fill='currentColor' />}>
-            {t('Add New Column')}
-          </Button>
-          
+
+          <Popover
+            isBordered
+            isOpen={isCreateColumnOpen}
+            onOpenChange={setIsCreateColumnOpen}>
+            <Popover.Trigger>
+              <Button
+                color='primary'
+                css={{ my: '6px' }}
+                auto
+                flat
+                icon={<IconPlus fill='currentColor' />}>
+                {t('Add New Column')}
+              </Button>
+            </Popover.Trigger>
+            <Popover.Content>
+              <PopoverAddColumn
+                boardId={boardId}
+                nextOrder={nextColumnOrder}
+                isOpen={isCreateColumnOpen}
+                setIsOpen={setIsCreateColumnOpen}
+              />
+            </Popover.Content>
+          </Popover>
+
           <Spacer x={1} />
-          
+
           <Button
             color='error'
             css={{ my: '6px' }}
@@ -106,9 +127,9 @@ export default function Board() {
             flat
             icon={<IconDelete fill='currentColor' />}></Button>
         </Row>
-        
+
         <Spacer y={1} />
-        
+
         <Grid.Container
           justify='flex-start'
           gap={1}
