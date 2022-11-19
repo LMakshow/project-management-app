@@ -4,10 +4,10 @@ import { Dropdown } from '@nextui-org/react'
 import { Key } from 'react'
 
 export default function LangSwitcher() {
-  const { locale, locales, route, push } = useRouter()
+  const { locale, pathname, asPath, query, push } = useRouter()
 
   const langChange = (key: Key) => {
-    push(route, route, { locale: key as string })
+    push({ pathname, query }, asPath, { locale: key as string })
   }
 
   return (
