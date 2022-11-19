@@ -15,8 +15,8 @@ const ColumnTask = (props: TaskResponse) => {
   }
 
   return (
-    <Card variant='bordered'>
-      <Card.Header css={{ p: '$3'}}>
+    <Card variant='bordered' css={{ flexShrink: '0' }}>
+      <Card.Header css={{ p: '$3' }}>
         {isEdit ? (
           <>
             <Input
@@ -55,7 +55,9 @@ const ColumnTask = (props: TaskResponse) => {
         )}
       </Card.Header>
       <Card.Body css={{ pt: '$2', pb: '$6', px: '$8' }}>
-        <Text css={{lh: '1.25rem', mh: '43px', overflow: 'hidden' }}>{props.description}</Text>
+        <Text css={{ lh: '1.3rem', mh: '43px', overflow: 'hidden' }}>
+          {props.description}
+        </Text>
       </Card.Body>
     </Card>
   )

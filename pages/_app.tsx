@@ -1,5 +1,5 @@
 import { createTheme, NextUIProvider } from '@nextui-org/react'
-// import '../styles/globals.css'
+import '../styles/globals.css'
 import { ThemeProvider as NextThemesProvider } from 'next-themes'
 import type { AppProps } from 'next/app'
 import { store } from '../features/store'

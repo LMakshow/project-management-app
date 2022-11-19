@@ -17,15 +17,17 @@ const Column = (props: { title: string; tasks: TaskResponse[] | undefined }) => 
         minWidth: '200px',
         mw: '300px',
         p: '10px',
+        pr: '5px',
+        overflowY: 'auto',
       }}>
-      <Card.Header>
+      <Card.Header css={{ pt: '$3' }}>
         <ColumnTitle title={props.title} />
       </Card.Header>
       <Card.Divider />
-      <Card.Body css={{ py: '$8', px: '0', gap: '$2' }}>
+      <Card.Body css={{ py: '$6', px: '0', pr: '5px', gap: '$2' }}>
         {props.tasks &&
           props.tasks.map((task) => <ColumnTask key={task._id} {...task} />)}
-        <Button color='primary' auto flat icon={<IconPlus fill="currentColor" />}>
+        <Button color='primary' auto flat icon={<IconPlus fill="currentColor" />} css={{ flexShrink: '0' }}>
           Add New Task
         </Button>
       </Card.Body>

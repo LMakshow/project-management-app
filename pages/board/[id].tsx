@@ -98,6 +98,7 @@ export default function Board() {
           wrap='nowrap'
           css={{
             overflowX: 'auto',
+            maxHeight: 'calc(-175px + 100vh)',
             oy: 'visible',
             m: '-50px',
             p: '40px',
