@@ -19,7 +19,6 @@ import { wrap } from 'module'
 export default function Board() {
   const router = useRouter()
   const { theme } = useTheme()
-  console.log(theme)
   const boardId = String(router.query.id)
   const { data: boardData } = useGetSingleBoardQuery(boardId)
   const [login, { isSuccess: isSigned }] = useSignInMutation()

@@ -7,6 +7,10 @@ import {
   ColumnRequest,
   ColumnResponse,
   CreateColumnRequest,
+  CreateTaskRequest,
+  TaskOrderRequest,
+  TaskRequest,
+  TaskResponse,
 } from '../../utils/interfaces'
 import { RootState } from '../store'
 
@@ -23,7 +27,7 @@ export const boardsApi = createApi({
       return headers
     },
   }),
-  tagTypes: ['BoardList', 'ColumnList'],
+  tagTypes: ['BoardList', 'ColumnList', 'TaskList'],
   endpoints: (builder) => ({
     // Boards
     getSingleBoard: builder.query<BoardResponse, string>({
@@ -78,20 +82,60 @@ export const boardsApi = createApi({
       }),
       invalidatesTags: ['ColumnList'],
     }),
-    changeColumnOrder: builder.mutation<ColumnResponse[], ColumnOrderRequest[]>({
-      query: (payload) => ({
-        url: `/columnsSet`,
-        method: 'PATCH',
-        body: payload,
-      }),
-      invalidatesTags: ['ColumnList'],
-    }),
+    changeColumnOrder: builder.mutation<ColumnResponse[], ColumnOrderRequest[]>(
+      {
+        query: (payload) => ({
+          url: `/columnsSet`,
+          method: 'PATCH',
+          body: payload,
+        }),
+        invalidatesTags: ['ColumnList'],
+      }
+    ),
     deleteColumn: builder.mutation<BoardResponse, ColumnRequest>({
       query: ({ boardId, columnId }) => ({
         url: `/boards/${boardId}/columns/${columnId}`,
         method: 'DELETE',
       }),
       invalidatesTags: ['ColumnList'],
+    }),
+
+    // Tasks
+    getTasks: builder.query<TaskResponse[], TaskRequest>({
+      query: ({ boardId, columnId }) =>
+        `/boards/${boardId}/columns/${columnId}/tasks`,
+      providesTags: (result, error, arg) => [{ type: 'TaskList', id: arg.columnId }],
+    }),
+    createTask: builder.mutation<TaskResponse, CreateTaskRequest>({
+      query: ({ boardId, columnId, title, order, description, userId, users }) => ({
+        url: `/boards/${boardId}/columns/${columnId}/tasks`,
+        method: 'POST',
+        body: { title, order, description, userId, users },
+      }),
+      invalidatesTags: (result, error, arg) => [{ type: 'TaskList', id: arg.columnId }],
+    }),
+    updateTask: builder.mutation<TaskResponse, CreateTaskRequest>({
+      query: ({ boardId, columnId: prevColumnId, newColumnId: columnId, taskId, title, order, description, userId, users }) => ({
+        url: `/boards/${boardId}/columns/${prevColumnId}/tasks/${taskId}`,
+        method: 'PUT',
+        body: { title, order, description, columnId, userId, users },
+      }),
+      invalidatesTags: (result, error, arg) => [{ type: 'TaskList', id: arg.columnId }, { type: 'TaskList', id: arg.newColumnId }],
+    }),
+    changeTaskOrder: builder.mutation<TaskResponse[], TaskOrderRequest[]>({
+      query: (payload) => ({
+        url: `/tasksSet`,
+        method: 'PATCH',
+        body: payload,
+      }),
+      invalidatesTags: ['TaskList'],
+    }),
+    deleteTask: builder.mutation<TaskResponse, TaskRequest>({
+      query: ({ boardId, columnId, taskId }) => ({
+        url: `/boards/${boardId}/columns/${columnId}/tasks/${taskId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: (result, error, arg) => [{ type: 'TaskList', id: arg.columnId }],
     }),
   }),
 })

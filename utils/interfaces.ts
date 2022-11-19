@@ -1,3 +1,4 @@
+// Sign In
 export interface UserSignUp {
   name: string
   login: string
@@ -26,6 +27,7 @@ export interface UserSignInResponse {
   }
 }
 
+// Boards
 export interface BoardRequest {
   title: string
   description: string
@@ -41,6 +43,7 @@ export interface BoardResponse {
   users: string[]
 }
 
+// Columns
 export interface CreateColumnRequest {
   boardId?: string
   columnId?: string
@@ -65,5 +68,38 @@ export interface ColumnResponse {
   boardId: string
 }
 
+// Tasks
+export interface TaskRequest {
+  boardId: string
+  columnId: string
+  taskId?: string
+}
 
+export interface TaskResponse {
+  _id: string
+  title: string
+  order: number
+  boardId: string
+  columnId: string
+  description: string
+  userId: string
+  users: string[]
+}
 
+export interface CreateTaskRequest {
+  boardId: string
+  columnId: string
+  newColumnId?: string
+  taskId?: string
+  title: string
+  order: number
+  description: string
+  userId: string
+  users: string[]
+}
+
+export interface TaskOrderRequest {
+  _id: string
+  order: number
+  columnId: string
+}
