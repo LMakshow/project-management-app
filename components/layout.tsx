@@ -28,11 +28,6 @@ export default function Layout({
       </Head>
       <Navbar />
       <main>{children}</main>
-      {!home && (
-        <div className={styles.backToHome}>
-          <Link href='/'>← Back to home</Link>
-        </div>
-      )}
       <Footer />
     </div>
   )

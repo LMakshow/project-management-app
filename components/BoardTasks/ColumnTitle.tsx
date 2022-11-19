@@ -1,7 +1,6 @@
-import { Container, Input, Spacer, Text, Tooltip } from '@nextui-org/react'
+import { Input, Spacer, Text, Tooltip } from '@nextui-org/react'
+import { useState } from 'react'
 import SaveButton from '../board-list-page/SaveButton'
-import EditButton from '../board-list-page/EditButton'
-import { FC, useState } from 'react'
 
 import { useTranslation } from 'next-i18next'
 import CancelButton from '../Buttons/CancelButton'

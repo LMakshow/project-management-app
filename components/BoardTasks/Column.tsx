@@ -1,9 +1,10 @@
-import { Card } from '@nextui-org/react'
+import { Card, Text } from '@nextui-org/react'
 import { useTranslation } from 'react-i18next'
-import { ColumnResponse } from '../../utils/interfaces'
+import { ColumnResponse, TaskResponse } from '../../utils/interfaces'
+import ColumnTask from './ColumnTask'
 import ColumnTitle from './ColumnTitle'
 
-const Column = (props: ColumnResponse) => {
+const Column = (props: { title: string; tasks: TaskResponse[] }) => {
   const { t } = useTranslation('common')
 
   return (
@@ -19,9 +20,16 @@ const Column = (props: ColumnResponse) => {
         <ColumnTitle title={props.title} />
       </Card.Header>
       <Card.Divider />
-      <Card.Body>
-        {/* <BoardCardDescription /> */}
-        Some Description
+      <Card.Body css={{ py: '$8', px: '0', gap: '$2' }} >
+      {props.tasks &&
+            props.tasks.map((task) => (
+              <ColumnTask key={task._id} {...task} />
+            ))}
+        {/* <Card variant='bordered' >
+          <Card.Body css={{ py: '$4', px: '$8' }}>
+            <Text>A basic card</Text>
+          </Card.Body>
+        </Card> */}
       </Card.Body>
       <Card.Footer
         css={{

@@ -101,26 +101,48 @@ export const boardsApi = createApi({
     }),
 
     // Tasks
-    getTasks: builder.query<TaskResponse[], TaskRequest>({
-      query: ({ boardId, columnId }) =>
-        `/boards/${boardId}/columns/${columnId}/tasks`,
-      providesTags: (result, error, arg) => [{ type: 'TaskList', id: arg.columnId }],
+    getTasks: builder.query<TaskResponse[], string>({
+      query: (boardId) => `/tasksSet/${boardId}`,
+      providesTags: ['TaskList'],
     }),
     createTask: builder.mutation<TaskResponse, CreateTaskRequest>({
-      query: ({ boardId, columnId, title, order, description, userId, users }) => ({
+      query: ({
+        boardId,
+        columnId,
+        title,
+        order,
+        description,
+        userId,
+        users,
+      }) => ({
         url: `/boards/${boardId}/columns/${columnId}/tasks`,
         method: 'POST',
         body: { title, order, description, userId, users },
       }),
-      invalidatesTags: (result, error, arg) => [{ type: 'TaskList', id: arg.columnId }],
+      invalidatesTags: (result, error, arg) => [
+        { type: 'TaskList', id: arg.columnId },
+      ],
     }),
     updateTask: builder.mutation<TaskResponse, CreateTaskRequest>({
-      query: ({ boardId, columnId: prevColumnId, newColumnId: columnId, taskId, title, order, description, userId, users }) => ({
+      query: ({
+        boardId,
+        columnId: prevColumnId,
+        newColumnId: columnId,
+        taskId,
+        title,
+        order,
+        description,
+        userId,
+        users,
+      }) => ({
         url: `/boards/${boardId}/columns/${prevColumnId}/tasks/${taskId}`,
         method: 'PUT',
         body: { title, order, description, columnId, userId, users },
       }),
-      invalidatesTags: (result, error, arg) => [{ type: 'TaskList', id: arg.columnId }, { type: 'TaskList', id: arg.newColumnId }],
+      invalidatesTags: (result, error, arg) => [
+        { type: 'TaskList', id: arg.columnId },
+        { type: 'TaskList', id: arg.newColumnId },
+      ],
     }),
     changeTaskOrder: builder.mutation<TaskResponse[], TaskOrderRequest[]>({
       query: (payload) => ({
@@ -135,7 +157,9 @@ export const boardsApi = createApi({
         url: `/boards/${boardId}/columns/${columnId}/tasks/${taskId}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, error, arg) => [{ type: 'TaskList', id: arg.columnId }],
+      invalidatesTags: (result, error, arg) => [
+        { type: 'TaskList', id: arg.columnId },
+      ],
     }),
   }),
 })
@@ -151,4 +175,9 @@ export const {
   useCreateColumnMutation,
   useUpdateColumnMutation,
   useDeleteColumnMutation,
+
+  useGetTasksQuery,
+  useCreateTaskMutation,
+  useUpdateTaskMutation,
+  useDeleteTaskMutation,
 } = boardsApi
