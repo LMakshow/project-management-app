@@ -1,13 +1,19 @@
 import { Button, Popover, Text, Container, Grid } from '@nextui-org/react';
 import { useTranslation } from 'next-i18next';
-import { useState } from 'react';
+import { FC, useState } from 'react';
+import { useCreateBoardMutation, useDeleteBoardMutation } from '../../features/boards/boardsApi';
 
-const PopoverDeleteBoard = () => {
+const PopoverDeleteBoard:FC<{ id: string }> = (props) => {
   const { t } = useTranslation('common');
   const [isOpen, setIsOpen] = useState(false);
+  const [deleteBoard] = useDeleteBoardMutation();
 
   const handleClick = () => {
     setIsOpen(!isOpen);
+  }
+
+  const handlerDeleteBoard = async () => {
+    await deleteBoard(props.id);
   }
 
   return (
@@ -35,7 +41,7 @@ const PopoverDeleteBoard = () => {
               </Button>
             </Grid>
             <Grid>
-              <Button auto shadow color="error" onClick={handleClick}>
+              <Button auto shadow color="error" onClick={handlerDeleteBoard}>
                 {t('Delete')}
               </Button>
             </Grid>

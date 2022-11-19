@@ -28,7 +28,7 @@ const BoardCard: FC<BoardResponse> = (board) => {
         alignItems: 'center',
         justifyContent: 'space-between',
       }}>
-        <PopoverDeleteBoard />
+        <PopoverDeleteBoard id={board._id} />
         <Avatar
           squared
           src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
