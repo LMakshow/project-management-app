@@ -19,7 +19,10 @@ const BoardCardTitle: FC<BoardTitleProps> = (props) => {
 
   const updateBoardTitle = () => {
     handleClick();
-    props.handleUpdateBoard({title: titleValue })
+
+    if (titleValue.trim()) {
+      props.handleUpdateBoard({title: titleValue.trim() })
+    }
   }
 
   return (

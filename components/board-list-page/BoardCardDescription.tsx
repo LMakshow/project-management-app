@@ -17,7 +17,10 @@ const BoardCardDescription: FC<BoardDescriptionProps> = (props) => {
 
   const updateBoardDescription = () => {
     handleClick();
-    props.handleUpdateBoard({description: descriptionValue })
+
+    if (descriptionValue.trim()) {
+      props.handleUpdateBoard({title: descriptionValue.trim() })
+    }
   }
 
   return (
