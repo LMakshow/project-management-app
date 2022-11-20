@@ -30,6 +30,7 @@ import {
   useUpdateBoardMutation,
 } from '../../features/boards/boardsApi'
 import { useAppSelector } from '../../features/hooks'
+import { BoardResponse } from '../../utils/interfaces'
 
 export const getServerSideProps = async ({
   locale,
@@ -50,9 +51,9 @@ export default function Board() {
   const { t } = useTranslation('common')
   const boardId = String(router.query.id)
   const [login, { isSuccess: isSigned }] = useSignInMutation()
-  const [updateBoard] = useUpdateBoardMutation()
   const [deleteBoard] = useDeleteBoardMutation()
 
+  //autologin for testing purposes
   useEffect(() => {
     const fetch = async () => {
       await login({
@@ -97,7 +98,7 @@ export default function Board() {
             <>
               <BoardTitle boardData={boardData} />
               <Spacer x={1} />
-              <BoardDescription description={boardData.description} />
+              <BoardDescription boardData={boardData} />
             </>
           ) : (
             <Loading size='lg'> Loading </Loading>
@@ -161,7 +162,7 @@ export default function Board() {
                   tasks={tasksList?.filter(
                     (task) => task.columnId === column._id
                   )}
-                  {...column}
+                  column={column}
                 />
               </Grid>
             ))}

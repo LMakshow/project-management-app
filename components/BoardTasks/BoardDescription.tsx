@@ -1,24 +1,37 @@
-import { Spacer, Text, useTheme } from '@nextui-org/react'
+import { Text, useTheme } from '@nextui-org/react'
 import { useState } from 'react'
+import { useUpdateBoardMutation } from '../../features/boards/boardsApi'
 import { BoardResponse } from '../../utils/interfaces'
 import InputEdit from '../Utilities/InputEdit'
 
-export default function BoardDescription({
-  description,
-}: {
-  description: string
-}) {
+export default function BoardDescription(props: { boardData: BoardResponse }) {
   const { theme } = useTheme()
   const [isEdit, setIsEdit] = useState(false)
+  const [updateBoard] = useUpdateBoardMutation()
 
   const handleClick = () => {
     setIsEdit(!isEdit)
   }
 
+  const handleUpdateDescription = async (description: string) => {
+    if (!props.boardData) return
+    await updateBoard({
+      _id: props.boardData._id,
+      title: props.boardData.title,
+      description: description,
+      owner: props.boardData.owner,
+      users: props.boardData.users,
+    })
+  }
+
   return (
     <>
       {isEdit ? (
-        <InputEdit editValue={description} onClick={handleClick} />
+        <InputEdit
+          editValue={props.boardData.description}
+          onClick={handleClick}
+          onConfirmEdit={handleUpdateDescription}
+        />
       ) : (
         <Text
           h3
@@ -33,7 +46,7 @@ export default function BoardDescription({
           }}
           color={theme?.colors?.gray800?.value}
           onClick={handleClick}>
-          {description}
+          {props.boardData.description}
         </Text>
       )}
     </>

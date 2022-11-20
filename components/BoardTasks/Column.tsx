@@ -1,17 +1,15 @@
-import { Avatar, Button, Card, Popover, Spacer, Text } from '@nextui-org/react'
+import { Button, Card, Popover } from '@nextui-org/react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ColumnResponse, TaskResponse } from '../../utils/interfaces'
-import PopoverDeleteBoard from '../PopoverDeleteElement'
 import { IconPlus } from '../icons/boardCard/icon_plus'
 import ColumnTask from './ColumnTask'
 import ColumnTitle from './ColumnTitle'
 import PopoverAddTask from './PopoverAddTask'
-import PopoverDeleteElement from '../PopoverDeleteElement'
-import { useDeleteColumnMutation, useDeleteTaskMutation } from '../../features/boards/boardsApi'
 
 const Column = (
-  props: ColumnResponse & {
+  props: {
+    column: ColumnResponse
     tasks: TaskResponse[] | undefined
   }
 ) => {
@@ -21,18 +19,6 @@ const Column = (
   const nextTaskOrder = tasks
     ? tasks?.reduce((a, b) => Math.max(a, b.order), 1)
     : 0
-  const [deleteColumn] = useDeleteColumnMutation()
-  const [deleteTask] = useDeleteTaskMutation()
-
-  const handleDeleteColumn = async () => {
-    const deleteAllTasksPromises = tasks?.map((task) => deleteTask({
-      boardId: props.boardId,
-      columnId: props._id,
-      taskId: task._id,
-    }).unwrap())
-    if (deleteAllTasksPromises) await Promise.all(deleteAllTasksPromises)
-    await deleteColumn({ boardId: props.boardId, columnId: props._id })
-  }
 
   return (
     <Card
@@ -46,7 +32,7 @@ const Column = (
         overflowY: 'auto',
       }}>
       <Card.Header css={{ p: '$4' }}>
-        <ColumnTitle title={props.title} deleteAction={handleDeleteColumn} />
+        <ColumnTitle {...props} />
       </Card.Header>
 
       <Card.Divider />
@@ -71,8 +57,8 @@ const Column = (
           </Popover.Trigger>
           <Popover.Content>
             <PopoverAddTask
-              boardId={props.boardId}
-              columnId={props._id}
+              boardId={props.column.boardId}
+              columnId={props.column._id}
               nextOrder={nextTaskOrder}
               isOpen={isCreateTaskOpen}
               setIsOpen={setIsCreateTaskOpen}

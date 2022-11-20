@@ -1,33 +1,64 @@
-import { Input, Spacer, Text, Tooltip } from '@nextui-org/react'
-import {
-  JSXElementConstructor,
-  MouseEventHandler,
-  ReactElement,
-  ReactFragment,
-  useState,
-} from 'react'
-import SaveButton from '../board-list-page/SaveButton'
+import { Spacer, Text, Tooltip } from '@nextui-org/react'
+import { useState } from 'react'
 
 import { useTranslation } from 'next-i18next'
-import CancelButton from '../Buttons/CancelButton'
-import InputEdit from '../Utilities/InputEdit'
+import {
+  useDeleteColumnMutation,
+  useDeleteTaskMutation,
+  useUpdateColumnMutation,
+} from '../../features/boards/boardsApi'
+import { ColumnResponse, TaskResponse } from '../../utils/interfaces'
 import PopoverDeleteElement from '../PopoverDeleteElement'
+import InputEdit from '../Utilities/InputEdit'
 
 const ColumnTitle = (props: {
-  title: string
-  deleteAction: MouseEventHandler<HTMLButtonElement> | undefined
+  column: ColumnResponse
+  tasks: TaskResponse[] | undefined
 }) => {
   const { t } = useTranslation('common')
   const [isEdit, setIsEdit] = useState(false)
+  const [updateColumn] = useUpdateColumnMutation()
+  const [deleteColumn] = useDeleteColumnMutation()
+  const [deleteTask] = useDeleteTaskMutation()
 
   const handleClick = () => {
     setIsEdit(!isEdit)
   }
 
+  const handleUpdateTitle = async (title: string) => {
+    if (!props.column) return
+    await updateColumn({
+      boardId: props.column.boardId,
+      columnId: props.column._id,
+      title: title,
+      order: props.column.order,
+    })
+  }
+
+  const handleDeleteColumn = async () => {
+    const deleteAllTasksPromises = props?.tasks?.map((task) =>
+      deleteTask({
+        boardId: props.column.boardId,
+        columnId: props.column._id,
+        taskId: task._id,
+      }).unwrap()
+    )
+    if (deleteAllTasksPromises) await Promise.all(deleteAllTasksPromises)
+    await deleteColumn({
+      boardId: props.column.boardId,
+      columnId: props.column._id,
+    })
+  }
+
   return (
     <>
       {isEdit ? (
-        <InputEdit fullWidth editValue={props.title} onClick={handleClick} />
+        <InputEdit
+          fullWidth
+          editValue={props.column.title}
+          onClick={handleClick}
+          onConfirmEdit={handleUpdateTitle}
+        />
       ) : (
         <>
           <Tooltip content={t('Edit title')} css={{ zIndex: 10 }}>
@@ -42,7 +73,7 @@ const ColumnTitle = (props: {
                 },
               }}
               onClick={handleClick}>
-              {props.title}
+              {props.column.title}
             </Text>
           </Tooltip>
           <Spacer css={{ mr: 'auto' }} />
@@ -50,7 +81,7 @@ const ColumnTitle = (props: {
             localeKeys={{
               text: 'Are you sure you want to delete the column and all accociated tasks?',
             }}
-            action={props.deleteAction}
+            action={handleDeleteColumn}
           />
         </>
       )}

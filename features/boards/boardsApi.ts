@@ -32,6 +32,7 @@ export const boardsApi = createApi({
     // Boards
     getSingleBoard: builder.query<BoardResponse, string>({
       query: (boardId) => `/boards/${boardId}`,
+      providesTags: ['BoardList'],
     }),
     getBoards: builder.query<BoardResponse[], string>({
       query: (userId) => `/boardsSet/${userId}`,
