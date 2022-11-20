@@ -1,18 +1,16 @@
-import { Button, Card, Popover } from '@nextui-org/react'
+import { Button, Card, Popover, Text } from '@nextui-org/react'
 import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import { ColumnResponse, TaskResponse } from '../../utils/interfaces'
 import { IconPlus } from '../icons/boardCard/icon_plus'
 import ColumnTask from './ColumnTask'
 import ColumnTitle from './ColumnTitle'
 import PopoverAddTask from './PopoverAddTask'
 
-const Column = (
-  props: {
-    column: ColumnResponse
-    tasks: TaskResponse[] | undefined
-  }
-) => {
+const Column = (props: {
+  column: ColumnResponse
+  tasks: TaskResponse[] | undefined
+}) => {
   const { t } = useTranslation('common')
   const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false)
   const { tasks } = props
@@ -41,7 +39,7 @@ const Column = (
         {props.tasks &&
           props.tasks.map((task) => <ColumnTask key={task._id} {...task} />)}
       </Card.Body>
-      <Card.Footer>
+      <Card.Footer css={{ pl: 0 }}>
         <Popover
           isBordered
           isOpen={isCreateTaskOpen}

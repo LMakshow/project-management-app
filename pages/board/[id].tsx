@@ -102,8 +102,9 @@ export default function Board() {
             <Loading size='lg'> Loading </Loading>
           )}
 
+          
+          <div style={{ display: 'flex', flexGrow: '1', maxWidth: '100%'}}>
           <Spacer x={1} css={{ mr: 'auto' }} />
-
           <Button
             color='secondary'
             css={{ my: '6px' }}
@@ -148,6 +149,7 @@ export default function Board() {
                 text: 'Popover delete board',
               }}
             />
+          </div>
           </div>
         </Row>
 

@@ -39,10 +39,21 @@ const BoardCard: FC<BoardResponse> = (board) => {
     <Card
       key={board._id}
       css={{
-        mw: '400px',
         pl: '10px',
         pr: '10px',
         pb: '15px',
+        '@xs': {
+          mw: '276px',
+        },
+        '@sm': {
+          mw: '430px',
+        },
+        '@md': {
+          mw: '380px',
+        },
+        '@lg': {
+          mw: '424px',
+        }
       }}>
       <Card.Header>
         <BoardCardTitle

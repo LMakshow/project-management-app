@@ -49,7 +49,7 @@ export default function Boards() {
           justifyContent: 'flex-start',
           alignItems: 'center',
         }}>
-        <Row align='flex-end' wrap='wrap'>
+        <Row wrap='wrap'>
           {boardList ? (
             <>
               <Text h2>{t('Boards of', { user: userName })}</Text>
