@@ -4,7 +4,7 @@ import styles from './layout.module.css'
 import { Container, Row, Col } from '@nextui-org/react'
 import Link from 'next/link'
 import Navbar from './Navbar'
-import Footer from './Footer';
+import Footer from './Footer'
 
 export const siteTitle = 'Project Management App'
 
@@ -16,7 +16,13 @@ export default function Layout({
   home?: boolean
 }) {
   return (
-    <div>
+    <div
+      style={{
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+      }}>
       <Head>
         <meta
           name='description'
