@@ -10,7 +10,7 @@ import {
   CreateTaskRequest,
   TaskOrderRequest,
   TaskRequest,
-  TaskResponse,
+  TaskResponse
 } from '../../utils/interfaces'
 import { RootState } from '../store'
 

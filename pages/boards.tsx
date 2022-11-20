@@ -35,6 +35,7 @@ export default function Boards() {
               key={board._id}
               description={board.description}
               title={board.title}
+              description={board.description}
               owner={board.owner}
               users={board.users}
               _id={board._id}

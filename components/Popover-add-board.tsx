@@ -27,8 +27,13 @@ const PopoverAddBoard = (props: {
       description: descriptValue,
       owner: userId,
       users: [userId],
-    })
-    router.push('/boards')
+    });
+
+    setIsOpen(!isOpen);
+
+    if (!router.pathname.endsWith('boards')) {
+      router.push('/boards');
+    }
   }
 
   return (
