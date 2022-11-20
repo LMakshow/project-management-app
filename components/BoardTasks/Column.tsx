@@ -8,7 +8,7 @@ import ColumnTask from './ColumnTask'
 import ColumnTitle from './ColumnTitle'
 import PopoverAddTask from './PopoverAddTask'
 import PopoverDeleteElement from '../PopoverDeleteElement'
-import { useDeleteColumnMutation } from '../../features/boards/boardsApi'
+import { useDeleteColumnMutation, useDeleteTaskMutation } from '../../features/boards/boardsApi'
 
 const Column = (
   props: ColumnResponse & {
@@ -22,8 +22,15 @@ const Column = (
     ? tasks?.reduce((a, b) => Math.max(a, b.order), 1)
     : 0
   const [deleteColumn] = useDeleteColumnMutation()
+  const [deleteTask] = useDeleteTaskMutation()
 
   const handleDeleteColumn = async () => {
+    const deleteAllTasksPromises = tasks?.map((task) => deleteTask({
+      boardId: props.boardId,
+      columnId: props._id,
+      taskId: task._id,
+    }).unwrap())
+    if (deleteAllTasksPromises) await Promise.all(deleteAllTasksPromises)
     await deleteColumn({ boardId: props.boardId, columnId: props._id })
   }
 
