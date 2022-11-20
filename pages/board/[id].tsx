@@ -145,6 +145,7 @@ export default function Board() {
             <PopoverDeleteElement
               action={handleDeleteElement}
               localeKeys={{
+                // t('Popover delete board')
                 text: 'Popover delete board',
               }}
             />

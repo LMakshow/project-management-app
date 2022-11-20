@@ -50,7 +50,12 @@ const PopoverDeleteElement = (props: {
             width: '330px',
             gap: '10px',
           }}>
-          <Text size='md'>{t(props.localeKeys.text)}</Text>
+          <Text size='md'>
+            {
+              // t('Popover delete board') t('Delete board') t('Are you sure you want to delete this task?') 
+              t(props.localeKeys.text)
+            }
+          </Text>
           <Grid.Container justify='space-around' alignContent='center'>
             <Grid>
               <Button auto light color='default' onClick={handleClick}>
