@@ -9,6 +9,7 @@ const SaveButton:FC<{onClick: () => void}> = ({ onClick: onClick }) => {
     auto
     light
     aria-label='save'
+    type='submit'
     css={{
       px: '0'
     }}

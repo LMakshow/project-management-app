@@ -1,8 +1,16 @@
-import { Input, Spacer, Tooltip, useInput } from '@nextui-org/react'
+import { Input, Tooltip, useInput } from '@nextui-org/react'
 import { useTranslation } from 'next-i18next'
-import SaveButton from '../board-list-page/SaveButton'
+import SaveButton from '../Buttons/SaveButton'
 import CancelButton from '../Buttons/CancelButton'
 
+/**
+ * Input field to edit some text. Creates line with cancel and confirm buttons.
+ * 
+ * @param props.editValue - default value for input
+ * @param props.fullWidth - pass true if you need input to have 100% width
+ * @param props.onClick - function after cancel edit
+ * @param props.onConfirmEdit - function after confirming edit
+ */
 export default function InputEdit(props: {
   editValue: string
   fullWidth?: boolean
@@ -30,7 +38,7 @@ export default function InputEdit(props: {
         value={props.editValue}
         type='text'
         size='lg'
-        width={props.fullWidth ? '100%' : 'auto'}
+        fullWidth={props.fullWidth}
         color='primary'
       />
       <Tooltip content={t('Cancel')}>
