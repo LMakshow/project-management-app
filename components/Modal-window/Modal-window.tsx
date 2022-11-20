@@ -88,8 +88,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
         login: emailValue,
         password: passwordValue,
       }).unwrap()
-
-      dispatch(setUser(userData))
+      dispatch(setUser({ ...userData, password: passwordValue }))
 
       hide()
     } catch (error) {
@@ -120,7 +119,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
         password: 'TestUserPwd',
       }).unwrap()
 
-      dispatch(setUser(userData))
+      dispatch(setUser({ ...userData, password: passwordValue }))
 
       hide()
     } catch (error) {

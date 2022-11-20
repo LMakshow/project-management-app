@@ -1,0 +1,16 @@
+.list {
+  font-family: 'Comfortaa', sans-serif;
+  border: 2px solid #043b7c;
+  border-radius: 20px;
+  padding: 20px 50px;
+  margin: 0;
+  position: relative;
+  &__item {
+    display: flex;
+    align-items: baseline;
+  }
+  &__prop {
+    font-weight: 700;
+    margin-right: 20px;
+  }
+}

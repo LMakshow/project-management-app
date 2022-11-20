@@ -54,7 +54,15 @@ export default function Header() {
   }, [])
 
   const signOutAction = () => {
-    dispatch(setUser({ token: null, name: null, login: null, _id: null }))
+    dispatch(
+      setUser({
+        token: null,
+        name: null,
+        login: null,
+        _id: null,
+        password: null,
+      })
+    )
   }
 
   return (

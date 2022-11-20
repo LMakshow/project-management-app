@@ -6,6 +6,7 @@ type AuthState = {
   name: string | null
   login: string | null
   token: string | null
+  password: string | null
 }
 
 const slice = createSlice({
@@ -15,13 +16,15 @@ const slice = createSlice({
     name: null,
     login: null,
     token: null,
+    password: null,
   } as AuthState,
   reducers: {
-    setUser: (state, { payload: { token, _id, name, login } }) => {
+    setUser: (state, { payload: { token, _id, name, login, password } }) => {
       state.token = token
-      state._id = _id,
-      state.name = name,
+      state._id = _id
+      state.name = name
       state.login = login
+      state.password = password
     },
   },
 })
