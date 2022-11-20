@@ -32,6 +32,7 @@ export default function Boards() {
             <BoardCard
               key={board._id}
               title={board.title}
+              description={board.description}
               owner={board.owner}
               users={board.users}
              _id={board._id}/>

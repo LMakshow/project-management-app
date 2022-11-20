@@ -1,18 +1,23 @@
-import { Container, Input, Text, Textarea, Tooltip } from '@nextui-org/react';
+import { Container, Input, Text, Textarea, Tooltip, useInput } from '@nextui-org/react';
 import SaveButton from './SaveButton';
 import EditButton from './EditButton';
-import { useState } from 'react';
+import { FC, useState } from 'react';
 
 import { useTranslation } from 'next-i18next';
+import { BoardDescriptionProps } from '../../utils/interfaces';
 
-const description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.mod tempor incididunt ut labore et dolore magna aliqua.'
-
-const BoardCardDescription = () => {
+const BoardCardDescription: FC<BoardDescriptionProps> = (props) => {
   const { t } = useTranslation('common');
   const [isEdit, setIsEdit] = useState(false);
+  const { value: descriptionValue, bindings: descriptionBindings } = useInput('');
 
   const handleClick = () => {
     setIsEdit(!isEdit);
+  }
+
+  const updateBoardDescription = () => {
+    handleClick();
+    props.handleUpdateBoard({description: descriptionValue })
   }
 
   return (
@@ -28,10 +33,11 @@ const BoardCardDescription = () => {
       {isEdit
         ? <>
           <Textarea
+            {...descriptionBindings}
             bordered
             width='306px'
             status="primary"
-            initialValue={description}
+            value={props.description}
             css={{
               display: 'flex',
               justifyContent: 'flex-start',
@@ -41,7 +47,7 @@ const BoardCardDescription = () => {
           <Tooltip
             content={t('Save new description')}
             css={{ zIndex: 10 }}>
-            <SaveButton onClick={handleClick}/>
+            <SaveButton onClick={updateBoardDescription}/>
           </Tooltip></>
         : <>
           <Container css={{
@@ -52,7 +58,7 @@ const BoardCardDescription = () => {
               overflow: 'auto'
             }}
               size="xl">
-              {description}</Text>
+              {props.description}</Text>
           </Container>
           <Tooltip
           content={t('Edit description')}

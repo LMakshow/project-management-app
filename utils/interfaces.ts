@@ -60,5 +60,15 @@ export interface ColumnResponse {
   boardId: string
 }
 
+export interface BoardTitleProps {
+  title: string
+  handleUpdateBoard: (value: Partial<BoardResponse>) => void
+}
+
+export interface BoardDescriptionProps {
+  description: string
+  handleUpdateBoard: (value: Partial<BoardResponse>) => void
+}
+
 
 
