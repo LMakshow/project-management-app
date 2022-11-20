@@ -1,4 +1,4 @@
-import { Avatar, Button, Card } from '@nextui-org/react';
+import { Avatar, Card } from '@nextui-org/react';
 import { BoardResponse } from '../../utils/interfaces';
 import { FC } from 'react';
 
