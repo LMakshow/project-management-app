@@ -61,13 +61,11 @@ const BoardCard: FC<BoardResponse> = (board) => {
           alignItems: 'center',
           justifyContent: 'space-between',
         }}>
-        <NextLink passHref legacyBehavior href={`/board/${board._id}`}>
-          <Link>
-            <Button color='primary' flat>
-              {t('Open Board')}
-            </Button>
-          </Link>
-        </NextLink>
+        <Button color='primary' flat>
+          <NextLink href={`/board/${board._id}`}>
+            {t('Open Board')}
+          </NextLink>
+        </Button>
         <PopoverDeleteElement
           action={handleDeleteElement}
           localeKeys={{
