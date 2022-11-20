@@ -1,9 +1,23 @@
-import { Container } from '@nextui-org/react'
+import {
+  Button,
+  Container,
+  Loading,
+  Popover,
+  Row,
+  Spacer,
+  Text,
+} from '@nextui-org/react'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import Layout from '../components/layout'
+import Layout, { siteTitle } from '../components/layout'
 import { useGetBoardsQuery } from '../features/boards/boardsApi'
 import { useAppSelector } from '../features/hooks'
 import BoardCard from '../components/board-list-page/BoardCard'
+import Head from 'next/head'
+import { t } from 'i18next'
+import { useTranslation } from 'next-i18next'
+import { IconKanbanAdd } from '../components/icons/icon_kanban_add'
+import PopoverAddBoard from '../components/Popover-add-board'
+import { useState } from 'react'
 
 export const getStaticProps = async ({ locale }: { locale: 'en' | 'ru' }) => ({
   props: {
@@ -15,12 +29,18 @@ export const getStaticProps = async ({ locale }: { locale: 'en' | 'ru' }) => ({
 })
 
 export default function Boards() {
+  const { t } = useTranslation('common')
   const isSigned = useAppSelector((state) => state.user.token)
   const userId = useAppSelector((state) => state.user._id) as string
+  const userName = useAppSelector((state) => state.user.name) as string
   const { data: boardList, error, isLoading } = useGetBoardsQuery(userId)
+  const [isCreateBoardOpen, setIsCreateBoardOpen] = useState(false)
 
   return (
     <Layout>
+      <Head>
+        <title>{siteTitle}</title>
+      </Head>
       <Container
         display='flex'
         css={{
@@ -29,6 +49,38 @@ export default function Boards() {
           justifyContent: 'flex-start',
           alignItems: 'center',
         }}>
+        <Row align='flex-end' wrap='wrap'>
+          {boardList ? (
+            <>
+              <Text h2>{t('Boards of', { user: userName })}</Text>
+              <Spacer x={1} css={{ mr: 'auto' }} />
+              <Popover
+                isBordered
+                isOpen={isCreateBoardOpen}
+                onOpenChange={setIsCreateBoardOpen}>
+                <Popover.Trigger>
+                  <Button
+                    color='primary'
+                    css={{ my: '6px' }}
+                    auto
+                    flat
+                    icon={<IconKanbanAdd fill='currentColor' />}>
+                    {t('Create Board')}
+                  </Button>
+                </Popover.Trigger>
+                <Popover.Content>
+                  <PopoverAddBoard
+                    isOpen={isCreateBoardOpen}
+                    setIsOpen={setIsCreateBoardOpen}
+                  />
+                </Popover.Content>
+              </Popover>
+            </>
+          ) : (
+            <Loading size='lg'> Loading </Loading>
+          )}
+        </Row>
+
         {boardList &&
           boardList.map((board) => (
             <BoardCard
