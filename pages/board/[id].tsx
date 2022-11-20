@@ -53,16 +53,16 @@ export default function Board() {
   const [login, { isSuccess: isSigned }] = useSignInMutation()
   const [deleteBoard] = useDeleteBoardMutation()
 
-  //autologin for testing purposes
-  useEffect(() => {
-    const fetch = async () => {
-      await login({
-        login: 'TestUser',
-        password: 'TestUserPwd',
-      })
-    }
-    fetch()
-  }, [login])
+  // //autologin for testing purposes
+  // useEffect(() => {
+  //   const fetch = async () => {
+  //     await login({
+  //       login: 'TestUser',
+  //       password: 'TestUserPwd',
+  //     })
+  //   }
+  //   fetch()
+  // }, [login])
 
   const [isCreateColumnOpen, setIsCreateColumnOpen] = useState(false)
   const userId = useAppSelector((state) => state.user._id) as string

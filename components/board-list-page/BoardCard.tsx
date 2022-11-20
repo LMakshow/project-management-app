@@ -1,5 +1,6 @@
-import { Avatar, Card } from '@nextui-org/react'
+import { Avatar, Button, Card, Link } from '@nextui-org/react'
 import { BoardResponse } from '../../utils/interfaces'
+import NextLink from 'next/link'
 import { FC } from 'react'
 
 import { useTranslation } from 'next-i18next'
@@ -60,6 +61,13 @@ const BoardCard: FC<BoardResponse> = (board) => {
           alignItems: 'center',
           justifyContent: 'space-between',
         }}>
+        <NextLink passHref legacyBehavior href={`/board/${board._id}`}>
+          <Link>
+            <Button color='primary' flat>
+              {t('Open Board')}
+            </Button>
+          </Link>
+        </NextLink>
         <PopoverDeleteElement
           action={handleDeleteElement}
           localeKeys={{
