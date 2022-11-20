@@ -20,11 +20,14 @@ import PopoverAddColumn from '../../components/BoardTasks/PopoverAddColumn'
 import { IconDelete } from '../../components/icons/boardCard/icon_delete'
 import { IconPlus } from '../../components/icons/boardCard/icon_plus'
 import Layout, { siteTitle } from '../../components/layout'
+import PopoverDeleteElement from '../../components/PopoverDeleteElement'
 import { useSignInMutation } from '../../features/auth/authApi'
 import {
+  useDeleteBoardMutation,
   useGetColumnsQuery,
   useGetSingleBoardQuery,
   useGetTasksQuery,
+  useUpdateBoardMutation,
 } from '../../features/boards/boardsApi'
 import { useAppSelector } from '../../features/hooks'
 
@@ -47,6 +50,8 @@ export default function Board() {
   const { t } = useTranslation('common')
   const boardId = String(router.query.id)
   const [login, { isSuccess: isSigned }] = useSignInMutation()
+  const [updateBoard] = useUpdateBoardMutation()
+  const [deleteBoard] = useDeleteBoardMutation()
 
   useEffect(() => {
     const fetch = async () => {
@@ -67,7 +72,13 @@ export default function Board() {
     userId ? boardId : skipToken
   )
   const { data: tasksList } = useGetTasksQuery(userId ? boardId : skipToken)
-  const nextColumnOrder = columnsList ? columnsList?.reduce((a, b) => Math.max(a, b.order), 1) : 0
+  const nextColumnOrder = columnsList
+    ? columnsList?.reduce((a, b) => Math.max(a, b.order), 1)
+    : 0
+
+  const handleDeleteElement = async () => {
+    await deleteBoard(boardId)
+  }
 
   return (
     <Layout>
@@ -119,13 +130,14 @@ export default function Board() {
           </Popover>
 
           <Spacer x={1} />
-
-          <Button
-            color='error'
-            css={{ my: '6px' }}
-            auto
-            flat
-            icon={<IconDelete fill='currentColor' />}></Button>
+          <div style={{ margin: '6px 0' }}>
+            <PopoverDeleteElement
+              action={handleDeleteElement}
+              localeKeys={{
+                text: 'Popover delete board',
+              }}
+            />
+          </div>
         </Row>
 
         <Spacer y={1} />

@@ -1,15 +1,33 @@
-import { Avatar, Button, Card, Input, Modal, Spacer, Text } from '@nextui-org/react'
+import {
+  Avatar,
+  Button,
+  Card,
+  Input,
+  Modal,
+  Spacer,
+  Text,
+} from '@nextui-org/react'
 import { useState } from 'react'
 
 import { useTranslation } from 'next-i18next'
 import { TaskResponse } from '../../utils/interfaces'
-import PopoverDeleteBoard from '../board-list-page/PopoverDeleteBoard'
+import PopoverDeleteElement from '../PopoverDeleteElement'
+import { useDeleteTaskMutation } from '../../features/boards/boardsApi'
 
 const ColumnTask = (props: TaskResponse) => {
   const { t } = useTranslation('common')
   const [modalVisible, setModalVisible] = useState(false)
   const openModal = () => setModalVisible(true)
   const closeModal = () => setModalVisible(false)
+  const [deleteTask] = useDeleteTaskMutation()
+
+  const handleDeleteTask = async () => {
+    await deleteTask({
+      boardId: props.boardId,
+      columnId: props.columnId,
+      taskId: props._id,
+    })
+  }
 
   return (
     <>
@@ -55,7 +73,12 @@ const ColumnTask = (props: TaskResponse) => {
             size='lg'
           />
           <Spacer css={{ mr: 'auto' }} />
-          <PopoverDeleteBoard />
+          <PopoverDeleteElement
+            localeKeys={{
+              text: 'Are you sure you want to delete this task?',
+            }}
+            action={handleDeleteTask}
+          />
         </Modal.Footer>
       </Modal>
     </>
