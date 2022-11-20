@@ -26,5 +26,7 @@
   "Delete": "Delete",
   "Cancel": "Cancel",
   "Save": "Save",
+  "Back": "Back",
+  "Add New Column": "Add New Column",
   "Boards of": "Boards of {{user}}"
 }
