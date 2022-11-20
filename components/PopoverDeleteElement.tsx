@@ -1,26 +1,26 @@
 import { Button, Popover, Text, Container, Grid } from '@nextui-org/react';
 import { useTranslation } from 'next-i18next';
 import { FC, useState } from 'react';
-import { useCreateBoardMutation, useDeleteBoardMutation } from '../../features/boards/boardsApi';
+import { DeleteElementPopoverProps } from '../utils/interfaces';
 
-const PopoverDeleteBoard:FC<{ id: string }> = (props) => {
+const PopoverDeleteElement:FC<DeleteElementPopoverProps> = (props) => {
   const { t } = useTranslation('common');
   const [isOpen, setIsOpen] = useState(false);
-  const [deleteBoard] = useDeleteBoardMutation();
+  const [deleteElement] = props.mutation();
 
   const handleClick = () => {
     setIsOpen(!isOpen);
   }
 
-  const handlerDeleteBoard = async () => {
-    await deleteBoard(props.id);
+  const handleDeleteElement = async () => {
+    await deleteElement(props.id);
   }
 
   return (
     <Popover isOpen={isOpen} onOpenChange={setIsOpen}>
       <Popover.Trigger>
         <Button flat color="primary" auto onClick={handleClick}>
-          {t('Delete board')}
+          {t(props.localeKeys.button)}
         </Button>
       </Popover.Trigger>
       <Popover.Content css={{
@@ -32,7 +32,7 @@ const PopoverDeleteBoard:FC<{ id: string }> = (props) => {
           gap: '10px',
         }}>
           <Text size="md">
-            {t('Popover delete board')}
+            {t(props.localeKeys.text)}
           </Text>
           <Grid.Container justify="space-around" alignContent="center">
             <Grid>
@@ -41,7 +41,7 @@ const PopoverDeleteBoard:FC<{ id: string }> = (props) => {
               </Button>
             </Grid>
             <Grid>
-              <Button auto shadow color="error" onClick={handlerDeleteBoard}>
+              <Button auto shadow color="error" onClick={handleDeleteElement}>
                 {t('Delete')}
               </Button>
             </Grid>
@@ -52,4 +52,4 @@ const PopoverDeleteBoard:FC<{ id: string }> = (props) => {
   )
 }
 
-export default PopoverDeleteBoard;
+export default PopoverDeleteElement;
