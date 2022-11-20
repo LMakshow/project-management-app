@@ -5,19 +5,20 @@ import {
   Loading,
   Popover,
   Row,
-  Spacer,
+  Spacer
 } from '@nextui-org/react'
 import { skipToken } from '@reduxjs/toolkit/dist/query'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Head from 'next/head'
+import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import BoardDescription from '../../components/BoardTasks/BoardDescription'
 import BoardTitle from '../../components/BoardTasks/BoardTitle'
 import Column from '../../components/BoardTasks/Column'
 import PopoverAddColumn from '../../components/BoardTasks/PopoverAddColumn'
-import { IconDelete } from '../../components/icons/boardCard/icon_delete'
+import { IconBack } from '../../components/icons/boardCard/icon_back'
 import { IconPlus } from '../../components/icons/boardCard/icon_plus'
 import Layout, { siteTitle } from '../../components/layout'
 import PopoverDeleteElement from '../../components/PopoverDeleteElement'
@@ -26,11 +27,9 @@ import {
   useDeleteBoardMutation,
   useGetColumnsQuery,
   useGetSingleBoardQuery,
-  useGetTasksQuery,
-  useUpdateBoardMutation,
+  useGetTasksQuery
 } from '../../features/boards/boardsApi'
 import { useAppSelector } from '../../features/hooks'
-import { BoardResponse } from '../../utils/interfaces'
 
 export const getServerSideProps = async ({
   locale,
@@ -105,6 +104,17 @@ export default function Board() {
           )}
 
           <Spacer x={1} css={{ mr: 'auto' }} />
+
+          <Button
+            color='secondary'
+            css={{ my: '6px' }}
+            onClick={() => router.push('/boards')}
+            auto
+            flat
+            icon={<IconBack fill='currentColor' />}>
+            {t('Back')}
+          </Button>
+          <Spacer x={1} />
 
           <Popover
             isBordered

@@ -1,6 +1,5 @@
 import { Avatar, Button, Card, Link } from '@nextui-org/react'
 import { BoardResponse } from '../../utils/interfaces'
-import NextLink from 'next/link'
 import { FC } from 'react'
 
 import { useTranslation } from 'next-i18next'
@@ -11,9 +10,11 @@ import {
   useDeleteBoardMutation,
   useUpdateBoardMutation,
 } from '../../features/boards/boardsApi'
+import { useRouter } from 'next/router'
 
 const BoardCard: FC<BoardResponse> = (board) => {
   const { t } = useTranslation('common')
+  const router = useRouter()
   const [updateBoard] = useUpdateBoardMutation()
   const [deleteBoard] = useDeleteBoardMutation()
 
@@ -61,11 +62,9 @@ const BoardCard: FC<BoardResponse> = (board) => {
           alignItems: 'center',
           justifyContent: 'space-between',
         }}>
-        <Button color='primary' flat>
-          <NextLink href={`/board/${board._id}`}>
+          <Button onClick={() => router.push(`/board/${board._id}`)} color='primary' flat>
             {t('Open Board')}
-          </NextLink>
-        </Button>
+          </Button>
         <PopoverDeleteElement
           action={handleDeleteElement}
           localeKeys={{
