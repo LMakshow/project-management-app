@@ -138,7 +138,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
         <Modal.Header>
           <Text id='modal-title' size={18}>
             {
-              // t('signIn')  t('signUp')
+              // t('signIn')  t('signUp') t('edit')
               t(action)
             }
             <Text b size={18}>
@@ -149,19 +149,20 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
         </Modal.Header>
 
         <Modal.Body css={{ gap: '10px', overflow: 'visible' }}>
-          {action === 'signUp' && (
-            <Input
-              {...nameBindings}
-              aria-labelledby='modal-name'
-              clearable
-              bordered
-              fullWidth
-              color='primary'
-              size='lg'
-              placeholder={t('Name')}
-              contentLeft={<User fill='currentColor' />}
-            />
-          )}
+          {action === 'signUp' ||
+            (action === 'edit' && (
+              <Input
+                {...nameBindings}
+                aria-labelledby='modal-name'
+                clearable
+                bordered
+                fullWidth
+                color='primary'
+                size='lg'
+                placeholder={t('Name')}
+                contentLeft={<User fill='currentColor' />}
+              />
+            ))}
           <Input
             {...emailBindings}
             aria-labelledby='modal-email'
@@ -194,9 +195,11 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
 
         <Modal.Footer>
           <Tooltip content={t('demo-tooltip')} css={{ zIndex: 9999 }}>
-            <Button auto flat onClick={handleSignInDemo}>
-              {t('Demo')}
-            </Button>
+            {action !== 'edit' && (
+              <Button auto flat onClick={handleSignInDemo}>
+                {t('Demo')}
+              </Button>
+            )}
           </Tooltip>
           <Spacer css={{ fg: 1 }} />
           <Button auto flat color='error' onClick={hide}>
@@ -214,7 +217,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
               }>
               {t('btnSignIn')}
             </Button>
-          ) : (
+          ) : action === 'signUp' ? (
             <Button
               auto
               type='submit'
@@ -227,6 +230,10 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
                   : true
               }>
               {t('btnSignUp')}
+            </Button>
+          ) : (
+            <Button auto type='submit' onClick={() => console.log('edit')}>
+              {t('btnEdit')}
             </Button>
           )}
         </Modal.Footer>

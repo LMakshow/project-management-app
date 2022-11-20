@@ -1,14 +1,19 @@
 import { Button, Col, Row } from '@nextui-org/react'
-import { useAppSelector } from '../../features/hooks'
+import { useAppSelector, useModal } from '../../features/hooks'
 import styles from './profile-content.module.scss'
 
 import { EditIcon } from '../icons/profile/Edit-icon'
 import { useTranslation } from 'next-i18next'
+import { useState } from 'react'
+import ModalWindow from '../Modal-window/Modal-window'
+import ReactDOM from 'react-dom'
 
 const ProfileContent = () => {
   const userName = useAppSelector((state) => state.user.name)
   const userLogin = useAppSelector((state) => state.user.login)
   const userPassword = useAppSelector((state) => state.user.password)
+
+  const { isShowing: isModalShowing, toggle: toggleModal } = useModal()
 
   const { t } = useTranslation('profile')
 
@@ -41,6 +46,7 @@ const ProfileContent = () => {
               light
               icon={<EditIcon />}
               css={{ position: 'absolute', top: '-30px', right: '-50px' }}
+              onClick={toggleModal}
             />
           </li>
 
@@ -66,6 +72,15 @@ const ProfileContent = () => {
           {t('delete')}
         </Button>
       </Col>
+      {isModalShowing &&
+        ReactDOM.createPortal(
+          <ModalWindow
+            isShowing={isModalShowing}
+            hide={toggleModal}
+            action='edit'
+          />,
+          document.body
+        )}
     </>
   )
 }
