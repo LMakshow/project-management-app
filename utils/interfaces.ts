@@ -26,18 +26,24 @@ export interface UserSignInResponse {
   }
 }
 
-export interface BoardRequest {
-  title: string
-  owner: string
-  users: string[]
+export interface UserEdit extends UserSignUp {
+  _id: string
 }
 
-export interface BoardResponse {
-  _id: string
-  title: string
-  owner: string
-  users: string[]
-}
+export interface UserEditResponse extends UserSignUpResponse {}
+
+// export interface BoardRequest {
+//   title: string
+//   owner: string
+//   users: string[]
+// }
+
+// export interface BoardResponse {
+//   _id: string
+//   title: string
+//   owner: string
+//   users: string[]
+// }
 
 export interface BoardRequest {
   title: string

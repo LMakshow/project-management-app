@@ -19,7 +19,7 @@ import {
   useSignUpMutation,
 } from '../../features/auth/authApi'
 
-import { useAppDispatch } from '../../features/hooks'
+import { useAppDispatch, useAppSelector } from '../../features/hooks'
 import { setUser } from '../../features/auth/userSlice'
 import { validateEmail, validatePassword } from './validation'
 import { User } from '../icons/modal/icon_user'
@@ -27,19 +27,16 @@ import { User } from '../icons/modal/icon_user'
 const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
   const dispatch = useAppDispatch()
 
+  const userName = useAppSelector((state) => state.user.name) as string
+  const userLogin = useAppSelector((state) => state.user.login) as string
+  const userPassword = useAppSelector((state) => state.user.password) as string
+  const userid = useAppSelector((state) => state.user._id) as string
+
   const { t } = useTranslation('modal-window')
 
   const { value: nameValue, bindings: nameBindings } = useInput('')
-  const {
-    value: emailValue,
-    setValue: setEmail,
-    bindings: emailBindings,
-  } = useInput('')
-  const {
-    value: passwordValue,
-    setValue: setPwd,
-    bindings: passwordBindings,
-  } = useInput('')
+  const { value: loginValue, bindings: emailBindings } = useInput('')
+  const { value: passwordValue, bindings: passwordBindings } = useInput('')
 
   const [login, { isLoading }] = useSignInMutation()
   const [signUp] = useSignUpMutation()
@@ -50,18 +47,18 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
     text: string
     color: helperColor
   } => {
-    if (!emailValue)
+    if (!loginValue)
       return {
         text: '',
         color: 'success',
       }
 
-    const isValid = validateEmail(emailValue)
+    const isValid = validateEmail(loginValue)
     return {
       text: isValid ? '' : `${t('unvalid-email')}`,
       color: isValid ? 'primary' : 'error',
     }
-  }, [emailValue, t])
+  }, [loginValue, t])
 
   const passwordHelper = React.useMemo((): {
     text: string
@@ -85,7 +82,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
   const handleSignIn = async () => {
     try {
       const userData = await login({
-        login: emailValue,
+        login: loginValue,
         password: passwordValue,
       }).unwrap()
       dispatch(setUser({ ...userData, password: passwordValue }))
@@ -99,7 +96,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
   const handleSignUp = async () => {
     try {
       await signUp({
-        login: emailValue,
+        login: loginValue,
         name: nameValue,
         password: passwordValue,
       })
@@ -120,6 +117,27 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
       }).unwrap()
 
       dispatch(setUser({ ...userData, password: passwordValue }))
+
+      hide()
+    } catch (error) {
+      setIsError(true)
+    }
+  }
+
+  const handleEdit = async () => {
+    try {
+      const editedData = {
+        name: nameValue || userName,
+        login: loginValue || userLogin,
+        password: passwordValue || userPassword,
+      }
+
+      // await editUser({
+      //   _id: userid,
+      //   ...editedData,
+      // })
+
+      // dispatch(setUser({ ...userData, password: passwordValue }))
 
       hide()
     } catch (error) {
@@ -149,20 +167,19 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
         </Modal.Header>
 
         <Modal.Body css={{ gap: '10px', overflow: 'visible' }}>
-          {action === 'signUp' ||
-            (action === 'edit' && (
-              <Input
-                {...nameBindings}
-                aria-labelledby='modal-name'
-                clearable
-                bordered
-                fullWidth
-                color='primary'
-                size='lg'
-                placeholder={t('Name')}
-                contentLeft={<User fill='currentColor' />}
-              />
-            ))}
+          {(action === 'signUp' || action === 'edit') && (
+            <Input
+              {...nameBindings}
+              aria-labelledby='modal-name'
+              clearable
+              bordered
+              fullWidth
+              color='primary'
+              size='lg'
+              placeholder={t('Name')}
+              contentLeft={<User fill='currentColor' />}
+            />
+          )}
           <Input
             {...emailBindings}
             aria-labelledby='modal-email'
@@ -211,7 +228,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
               type='submit'
               onClick={handleSignIn}
               disabled={
-                validateEmail(emailValue) && validatePassword(passwordValue)
+                validateEmail(loginValue) && validatePassword(passwordValue)
                   ? false
                   : true
               }>
@@ -223,7 +240,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
               type='submit'
               onClick={handleSignUp}
               disabled={
-                validateEmail(emailValue) &&
+                validateEmail(loginValue) &&
                 validatePassword(passwordValue) &&
                 nameValue
                   ? false
@@ -232,7 +249,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
               {t('btnSignUp')}
             </Button>
           ) : (
-            <Button auto type='submit' onClick={() => console.log('edit')}>
+            <Button auto type='submit' onClick={handleEdit}>
               {t('btnEdit')}
             </Button>
           )}
