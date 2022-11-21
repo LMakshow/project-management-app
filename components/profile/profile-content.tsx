@@ -1,12 +1,14 @@
-import { Button, Col, Row } from '@nextui-org/react'
+import { Button, Col, Popover, Text } from '@nextui-org/react'
 import { useAppSelector, useModal } from '../../features/hooks'
 import styles from './profile-content.module.scss'
 
 import { EditIcon } from '../icons/profile/Edit-icon'
+
 import { useTranslation } from 'next-i18next'
-import { useState } from 'react'
 import ModalWindow from '../Modal-window/Modal-window'
 import ReactDOM from 'react-dom'
+import { DeleteUser } from './Delete-user-confirm'
+import { useState } from 'react'
 
 const ProfileContent = () => {
   const userName = useAppSelector((state) => state.user.name)
@@ -14,6 +16,8 @@ const ProfileContent = () => {
   const userPassword = useAppSelector((state) => state.user.password)
 
   const { isShowing: isModalShowing, toggle: toggleModal } = useModal()
+
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false)
 
   const { t } = useTranslation('profile')
 
@@ -67,10 +71,19 @@ const ProfileContent = () => {
             </span>
           </li>
         </ul>
-
-        <Button color='error' auto>
-          {t('delete')}
-        </Button>
+        <Popover
+          isBordered
+          isOpen={isPopoverOpen}
+          onOpenChange={setIsPopoverOpen}>
+          <Popover.Trigger>
+            <Button color='error' auto>
+              {t('delete')}
+            </Button>
+          </Popover.Trigger>
+          <Popover.Content>
+            <DeleteUser isOpen={isPopoverOpen} setIsOpen={setIsPopoverOpen} />
+          </Popover.Content>
+        </Popover>
       </Col>
       {isModalShowing &&
         ReactDOM.createPortal(

@@ -28,7 +28,7 @@ const PopoverAddBoard = (props: {
       owner: userId,
       users: [userId],
     })
-    // router.push('/boards')
+    router.push('/boards')
   }
 
   return (

@@ -24,7 +24,14 @@ export const profileApi = createApi({
         body: data,
       }),
     }),
+    deleteProfile: builder.mutation<UserEditResponse, string>({
+      query: (_id) => ({
+        url: `users/${_id}`,
+        method: 'DELETE',
+        body: {},
+      }),
+    }),
   }),
 })
 
-export const { useEditProfileMutation } = profileApi
+export const { useEditProfileMutation, useDeleteProfileMutation } = profileApi

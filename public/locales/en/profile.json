@@ -2,5 +2,9 @@
   "name": "Name",
   "email": "Email",
   "password": "Password",
-  "delete": "Delete profile"
+  "delete": "Delete profile",
+  "Confirm": "Confirm",
+  "text": "Are you sure you want to delete this user ? By doing this, you will not be able to recover the data.",
+  "Cancel": "Close",
+  "Delete": "Delete"
 }

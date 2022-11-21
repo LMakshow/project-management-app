@@ -32,19 +32,6 @@ export interface UserEdit extends UserSignUp {
 
 export interface UserEditResponse extends UserSignUpResponse {}
 
-// export interface BoardRequest {
-//   title: string
-//   owner: string
-//   users: string[]
-// }
-
-// export interface BoardResponse {
-//   _id: string
-//   title: string
-//   owner: string
-//   users: string[]
-// }
-
 export interface BoardRequest {
   title: string
   description: string
