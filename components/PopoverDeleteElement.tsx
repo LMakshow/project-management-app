@@ -1,20 +1,26 @@
 import { Button, Popover, Text, Container, Grid } from '@nextui-org/react';
 import { useTranslation } from 'next-i18next';
-import { useState } from 'react';
+import { FC, useState } from 'react';
+import { DeleteElementPopoverProps } from '../utils/interfaces';
 
-const PopoverDeleteBoard = () => {
+const PopoverDeleteElement:FC<DeleteElementPopoverProps> = (props) => {
   const { t } = useTranslation('common');
   const [isOpen, setIsOpen] = useState(false);
+  const [deleteElement] = props.mutation();
 
   const handleClick = () => {
     setIsOpen(!isOpen);
+  }
+
+  const handleDeleteElement = async () => {
+    await deleteElement(props.id);
   }
 
   return (
     <Popover isOpen={isOpen} onOpenChange={setIsOpen}>
       <Popover.Trigger>
         <Button flat color="primary" auto onClick={handleClick}>
-          {t('Delete board')}
+          {t(props.localeKeys.button)}
         </Button>
       </Popover.Trigger>
       <Popover.Content css={{
@@ -26,7 +32,7 @@ const PopoverDeleteBoard = () => {
           gap: '10px',
         }}>
           <Text size="md">
-            {t('Popover delete board')}
+            {t(props.localeKeys.text)}
           </Text>
           <Grid.Container justify="space-around" alignContent="center">
             <Grid>
@@ -35,7 +41,7 @@ const PopoverDeleteBoard = () => {
               </Button>
             </Grid>
             <Grid>
-              <Button auto shadow color="error" onClick={handleClick}>
+              <Button auto shadow color="error" onClick={handleDeleteElement}>
                 {t('Delete')}
               </Button>
             </Grid>
@@ -46,4 +52,4 @@ const PopoverDeleteBoard = () => {
   )
 }
 
-export default PopoverDeleteBoard;
+export default PopoverDeleteElement;

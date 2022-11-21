@@ -1,3 +1,6 @@
+import { UseMutation } from '@reduxjs/toolkit/dist/query/react/buildHooks';
+import { MutationDefinitionDeleteElement } from './types';
+
 export interface UserSignUp {
   name: string
   login: string
@@ -28,19 +31,6 @@ export interface UserSignInResponse {
 
 export interface BoardRequest {
   title: string
-  owner: string
-  users: string[]
-}
-
-export interface BoardResponse {
-  _id: string
-  title: string
-  owner: string
-  users: string[]
-}
-
-export interface BoardRequest {
-  title: string
   description: string
   owner: string
   users: string[]
@@ -49,6 +39,48 @@ export interface BoardRequest {
 export interface BoardResponse {
   _id: string
   title: string
+  description: string
   owner: string
   users: string[]
 }
+
+export interface CreateColumnRequest {
+  boardId?: string
+  columnId?: string
+  title: string
+  order: number
+}
+
+export interface ColumnRequest {
+  boardId: string
+  columnId: string
+}
+
+export interface ColumnResponse {
+  _id: string
+  title: string
+  order: number
+  boardId: string
+}
+
+export interface BoardTitleProps {
+  title: string
+  handleUpdateBoard: (value: Partial<BoardResponse>) => void
+}
+
+export interface BoardDescriptionProps {
+  description: string
+  handleUpdateBoard: (value: Partial<BoardResponse>) => void
+}
+
+export interface DeleteElementPopoverProps {
+  id: string
+  mutation: UseMutation<MutationDefinitionDeleteElement>
+  localeKeys: {
+    button: string,
+    text: string
+  }
+}
+
+
+

@@ -1,16 +1,28 @@
-import { Container, Input, Text, Tooltip } from '@nextui-org/react';
+import { Container, Input, Text, Tooltip, useInput } from '@nextui-org/react';
 import SaveButton from './SaveButton';
 import EditButton from './EditButton';
 import { FC, useState } from 'react';
 
 import { useTranslation } from 'next-i18next';
+import { useCreateBoardMutation, useUpdateBoardMutation } from '../../features/boards/boardsApi';
+import { BoardResponse, BoardTitleProps } from '../../utils/interfaces';
 
-const BoardCardTitle: FC<{ title: string }> = (props) => {
+const BoardCardTitle: FC<BoardTitleProps> = (props) => {
   const { t } = useTranslation('common');
   const [isEdit, setIsEdit] = useState(false);
 
+  const { value: titleValue, bindings: titleBindings } = useInput(props.title);
+
   const handleClick = () => {
     setIsEdit(!isEdit);
+  }
+
+  const updateBoardTitle = () => {
+    handleClick();
+
+    if (titleValue.trim()) {
+      props.handleUpdateBoard({title: titleValue.trim() })
+    }
   }
 
   return (
@@ -23,6 +35,7 @@ const BoardCardTitle: FC<{ title: string }> = (props) => {
     }}>
       {isEdit
         ? <><Input
+          {...titleBindings}
           bordered
           value={props.title}
           type="text"
@@ -33,7 +46,7 @@ const BoardCardTitle: FC<{ title: string }> = (props) => {
           <Tooltip
             content={t('Save new title')}
             css={{ zIndex: 10 }}>
-            <SaveButton onClick={handleClick}/>
+            <SaveButton onClick={updateBoardTitle}/>
           </Tooltip></>
         : <><Text size="$2xl">{props.title}</Text><Tooltip
           content={t('Edit title')}
