@@ -13,6 +13,17 @@ a {
 
 * {
   box-sizing: border-box;
+  scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
+  width: 7px;
+    border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #909090;
+  border-radius: 4px;
 }
 
 @media (prefers-color-scheme: dark) {

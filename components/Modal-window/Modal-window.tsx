@@ -1,13 +1,7 @@
-import React, { useState } from 'react'
 import {
-  Modal,
-  Input,
-  Button,
-  Text,
-  useInput,
-  Spacer,
-  Tooltip,
+  Button, Input, Modal, Spacer, Text, Tooltip, useInput
 } from '@nextui-org/react'
+import React, { useState } from 'react'
 
 import { Mail } from '../icons/modal/icon_mail'
 import { Password } from '../icons/modal/icon_password'
@@ -16,17 +10,14 @@ import { helperColor, TModalProps } from './type-modal-window'
 import { useTranslation } from 'next-i18next'
 import {
   useSignInMutation,
-  useSignUpMutation,
+  useSignUpMutation
 } from '../../features/auth/authApi'
 
 import { useAppDispatch } from '../../features/hooks'
-import { setUser } from '../../features/auth/userSlice'
-import { validateEmail, validatePassword } from './validation'
 import { User } from '../icons/modal/icon_user'
+import { validateEmail, validatePassword } from './validation'
 
 const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
-  const dispatch = useAppDispatch()
-
   const { t } = useTranslation('modal-window')
 
   const { value: nameValue, bindings: nameBindings } = useInput('')
@@ -84,12 +75,10 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
   // Handlers
   const handleSignIn = async () => {
     try {
-      const userData = await login({
+      await login({
         login: emailValue,
         password: passwordValue,
-      }).unwrap()
-
-      dispatch(setUser(userData))
+      })
 
       hide()
     } catch (error) {
@@ -115,12 +104,10 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
 
   const handleSignInDemo = async () => {
     try {
-      const userData = await login({
+      await login({
         login: 'TestUser',
         password: 'TestUserPwd',
-      }).unwrap()
-
-      dispatch(setUser(userData))
+      })
 
       hide()
     } catch (error) {

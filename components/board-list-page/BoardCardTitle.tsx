@@ -1,6 +1,6 @@
 import { Container, Input, Text, Tooltip, useInput } from '@nextui-org/react';
-import SaveButton from './SaveButton';
-import EditButton from './EditButton';
+import SaveButton from '../Buttons/SaveButton';
+import EditButton from '../Buttons/EditButton';
 import { FC, useState } from 'react';
 
 import { useTranslation } from 'next-i18next';
