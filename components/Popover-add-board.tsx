@@ -50,7 +50,7 @@ const PopoverAddBoard = (props: {
           placeholder={t('boardName')}
           width='100%'
           css={{ margin: '15px 0 0' }}
-          aria-labelledby="board's name"
+          aria-labelledby="board's title"
         />
       </Row>
       <Row>
