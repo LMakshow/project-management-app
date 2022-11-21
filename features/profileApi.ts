@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { SERVER } from '../utils/constants'
 import { UserEdit, UserEditResponse } from '../utils/interfaces'
 import { RootState } from './store'

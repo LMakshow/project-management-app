@@ -23,6 +23,7 @@ import { useAppDispatch, useAppSelector } from '../../features/hooks'
 import { setUser } from '../../features/auth/userSlice'
 import { validateEmail, validatePassword } from './validation'
 import { User } from '../icons/modal/icon_user'
+import { useEditProfileMutation } from '../../features/profileApi'
 
 const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
   const dispatch = useAppDispatch()
@@ -31,6 +32,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
   const userLogin = useAppSelector((state) => state.user.login) as string
   const userPassword = useAppSelector((state) => state.user.password) as string
   const userid = useAppSelector((state) => state.user._id) as string
+  const usertoken = useAppSelector((state) => state.user.token) as string
 
   const { t } = useTranslation('modal-window')
 
@@ -40,6 +42,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
 
   const [login, { isLoading }] = useSignInMutation()
   const [signUp] = useSignUpMutation()
+  const [editProfile] = useEditProfileMutation()
 
   const [isError, setIsError] = useState(false)
 
@@ -132,12 +135,12 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
         password: passwordValue || userPassword,
       }
 
-      // await editUser({
-      //   _id: userid,
-      //   ...editedData,
-      // })
+      await editProfile({
+        _id: userid,
+        ...editedData,
+      })
 
-      // dispatch(setUser({ ...userData, password: passwordValue }))
+      dispatch(setUser({ ...editedData, token: usertoken, _id: userid }))
 
       hide()
     } catch (error) {
