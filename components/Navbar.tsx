@@ -1,5 +1,13 @@
 import { useTheme as useNextTheme } from 'next-themes'
-import { Button, Popover, Switch, Text, useTheme } from '@nextui-org/react'
+import {
+  Avatar,
+  Button,
+  Popover,
+  Spacer,
+  Switch,
+  Text,
+  useTheme,
+} from '@nextui-org/react'
 import { Navbar, Link } from '@nextui-org/react'
 import NextLink from 'next/link'
 import LangSwitcher from '../utils/LangSwitcher'
@@ -24,6 +32,7 @@ import { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import PopoverAddBoard from './Popover-add-board'
 import { IconExit } from './icons/icon_exit'
+import { current } from '@reduxjs/toolkit'
 
 export default function Header() {
   const { setTheme } = useNextTheme()
@@ -115,7 +124,10 @@ export default function Header() {
           </Navbar.Content>
         ) : null}
         <Navbar.Content
-          css={{ '@sm': { marginLeft: 'auto', marginRight: '$12' } }}
+          css={{
+            '@sm': { marginLeft: 'auto', marginRight: '$12' },
+            '@smMax': { gap: '$3' },
+          }}
           hideIn='xs'>
           <Switch
             checked={isDark}
@@ -128,34 +140,27 @@ export default function Header() {
         <Navbar.Content hideIn='xs'>
           {isSigned ? (
             <>
+              <NextLink legacyBehavior passHref href='/profile'>
+                <Link>
+                  <Avatar
+                    text={userName as string}
+                    css={{ cursor: 'pointer' }}
+                  />
+                  <Spacer x={0.5} css={{ '@mdMax': { display: 'none' } }} />
+                  <Text size='large' css={{ '@mdMax': { display: 'none' } }}>
+                    {userName}
+                  </Text>
+                </Link>
+              </NextLink>
               <Button
                 auto
                 flat
-                size={'sm'}
+                rounded
+                color='primary'
                 icon={<IconExit fill='currentColor' />}
                 onClick={signOutAction}>
-                <Text>{`${t('Sign Out')}`}</Text>
+                {/* <Text>{`${t('Sign Out')}`}</Text> */}
               </Button>
-
-              <NextLink passHref legacyBehavior href='/profile'>
-                <Link>
-                  <Text
-                    size='$2xl'
-                    css={{
-                      width: '40px',
-                      height: '40px',
-                      marginRight: '5px',
-                      border: '1px solid #000',
-                      borderRadius: '100%',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    {userName!.slice(0, 2)}
-                  </Text>
-                  <Text size='large'>{userName}</Text>
-                </Link>
-              </NextLink>
             </>
           ) : (
             <>
@@ -210,37 +215,30 @@ export default function Header() {
                   </Popover.Content>
                 </Popover>
               </Navbar.CollapseItem>
+
+              <Spacer y={1} />
+              
+              <Navbar.CollapseItem>
+                <NextLink legacyBehavior passHref href='/profile'>
+                  <Link>
+                    <Avatar
+                      text={userName as string}
+                      css={{ cursor: 'pointer' }}
+                    />
+                    <Spacer x={0.5} />
+                    <Text size='large'>{userName}</Text>
+                  </Link>
+                </NextLink>
+              </Navbar.CollapseItem>
               <Navbar.CollapseItem>
                 <Button
                   auto
                   flat
-                  size={'sm'}
+                  rounded
                   icon={<IconExit fill='currentColor' />}
                   onClick={signOutAction}>
                   <Text>{`${t('Sign Out')}`}</Text>
                 </Button>
-              </Navbar.CollapseItem>
-
-              <Navbar.CollapseItem>
-                <NextLink passHref legacyBehavior href='/profile'>
-                  <Link>
-                    <Text
-                      size='$2xl'
-                      css={{
-                        width: '45px',
-                        height: '45px',
-                        marginRight: '5px',
-                        border: '1px solid #000',
-                        borderRadius: '100%',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}>
-                      {userName!.slice(0, 2)}
-                    </Text>
-                    <Text size='large'>{userName}</Text>
-                  </Link>
-                </NextLink>
               </Navbar.CollapseItem>
             </>
           ) : (
@@ -271,6 +269,7 @@ export default function Header() {
               </Navbar.CollapseItem>
             </>
           )}
+          <Spacer y={1} />
           <Navbar.CollapseItem>
             <LangSwitcher />
             <Switch
