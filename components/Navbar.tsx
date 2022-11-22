@@ -1,5 +1,5 @@
 import { useTheme as useNextTheme } from 'next-themes'
-import { Button, Popover, Row, Switch, Text, useTheme } from '@nextui-org/react'
+import { Button, Popover, Switch, Text, useTheme } from '@nextui-org/react'
 import { Navbar, Link } from '@nextui-org/react'
 import NextLink from 'next/link'
 import LangSwitcher from '../utils/LangSwitcher'
@@ -23,6 +23,7 @@ import ModalWindow from './Modal-window/Modal-window'
 import { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import PopoverAddBoard from './Popover-add-board'
+import { IconExit } from './icons/icon_exit'
 
 export default function Header() {
   const { setTheme } = useNextTheme()
@@ -127,10 +128,14 @@ export default function Header() {
         <Navbar.Content hideIn='xs'>
           {isSigned ? (
             <>
-              <Link color='inherit' href='#' onClick={signOutAction}>
-                <Text>{t('Sign Out')}&nbsp;</Text>
-                <Text as='span' hideIn='sm'>{`(${userName})`}</Text>
-              </Link>
+              <Button
+                auto
+                flat
+                size={'sm'}
+                icon={<IconExit fill='currentColor' />}
+                onClick={signOutAction}>
+                <Text>{`${t('Sign Out')}`}</Text>
+              </Button>
 
               <NextLink passHref legacyBehavior href='/profile'>
                 <Link>
@@ -206,13 +211,14 @@ export default function Header() {
                 </Popover>
               </Navbar.CollapseItem>
               <Navbar.CollapseItem>
-                <Link
-                  color='error'
-                  css={{ paddingLeft: '$12' }}
-                  href='#'
+                <Button
+                  auto
+                  flat
+                  size={'sm'}
+                  icon={<IconExit fill='currentColor' />}
                   onClick={signOutAction}>
-                  {`${t('Sign Out')} (${userName})`}
-                </Link>
+                  <Text>{`${t('Sign Out')}`}</Text>
+                </Button>
               </Navbar.CollapseItem>
 
               <Navbar.CollapseItem>
