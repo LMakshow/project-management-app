@@ -31,35 +31,52 @@ const ProfileContent = () => {
           flexDirection: 'column',
           alignItems: 'center',
         }}>
-        <ul className={styles.list}>
+        <ul
+          className={styles.list}
+          style={{
+            border: `${isDark ? '1px solid #F1F3F5' : '#none'}`,
+          }}>
           <li>
             <Button
               animated={false}
               auto
               light
               icon={<EditIcon />}
-              css={{ position: 'absolute', top: '-30px', right: '-50px' }}
+              css={{
+                position: 'absolute',
+                top: '-50px',
+                right: '-50px',
+                '@xsMax': {
+                  right: '0',
+                },
+              }}
               onClick={toggleModal}
             />
           </li>
 
           <li
             className={styles.list__item}
-            style={{ color: `${theme?.colors?.primary?.value}` }}>
+            style={{
+              color: `${isDark ? theme?.colors?.primary?.value : '#000'}`,
+            }}>
             <span className={styles.list__prop}>{t('name')}</span>
             <span className={styles.list__value}>{userName}</span>
           </li>
 
           <li
             className={styles.list__item}
-            style={{ color: `${theme?.colors?.primary?.value}` }}>
+            style={{
+              color: `${isDark ? theme?.colors?.primary?.value : '#000'}`,
+            }}>
             <span className={styles.list__prop}>{t('email')}</span>
             <span className={styles.list__value}>{userLogin}</span>
           </li>
 
           <li
             className={styles.list__item}
-            style={{ color: `${theme?.colors?.primary?.value}` }}>
+            style={{
+              color: `${isDark ? theme?.colors?.primary?.value : '#000'}`,
+            }}>
             <span className={styles.list__prop}>{t('password')}</span>
             <span className={styles.list__value}>
               {''.padStart(userPassword?.length!, '*')}
