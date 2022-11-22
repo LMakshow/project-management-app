@@ -82,11 +82,6 @@ const BoardCard: FC<BoardResponse> = (board) => {
             text: 'Popover delete board',
           }}
         />
-        <Avatar
-          squared
-          src='https://i.pravatar.cc/150?u=a042581f4e29026024d'
-          size='lg'
-        />
       </Card.Footer>
     </Card>
   )
