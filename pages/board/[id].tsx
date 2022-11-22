@@ -12,7 +12,7 @@ import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import BoardDescription from '../../components/BoardTasks/BoardDescription'
 import BoardTitle from '../../components/BoardTasks/BoardTitle'
 import Column from '../../components/BoardTasks/Column'
@@ -26,9 +26,14 @@ import {
   useDeleteBoardMutation,
   useGetColumnsQuery,
   useGetSingleBoardQuery,
-  useGetTasksQuery
+  useGetTasksQuery,
+  useChangeColumnOrderMutation
 } from '../../features/boards/boardsApi'
 import { useAppSelector } from '../../features/hooks'
+
+import { Reorder } from "framer-motion"
+import { ColumnOrderRequest, ColumnResponse } from '../../utils/interfaces';
+import { color } from 'style-value-types';
 
 export const getServerSideProps = async ({
   locale,
@@ -50,6 +55,7 @@ export default function Board() {
   const boardId = String(router.query.id)
   const [login, { isSuccess: isSigned }] = useSignInMutation()
   const [deleteBoard] = useDeleteBoardMutation()
+  const [changeOrder] = useChangeColumnOrderMutation()
 
   // //autologin for testing purposes
   // useEffect(() => {
@@ -78,6 +84,20 @@ export default function Board() {
   const handleDeleteElement = async () => {
     await deleteBoard(boardId)
   }
+
+  const handleChangeOrder = async (array: ColumnOrderRequest[]) => {
+    await changeOrder(array.map((column) => ({_id: column._id, order: column.order})));
+  }
+
+  console.log(columnsList?.map((column) => ({_id: column._id, order: column.order})));
+
+  const [columns, setColumns] = useState<ColumnResponse[]>([])
+
+  console.log(columnsList);
+
+  useEffect(() => {
+    handleChangeOrder(columns.map((column, index) => ({_id: column._id, order: index})));
+  }, [columns])
 
   return (
     <Layout>
@@ -154,7 +174,7 @@ export default function Board() {
         </Row>
 
         <Spacer y={1} />
-
+        <Reorder.Group axis='x' onReorder={setColumns} values={columnsList ? columnsList : []} as='div'>
         <Grid.Container
           justify='flex-start'
           gap={1}
@@ -168,17 +188,20 @@ export default function Board() {
             w: 'auto',
           }}>
           {columnsList &&
-            columnsList.map((column) => (
+            [...columnsList].sort((a, b) => a.order - b.order).map((column) => (
               <Grid key={column._id} sm={3} css={{ display: 'inherit' }}>
+                <Reorder.Item value={column} key={column._id}>
                 <Column
                   tasks={tasksList?.filter(
                     (task) => task.columnId === column._id
                   )}
                   column={column}
                 />
+                </Reorder.Item>
               </Grid>
             ))}
         </Grid.Container>
+        </Reorder.Group>
       </Container>
     </Layout>
   )
