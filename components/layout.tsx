@@ -33,12 +33,7 @@ export default function Layout({
         <link rel='icon' href='/favicon.svg' />
       </Head>
       <Navbar />
-      <main>{children}</main>
-      {!home && (
-        <div className={styles.backToHome}>
-          <Link href='/'>← Back to home</Link>
-        </div>
-      )}
+      <main style={{ minHeight: 'calc(100vh - 150px)' }}>{children}</main>
       <Footer />
     </div>
   )

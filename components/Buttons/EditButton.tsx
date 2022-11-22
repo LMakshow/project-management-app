@@ -7,6 +7,7 @@ const EditButton:FC<{onClick: () => void}> = ({ onClick: onClick }) => {
   return <Button
     auto
     light
+    aria-label='edit'
     css={{
       pl: '10px',
       pr: '10px',

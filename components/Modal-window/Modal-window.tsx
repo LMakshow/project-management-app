@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
 import {
-  Modal,
-  Input,
   Button,
-  Text,
-  useInput,
+  Input,
+  Modal,
   Spacer,
+  Text,
   Tooltip,
+  useInput,
 } from '@nextui-org/react'
+import React, { useState } from 'react'
 
 import { Mail } from '../icons/modal/icon_mail'
 import { Password } from '../icons/modal/icon_password'
@@ -20,10 +20,10 @@ import {
 } from '../../features/auth/authApi'
 
 import { useAppDispatch, useAppSelector } from '../../features/hooks'
-import { setUser } from '../../features/auth/userSlice'
-import { validateEmail, validatePassword } from './validation'
 import { User } from '../icons/modal/icon_user'
+import { validateEmail, validatePassword } from './validation'
 import { useEditProfileMutation } from '../../features/profileApi'
+import { setUser } from '../../features/auth/userSlice'
 
 const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
   const dispatch = useAppDispatch()
