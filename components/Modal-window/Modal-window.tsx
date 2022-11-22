@@ -1,5 +1,11 @@
 import {
-  Button, Input, Modal, Spacer, Text, Tooltip, useInput
+  Button,
+  Input,
+  Modal,
+  Spacer,
+  Text,
+  Tooltip,
+  useInput,
 } from '@nextui-org/react'
 import React, { useState } from 'react'
 
@@ -10,49 +16,53 @@ import { helperColor, TModalProps } from './type-modal-window'
 import { useTranslation } from 'next-i18next'
 import {
   useSignInMutation,
-  useSignUpMutation
+  useSignUpMutation,
 } from '../../features/auth/authApi'
 
-import { useAppDispatch } from '../../features/hooks'
+import { useAppDispatch, useAppSelector } from '../../features/hooks'
 import { User } from '../icons/modal/icon_user'
 import { validateEmail, validatePassword } from './validation'
+import { useEditProfileMutation } from '../../features/profileApi'
+import { setUser } from '../../features/auth/userSlice'
 
 const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
+  const dispatch = useAppDispatch()
+
+  const userName = useAppSelector((state) => state.user.name) as string
+  const userLogin = useAppSelector((state) => state.user.login) as string
+  const userPassword = useAppSelector((state) => state.user.password) as string
+  const userid = useAppSelector((state) => state.user._id) as string
+  const usertoken = useAppSelector((state) => state.user.token) as string
+
   const { t } = useTranslation('modal-window')
 
   const { value: nameValue, bindings: nameBindings } = useInput('')
-  const {
-    value: emailValue,
-    setValue: setEmail,
-    bindings: emailBindings,
-  } = useInput('')
-  const {
-    value: passwordValue,
-    setValue: setPwd,
-    bindings: passwordBindings,
-  } = useInput('')
+  const { value: loginValue, bindings: emailBindings } = useInput('')
+  const { value: passwordValue, bindings: passwordBindings } = useInput('')
 
   const [login, { isLoading }] = useSignInMutation()
   const [signUp] = useSignUpMutation()
+  const [editProfile] = useEditProfileMutation()
 
   const [isError, setIsError] = useState(false)
+  const [isExist, setIsExist] = useState(false)
 
   const emailHelper = React.useMemo((): {
     text: string
     color: helperColor
   } => {
-    if (!emailValue)
+    if (!loginValue)
       return {
         text: '',
         color: 'success',
       }
 
-    const isValid = validateEmail(emailValue)
+    const isValid = validateEmail(loginValue)
     return {
       text: isValid ? '' : `${t('unvalid-email')}`,
       color: isValid ? 'primary' : 'error',
     }
-  }, [emailValue, t])
+  }, [loginValue, t])
 
   const passwordHelper = React.useMemo((): {
     text: string
@@ -75,10 +85,11 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
   // Handlers
   const handleSignIn = async () => {
     try {
-      await login({
-        login: emailValue,
+      const userData = await login({
+        login: loginValue,
         password: passwordValue,
-      })
+      }).unwrap()
+      dispatch(setUser({ ...userData, password: passwordValue }))
 
       hide()
     } catch (error) {
@@ -88,13 +99,28 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
 
   const handleSignUp = async () => {
     try {
-      await signUp({
-        login: emailValue,
+      const response = await signUp({
+        login: loginValue,
         name: nameValue,
         password: passwordValue,
-      })
+      }).unwrap()
 
       await handleSignIn()
+
+      hide()
+    } catch (error) {
+      setIsExist(true)
+    }
+  }
+
+  const handleSignInDemo = async () => {
+    try {
+      const userData = await login({
+        login: 'TestUser',
+        password: 'TestUserPwd',
+      }).unwrap()
+
+      dispatch(setUser({ ...userData, password: 'TestUserPwd' }))
 
       hide()
     } catch (error) {
@@ -102,12 +128,20 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
     }
   }
 
-  const handleSignInDemo = async () => {
+  const handleEdit = async () => {
     try {
-      await login({
-        login: 'TestUser',
-        password: 'TestUserPwd',
+      const editedData = {
+        name: nameValue || userName,
+        login: loginValue || userLogin,
+        password: passwordValue || userPassword,
+      }
+
+      await editProfile({
+        _id: userid,
+        ...editedData,
       })
+
+      dispatch(setUser({ ...editedData, token: usertoken, _id: userid }))
 
       hide()
     } catch (error) {
@@ -126,7 +160,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
         <Modal.Header>
           <Text id='modal-title' size={18}>
             {
-              // t('signIn')  t('signUp')
+              // t('signIn')  t('signUp') t('edit')
               t(action)
             }
             <Text b size={18}>
@@ -137,7 +171,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
         </Modal.Header>
 
         <Modal.Body css={{ gap: '10px', overflow: 'visible' }}>
-          {action === 'signUp' && (
+          {(action === 'signUp' || action === 'edit') && (
             <Input
               {...nameBindings}
               aria-labelledby='modal-name'
@@ -178,13 +212,16 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
             contentLeft={<Password fill='currentColor' />}
           />
           {isError && <span style={{ color: 'red' }}> {t('error')}</span>}
+          {isExist && <span style={{ color: 'red' }}> {t('exist')}</span>}
         </Modal.Body>
 
         <Modal.Footer>
           <Tooltip content={t('demo-tooltip')} css={{ zIndex: 9999 }}>
-            <Button auto flat onClick={handleSignInDemo}>
-              {t('Demo')}
-            </Button>
+            {action !== 'edit' && (
+              <Button auto flat onClick={handleSignInDemo}>
+                {t('Demo')}
+              </Button>
+            )}
           </Tooltip>
           <Spacer css={{ fg: 1 }} />
           <Button auto flat color='error' onClick={hide}>
@@ -196,25 +233,29 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
               type='submit'
               onClick={handleSignIn}
               disabled={
-                validateEmail(emailValue) && validatePassword(passwordValue)
+                validateEmail(loginValue) && validatePassword(passwordValue)
                   ? false
                   : true
               }>
               {t('btnSignIn')}
             </Button>
-          ) : (
+          ) : action === 'signUp' ? (
             <Button
               auto
               type='submit'
               onClick={handleSignUp}
               disabled={
-                validateEmail(emailValue) &&
+                validateEmail(loginValue) &&
                 validatePassword(passwordValue) &&
                 nameValue
                   ? false
                   : true
               }>
               {t('btnSignUp')}
+            </Button>
+          ) : (
+            <Button auto type='submit' onClick={handleEdit}>
+              {t('btnEdit')}
             </Button>
           )}
         </Modal.Footer>

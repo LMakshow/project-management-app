@@ -3,13 +3,16 @@
   "unvalid-password": "Enter a valid password",
   "signIn": "Welcome to",
   "signUp": "Join",
+  "edit": "Edit profile at",
   "Name": "Name",
   "Email": "Email",
   "Password": "Password",
   "error": "Incorrect value",
+  "exist": "This profile alredy exist",
   "demo-tooltip": "Sign in as TestUser to check the app",
   "Demo": "Demo",
   "Close": "Close",
   "btnSignIn": "Sign In",
-  "btnSignUp": "Sign Up"
+  "btnSignUp": "Sign Up",
+  "btnEdit": "Edit"
 }

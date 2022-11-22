@@ -1,32 +1,34 @@
 import { Container } from '@nextui-org/react'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import Head from 'next/head'
-import Benefits from '../components/Benefits/Benefits'
-import Hero from '../components/Hero/Hero'
 import Layout, { siteTitle } from '../components/layout'
-import Team from '../components/Team/Team'
+import ProfileContent from '../components/profile/profile-content'
+import Head from 'next/head'
 
 export const getStaticProps = async ({ locale }: { locale: 'en' | 'ru' }) => ({
   props: {
     ...(await serverSideTranslations(locale ?? 'en', [
       'common',
-      'home-page',
       'modal-window',
+      'profile',
     ])),
   },
 })
-
-export default function Home() {
+const Profile = () => {
   return (
-    <Layout home>
+    <Layout>
       <Head>
         <title>{siteTitle}</title>
       </Head>
-      <Container>
-        <Hero />
-        <Benefits />
-        <Team />
+      <Container
+        css={{
+          padding: '100px',
+          display: 'flex',
+          flexWrap: 'initial',
+        }}>
+        <ProfileContent />
       </Container>
     </Layout>
   )
 }
+
+export default Profile
