@@ -3,6 +3,7 @@ import { Button, Popover, Switch, Text, useTheme } from '@nextui-org/react'
 import { Navbar, Link } from '@nextui-org/react'
 import NextLink from 'next/link'
 import LangSwitcher from '../utils/LangSwitcher'
+import { useEffect, useState } from 'react'
 
 // Import images
 import logo_small from '../assets/logo/logo_small.svg'
@@ -11,6 +12,7 @@ import { IconSun } from './icons/icon_sun'
 import { IconMoon } from './icons/icon_moon'
 import { IconKanban } from './icons/icon_kanban'
 import { IconKanbanAdd } from './icons/icon_kanban_add'
+import { IconExit } from './icons/icon_exit'
 
 // Import redux
 import { useAppDispatch, useAppSelector, useModal } from '../features/hooks'
@@ -20,10 +22,10 @@ import { useTranslation } from 'next-i18next'
 import { setUser } from '../features/auth/userSlice'
 
 import ModalWindow from './Modal-window/Modal-window'
-import { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import PopoverAddBoard from './Popover-add-board'
-import { IconExit } from './icons/icon_exit'
+
+import { useRouter } from 'next/router'
 
 export default function Header() {
   const { setTheme } = useNextTheme()
@@ -39,6 +41,8 @@ export default function Header() {
 
   const [isCreateBoardOpen, setIsCreateBoardOpen] = useState(false)
   const [isCreateBoardSmOpen, setIsCreateBoardSmOpen] = useState(false)
+
+  const router = useRouter()
 
   const listenScrollEvent = () => {
     if (window.scrollY < 70) {
@@ -64,6 +68,7 @@ export default function Header() {
         password: null,
       })
     )
+    router.push('/')
   }
 
   return (
