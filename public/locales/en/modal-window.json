@@ -8,6 +8,7 @@
   "Email": "Email",
   "Password": "Password",
   "error": "Incorrect value",
+  "exist": "This profile alredy exist",
   "demo-tooltip": "Sign in as TestUser to check the app",
   "Demo": "Demo",
   "Close": "Close",

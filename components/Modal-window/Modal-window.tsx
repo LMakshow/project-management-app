@@ -45,6 +45,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
   const [editProfile] = useEditProfileMutation()
 
   const [isError, setIsError] = useState(false)
+  const [isExist, setIsExist] = useState(false)
 
   const emailHelper = React.useMemo((): {
     text: string
@@ -98,17 +99,17 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
 
   const handleSignUp = async () => {
     try {
-      await signUp({
+      const response = await signUp({
         login: loginValue,
         name: nameValue,
         password: passwordValue,
-      })
+      }).unwrap()
 
       await handleSignIn()
 
       hide()
     } catch (error) {
-      setIsError(true)
+      setIsExist(true)
     }
   }
 
@@ -211,6 +212,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
             contentLeft={<Password fill='currentColor' />}
           />
           {isError && <span style={{ color: 'red' }}> {t('error')}</span>}
+          {isExist && <span style={{ color: 'red' }}> {t('exist')}</span>}
         </Modal.Body>
 
         <Modal.Footer>
