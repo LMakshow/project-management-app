@@ -119,7 +119,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
         password: 'TestUserPwd',
       }).unwrap()
 
-      dispatch(setUser({ ...userData, password: passwordValue }))
+      dispatch(setUser({ ...userData, password: 'TestUserPwd' }))
 
       hide()
     } catch (error) {

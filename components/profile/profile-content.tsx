@@ -20,27 +20,14 @@ const ProfileContent = () => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
 
   const { t } = useTranslation('profile')
-
+  console.log(userPassword, 'pass')
   return (
     <>
-      <Col>
-        <div
-          style={{
-            width: '300px',
-            height: '300px',
-            backgroundColor: '#C5DBF4',
-            borderRadius: '5px',
-          }}>
-          userPhoto
-        </div>
-      </Col>
-
       <Col
         css={{
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'flex-start',
-          justifyContent: 'space-around',
+          alignItems: 'center',
         }}>
         <ul className={styles.list}>
           <li>
@@ -76,7 +63,12 @@ const ProfileContent = () => {
           isOpen={isPopoverOpen}
           onOpenChange={setIsPopoverOpen}>
           <Popover.Trigger>
-            <Button color='error' auto>
+            <Button
+              color='error'
+              auto
+              css={{
+                margin: '0 auto',
+              }}>
               {t('delete')}
             </Button>
           </Popover.Trigger>
