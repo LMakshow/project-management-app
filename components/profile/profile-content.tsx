@@ -1,4 +1,4 @@
-import { Button, Col, Popover, Text } from '@nextui-org/react'
+import { Button, Col, Popover, useTheme } from '@nextui-org/react'
 import { useAppSelector, useModal } from '../../features/hooks'
 import styles from './profile-content.module.scss'
 
@@ -11,6 +11,8 @@ import { DeleteUser } from './Delete-user-confirm'
 import { useState } from 'react'
 
 const ProfileContent = () => {
+  const { isDark, theme } = useTheme()
+
   const userName = useAppSelector((state) => state.user.name)
   const userLogin = useAppSelector((state) => state.user.login)
   const userPassword = useAppSelector((state) => state.user.password)
@@ -33,7 +35,7 @@ const ProfileContent = () => {
           <li>
             <Button
               animated={false}
-              size='xs'
+              auto
               light
               icon={<EditIcon />}
               css={{ position: 'absolute', top: '-30px', right: '-50px' }}
@@ -41,17 +43,23 @@ const ProfileContent = () => {
             />
           </li>
 
-          <li className={styles.list__item}>
+          <li
+            className={styles.list__item}
+            style={{ color: `${theme?.colors?.primary?.value}` }}>
             <span className={styles.list__prop}>{t('name')}</span>
             <span className={styles.list__value}>{userName}</span>
           </li>
 
-          <li className={styles.list__item}>
+          <li
+            className={styles.list__item}
+            style={{ color: `${theme?.colors?.primary?.value}` }}>
             <span className={styles.list__prop}>{t('email')}</span>
             <span className={styles.list__value}>{userLogin}</span>
           </li>
 
-          <li className={styles.list__item}>
+          <li
+            className={styles.list__item}
+            style={{ color: `${theme?.colors?.primary?.value}` }}>
             <span className={styles.list__prop}>{t('password')}</span>
             <span className={styles.list__value}>
               {''.padStart(userPassword?.length!, '*')}
