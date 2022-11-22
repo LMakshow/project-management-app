@@ -22,7 +22,6 @@ const ProfileContent = () => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
 
   const { t } = useTranslation('profile')
-  console.log(userPassword, 'pass')
   return (
     <>
       <Col
