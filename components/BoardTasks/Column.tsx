@@ -1,4 +1,4 @@
-import { Button, Card, Popover, Text } from '@nextui-org/react'
+import { Button, Card, Popover } from '@nextui-org/react'
 import { useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import { ColumnResponse, TaskResponse } from '../../utils/interfaces'
@@ -21,7 +21,7 @@ const Column = (props: {
   return (
     <Card
       isHoverable
-      variant='flat'
+      variant="flat"
       css={{
         minWidth: '200px',
         mw: '300px',
@@ -33,7 +33,7 @@ const Column = (props: {
         <ColumnTitle {...props} />
       </Card.Header>
 
-      <Card.Divider />
+      <Card.Divider/>
 
       <Card.Body css={{ py: '$6', px: '0', pr: '5px', gap: '$2' }}>
         {props.tasks &&
@@ -46,9 +46,9 @@ const Column = (props: {
           onOpenChange={setIsCreateTaskOpen}>
           <Popover.Trigger>
             <Button
-              color='primary'
+              color="primary"
               flat
-              icon={<IconPlus fill='currentColor' />}
+              icon={<IconPlus fill="currentColor"/>}
               css={{ flexShrink: '0', width: '100%' }}>
               {t('Add New Task')}
             </Button>

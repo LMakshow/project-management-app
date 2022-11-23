@@ -4,10 +4,10 @@ import SaveButton from '../Buttons/SaveButton'
 import CancelButton from '../Buttons/CancelButton'
 
 /**
- * Input field to edit some text. Creates line with cancel and confirm buttons.
+ * Textarea to edit some text. Creates line with cancel and confirm buttons.
  * 
- * @param props.editValue - default value for input
- * @param props.fullWidth - pass true if you need input to have 100% width
+ * @param props.editValue - default value for textarea
+ * @param props.fullWidth - pass true if you need textarea to have 100% width
  * @param props.onClick - function after cancel edit
  * @param props.onConfirmEdit - function after confirming edit
  */
@@ -31,6 +31,16 @@ export default function TextareaEdit(props: {
 
   return (
     <Grid.Container>
+      <Row>
+        <Textarea
+          aria-label='Edit'
+          {...bindings}
+          initialValue={props.editValue}
+          size='lg'
+          fullWidth={props.fullWidth}
+          color='primary'
+        />
+      </Row>
       <Row css={{justifyContent: 'end'}}>
         <Tooltip content={t('Cancel')} css={{ zIndex: 9999 }}>
           <CancelButton onClick={props.onClick} />
@@ -39,18 +49,6 @@ export default function TextareaEdit(props: {
           <SaveButton onClick={updateValue} />
         </Tooltip>
       </Row>
-      <Row>
-        <Textarea
-          aria-label='Edit'
-          {...bindings}
-          underlined
-          initialValue={props.editValue}
-          size='lg'
-          fullWidth={props.fullWidth}
-          color='primary'
-        />
-      </Row>
-
     </Grid.Container>
   )
 }

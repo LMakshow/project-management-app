@@ -1,16 +1,13 @@
 import {
-  Avatar,
-  Button,
   Card,
-  Input,
   Modal,
   Spacer,
-  Text, Textarea, Tooltip,
+  Text, Tooltip,
 } from '@nextui-org/react'
 import { useState } from 'react'
 
 import { useTranslation } from 'next-i18next'
-import { BoardResponse, CreateTaskRequest, TaskResponse } from '../../utils/interfaces'
+import { CreateTaskRequest, TaskResponse } from '../../utils/interfaces'
 import PopoverDeleteElement from '../PopoverDeleteElement'
 import { useDeleteTaskMutation, useUpdateTaskMutation } from '../../features/boards/boardsApi'
 import InputEdit from '../Utilities/InputEdit';
@@ -44,7 +41,6 @@ const ColumnTask = (props: TaskResponse) => {
   }
 
 
-
   const handleUpdateTask = async (value: Partial<CreateTaskRequest>) => {
     await updateTask({
       ...{
@@ -64,7 +60,7 @@ const ColumnTask = (props: TaskResponse) => {
 
   return (
     <>
-      <Card variant="bordered" isHoverable css={{ flexShrink: '0' }}>
+      <Card variant="bordered" isHoverable css={{ flexShrink: '0', cursor: 'pointer' }}>
         <div onClick={openModal}>
           <Card.Header css={{ p: '$3' }}>
             <Text
@@ -104,7 +100,7 @@ const ColumnTask = (props: TaskResponse) => {
               id="modal-title"
               b
               size="$2xl"
-              css={{cursor: 'pointer'}}>
+              css={{ cursor: 'pointer' }}>
               {props.title}
             </Text>
           </Tooltip>)
@@ -118,7 +114,8 @@ const ColumnTask = (props: TaskResponse) => {
             onConfirmEdit={(description) => handleUpdateTask({ description: description })}
           />) : (
             <Tooltip content={t('Edit description')} css={{ zIndex: 9999 }}>
-            <Text onClick={() => setIsEditDescription(!isEditDescription)} css={{cursor: 'pointer'}}>{addNewLine(props.description)}</Text>
+              <Text onClick={() => setIsEditDescription(!isEditDescription)}
+                    css={{ cursor: 'pointer' }}>{addNewLine(props.description)}</Text>
             </Tooltip>
           )}
 

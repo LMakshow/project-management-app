@@ -1,11 +1,8 @@
-import { Container, Input, Text, Tooltip, useInput } from '@nextui-org/react';
-import SaveButton from '../Buttons/SaveButton';
-import EditButton from '../Buttons/EditButton';
-import { FC, useEffect, useReducer, useState } from 'react';
+import { Container, Text, Tooltip } from '@nextui-org/react';
+import { FC } from 'react';
 
 import { useTranslation } from 'next-i18next';
-import { useCreateBoardMutation, useUpdateBoardMutation } from '../../features/boards/boardsApi';
-import { BoardResponse, BoardTitleProps } from '../../utils/interfaces';
+import { BoardTitleProps } from '../../utils/interfaces';
 import InputEdit from '../Utilities/InputEdit';
 
 const BoardCardTitle: FC<BoardTitleProps> = (props) => {

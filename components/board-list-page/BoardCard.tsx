@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, Link } from '@nextui-org/react'
+import { Button, Card } from '@nextui-org/react'
 import { BoardResponse } from '../../utils/interfaces'
 import { FC, useState } from 'react'
 
@@ -69,7 +69,7 @@ const BoardCard: FC<BoardResponse> = (board) => {
         },
         '@lg': {
           mw: '424px',
-        }
+        },
       }}>
       <Card.Header>
         <BoardCardTitle
@@ -81,7 +81,8 @@ const BoardCard: FC<BoardResponse> = (board) => {
       </Card.Header>
       <Card.Body
         css={{
-            pt: 0}}>
+          pt: 0,
+        }}>
         <BoardCardDescription
           setIsEdit={setIsEditDescriptionProps}
           isEdit={isEditDescription}
@@ -95,12 +96,12 @@ const BoardCard: FC<BoardResponse> = (board) => {
           alignItems: 'center',
           justifyContent: 'space-between',
         }}>
-          <Button onClick={() => {
-            router.push(`/board/${board._id}`);
-            closeEditInputs();
-          }} color='primary' flat>
-            {t('Open Board')}
-          </Button>
+        <Button onClick={() => {
+          router.push(`/board/${board._id}`);
+          closeEditInputs();
+        }} color="primary" flat>
+          {t('Open Board')}
+        </Button>
         <PopoverDeleteElement
           actionTrigger={closeEditInputs}
           action={handleDeleteElement}
@@ -113,4 +114,4 @@ const BoardCard: FC<BoardResponse> = (board) => {
   )
 }
 
-export default BoardCard
+export default BoardCard;

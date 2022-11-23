@@ -1,7 +1,5 @@
-import { Card, Container, Text, Tooltip } from '@nextui-org/react';
-import SaveButton from '../Buttons/SaveButton';
-import EditButton from '../Buttons/EditButton';
-import { FC, useEffect, useState } from 'react';
+import { Container, Text, Tooltip } from '@nextui-org/react';
+import { FC } from 'react';
 
 import { useTranslation } from 'next-i18next';
 import { BoardDescriptionProps } from '../../utils/interfaces';
@@ -45,7 +43,6 @@ const BoardCardDescription: FC<BoardDescriptionProps> = (props) => {
             css={{
               p: 0,
               cursor: 'pointer',
-              width: '100%',
             }}>
             <Text css={{
               h: '148px',
