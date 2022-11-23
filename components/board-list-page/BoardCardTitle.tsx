@@ -1,7 +1,7 @@
 import { Container, Input, Text, Tooltip, useInput } from '@nextui-org/react';
 import SaveButton from '../Buttons/SaveButton';
 import EditButton from '../Buttons/EditButton';
-import { FC, useState } from 'react';
+import { FC, useEffect, useReducer, useState } from 'react';
 
 import { useTranslation } from 'next-i18next';
 import { useCreateBoardMutation, useUpdateBoardMutation } from '../../features/boards/boardsApi';
@@ -10,14 +10,13 @@ import InputEdit from '../Utilities/InputEdit';
 
 const BoardCardTitle: FC<BoardTitleProps> = (props) => {
   const { t } = useTranslation('common');
-  const [isEdit, setIsEdit] = useState(false);
 
   const handleClick = () => {
-    setIsEdit(!isEdit);
+    props.setIsEdit(!props.isEdit);
   }
 
   const updateBoardTitle = (title: string) => {
-      props.handleUpdateBoard({ title: title })
+    props.handleUpdateBoard({ title: title })
   }
 
   return (
@@ -29,7 +28,7 @@ const BoardCardTitle: FC<BoardTitleProps> = (props) => {
       flexWrap: 'nowrap',
       p: 0,
     }}>
-      {isEdit
+      {props.isEdit
         ? <InputEdit
           fullWidth
           editValue={props.title}
@@ -38,8 +37,17 @@ const BoardCardTitle: FC<BoardTitleProps> = (props) => {
         />
         : <Tooltip content={t('Edit title')} css={{ zIndex: 10 }}>
           <Text
+            b
             size="$2xl"
             onClick={handleClick}
+            css={{
+              cursor: 'pointer',
+              br: '5px',
+              px: '10px',
+              '&:hover': {
+                background: '$primaryLight',
+              },
+            }}
           >
             {props.title}
           </Text>

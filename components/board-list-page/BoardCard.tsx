@@ -1,6 +1,6 @@
 import { Avatar, Button, Card, Link } from '@nextui-org/react'
 import { BoardResponse } from '../../utils/interfaces'
-import { FC } from 'react'
+import { FC, useState } from 'react'
 
 import { useTranslation } from 'next-i18next'
 import BoardCardTitle from './BoardCardTitle'
@@ -18,6 +18,22 @@ const BoardCard: FC<BoardResponse> = (board) => {
   const [updateBoard] = useUpdateBoardMutation()
   const [deleteBoard] = useDeleteBoardMutation()
 
+  const [isEditTitle, setIsEditTitle] = useState(false);
+  const [isEditDescription, setIsEditDescription] = useState(false);
+
+  const setIsEditTitleProps = (value: boolean) => {
+    setIsEditTitle(value);
+  }
+
+  const setIsEditDescriptionProps = (value: boolean) => {
+    setIsEditDescription(value);
+  }
+
+  const closeEditInputs = () => {
+    setIsEditTitle(false);
+    setIsEditDescription(false);
+  }
+
   const handleUpdateBoard = async (value: Partial<BoardResponse>) => {
     await updateBoard({
       ...{
@@ -32,7 +48,7 @@ const BoardCard: FC<BoardResponse> = (board) => {
   }
 
   const handleDeleteElement = async () => {
-    await deleteBoard(board._id)
+    await deleteBoard(board._id);
   }
 
   return (
@@ -57,12 +73,18 @@ const BoardCard: FC<BoardResponse> = (board) => {
       }}>
       <Card.Header>
         <BoardCardTitle
+          setIsEdit={setIsEditTitleProps}
+          isEdit={isEditTitle}
           title={board.title}
           handleUpdateBoard={handleUpdateBoard}
         />
       </Card.Header>
-      <Card.Body>
+      <Card.Body
+        css={{
+            pt: 0}}>
         <BoardCardDescription
+          setIsEdit={setIsEditDescriptionProps}
+          isEdit={isEditDescription}
           description={board.description}
           handleUpdateBoard={handleUpdateBoard}
         />
@@ -73,10 +95,14 @@ const BoardCard: FC<BoardResponse> = (board) => {
           alignItems: 'center',
           justifyContent: 'space-between',
         }}>
-          <Button onClick={() => router.push(`/board/${board._id}`)} color='primary' flat>
+          <Button onClick={() => {
+            router.push(`/board/${board._id}`);
+            closeEditInputs();
+          }} color='primary' flat>
             {t('Open Board')}
           </Button>
         <PopoverDeleteElement
+          actionTrigger={closeEditInputs}
           action={handleDeleteElement}
           localeKeys={{
             text: 'Popover delete board',

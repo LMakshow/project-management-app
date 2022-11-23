@@ -70,6 +70,7 @@ const ColumnTitle = (props: {
                 px: '10px',
                 '&:hover': {
                   background: '$primaryLight',
+                  cursor: 'pointer'
                 },
               }}
               onClick={handleClick}>
