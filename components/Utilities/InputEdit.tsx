@@ -41,10 +41,10 @@ export default function InputEdit(props: {
         fullWidth={props.fullWidth}
         color='primary'
       />
-      <Tooltip content={t('Cancel')}>
+      <Tooltip content={t('Cancel')} css={{ zIndex: 9999 }}>
         <CancelButton onClick={props.onClick} />
       </Tooltip>
-      <Tooltip content={t('Save')}>
+      <Tooltip content={t('Save')} css={{ zIndex: 9999 }}>
         <SaveButton onClick={updateValue} />
       </Tooltip>
     </>

@@ -29,7 +29,7 @@ const Column = (props: {
         pl: '10px',
         overflowY: 'auto',
       }}>
-      <Card.Header css={{ p: '$4' }}>
+      <Card.Header css={{ p: '$4', minHeight: '60px' }}>
         <ColumnTitle {...props} />
       </Card.Header>
 

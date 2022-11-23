@@ -26,10 +26,12 @@ const BoardCardTitle: FC<BoardTitleProps> = (props) => {
       alignItems: 'center',
       justifyContent: 'space-between',
       minHeight: '76px',
+      flexWrap: 'nowrap',
       p: 0,
     }}>
       {isEdit
         ? <InputEdit
+          fullWidth
           editValue={props.title}
           onClick={handleClick}
           onConfirmEdit={updateBoardTitle}
