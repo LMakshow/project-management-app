@@ -47,6 +47,9 @@ export interface BoardResponse {
 }
 
 export interface UserEditResponse extends UserSignUpResponse {}
+export interface UserEdit extends UserSignUp {
+  _id: string
+}
 
 // Columns
 export interface CreateColumnRequest {
