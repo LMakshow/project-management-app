@@ -41,7 +41,7 @@ const ColumnTitle = (props: {
         boardId: props.column.boardId,
         columnId: props.column._id,
         taskId: task._id,
-      }).unwrap()
+      }).unwrap(),
     )
     if (deleteAllTasksPromises) await Promise.all(deleteAllTasksPromises)
     await deleteColumn({
@@ -64,19 +64,20 @@ const ColumnTitle = (props: {
           <Tooltip content={t('Edit title')} css={{ zIndex: 10 }}>
             <Text
               b
-              size='$lg'
+              size="$lg"
               css={{
                 br: '5px',
                 px: '10px',
                 '&:hover': {
                   background: '$primaryLight',
+                  cursor: 'pointer',
                 },
               }}
               onClick={handleClick}>
               {props.column.title}
             </Text>
           </Tooltip>
-          <Spacer css={{ mr: 'auto' }} />
+          <Spacer css={{ mr: 'auto' }}/>
           <PopoverDeleteElement
             localeKeys={{
               // t('Are you sure you want to delete the column and all accociated tasks?')
