@@ -20,8 +20,6 @@
   "createBoard": "Создать доску",
   "boardDiscript": "Описание доски",
   "Popover delete board": "Вы уверены, что хотите удалить доску?",
-  "Close": "Закрыть",
-  "Create": "Создать",
   "boardName": "Наименование доски",
   "Delete board": "Удалить доску",
   "Are you sure you want to delete this task?": "Вы уверены, что хотите удалить эту задачу?",
@@ -30,5 +28,6 @@
   "Save": "Сохранить",
   "Back": "Назад",
   "Add New Column": "Добавить колонку",
-  "Boards of": "Доски {{user}}"
+  "Boards of": "Доски {{user}}",
+  "Search": "Поиск"
 }

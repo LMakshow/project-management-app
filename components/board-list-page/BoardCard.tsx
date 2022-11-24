@@ -53,7 +53,7 @@ const BoardCard: FC<BoardResponse> = (board) => {
         },
         '@lg': {
           mw: '424px',
-        }
+        },
       }}>
       <Card.Header>
         <BoardCardTitle
@@ -73,9 +73,12 @@ const BoardCard: FC<BoardResponse> = (board) => {
           alignItems: 'center',
           justifyContent: 'space-between',
         }}>
-          <Button onClick={() => router.push(`/board/${board._id}`)} color='primary' flat>
-            {t('Open Board')}
-          </Button>
+        <Button
+          onClick={() => router.push(`/board/${board._id}`)}
+          color='primary'
+          flat>
+          {t('Open Board')}
+        </Button>
         <PopoverDeleteElement
           action={handleDeleteElement}
           localeKeys={{

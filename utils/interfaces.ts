@@ -92,6 +92,7 @@ export interface TaskResponse {
   description: string
   userId: string
   users: string[]
+  [Symbol.iterator](): IterableIterator<TaskRequest>
 }
 
 export interface CreateTaskRequest {
