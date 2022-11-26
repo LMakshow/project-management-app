@@ -18,14 +18,14 @@ import {
 import { useAppSelector } from '../features/hooks'
 import BoardCard from '../components/board-list-page/BoardCard'
 import Head from 'next/head'
-import { t } from 'i18next'
 import { useTranslation } from 'next-i18next'
 import { IconKanbanAdd } from '../components/icons/icon_kanban_add'
 import PopoverAddBoard from '../components/Popover-add-board'
 import { useEffect, useState } from 'react'
 import Search from '../components/Search'
 import { BoardResponse, TaskResponse } from '../utils/interfaces'
-import useDebounce from '../features/useDebounce'
+import { useDebounce } from '../features/hooks'
+import { IconSearch } from '../components/icons/boardCard/icon_search'
 
 export const getStaticProps = async ({ locale }: { locale: 'en' | 'ru' }) => ({
   props: {
@@ -60,7 +60,6 @@ export default function Boards() {
 
       const doSearch = async () => {
         const boards = await searchTask(debouncedSearchTerm).unwrap()
-
         const boardIds = new Set()
 
         for (const board of boards) {
@@ -68,9 +67,7 @@ export default function Boards() {
         }
 
         const boardIdsString = Array.from(boardIds).join(',')
-
         const filteredBoards = await getBoardsSet(boardIdsString).unwrap()
-
         setFilteredBoards(filteredBoards)
       }
       doSearch()
