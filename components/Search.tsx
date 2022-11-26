@@ -10,17 +10,15 @@ const Search = (props: {
   const { filterText, setSearchTerm } = props
 
   return (
-    <>
-      <Input
-        clearable
-        bordered
-        labelPlaceholder={t('Search')}
-        value={filterText}
-        contentLeft={<IconSearch fill='currentColor' />}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <Spacer x={0.5} />
-    </>
+    <Input
+      clearable
+      bordered
+      width={'300px'}
+      labelPlaceholder={t('Search')}
+      value={filterText}
+      contentLeft={<IconSearch fill='currentColor' />}
+      onChange={(e) => setSearchTerm(e.target.value)}
+    />
   )
 }
 
