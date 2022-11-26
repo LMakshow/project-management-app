@@ -16,11 +16,13 @@ import { IconDelete } from './icons/boardCard/icon_delete'
  * @param props.localeKeys.text - Popover confirmation text
  * @param props.btnColor - One of the main NextUI colors, "default" | "primary" | "secondary" | "success" | "warning" | "error" | "gradient";
  * @param props.action - Action when the user confirms the deletion
+ * @param props.actionTrigger - Action when the user push the popover.trigger (button)
  */
 const PopoverDeleteElement = (props: {
   localeKeys: { text: string }
   btnColor?: NormalColors
   action: MouseEventHandler<HTMLButtonElement> | undefined
+  actionTrigger?: MouseEventHandler<HTMLButtonElement> | undefined
 }) => {
   const { t } = useTranslation('common')
   const [isOpen, setIsOpen] = useState(false)
@@ -32,6 +34,7 @@ const PopoverDeleteElement = (props: {
     <Popover isOpen={isOpen} onOpenChange={setIsOpen}>
       <Popover.Trigger>
         <Button
+          onClick={props.actionTrigger}
           color={props.btnColor || 'error'}
           auto
           flat

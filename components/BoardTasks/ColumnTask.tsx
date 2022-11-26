@@ -1,25 +1,36 @@
 import {
-  Avatar,
-  Button,
   Card,
-  Input,
   Modal,
   Spacer,
-  Text,
+  Text, Tooltip,
 } from '@nextui-org/react'
 import { useState } from 'react'
 
 import { useTranslation } from 'next-i18next'
-import { TaskResponse } from '../../utils/interfaces'
+import { CreateTaskRequest, TaskResponse } from '../../utils/interfaces'
 import PopoverDeleteElement from '../PopoverDeleteElement'
-import { useDeleteTaskMutation } from '../../features/boards/boardsApi'
+import { useDeleteTaskMutation, useUpdateTaskMutation } from '../../features/boards/boardsApi'
+import InputEdit from '../Utilities/InputEdit';
+import TextareaEdit from '../Utilities/TextareaEdit'
+import { addNewLine } from '../../utils/helpers';
 
 const ColumnTask = (props: TaskResponse) => {
   const { t } = useTranslation('common')
   const [modalVisible, setModalVisible] = useState(false)
+  const [isEditTitle, setIsEditTitle] = useState(false);
+  const [isEditDescription, setIsEditDescription] = useState(false);
+
+  const closeEditInputs = () => {
+    setIsEditTitle(false);
+    setIsEditDescription(false);
+  }
   const openModal = () => setModalVisible(true)
-  const closeModal = () => setModalVisible(false)
+  const closeModal = () => {
+    setModalVisible(false);
+    closeEditInputs();
+  }
   const [deleteTask] = useDeleteTaskMutation()
+  const [updateTask] = useUpdateTaskMutation()
 
   const handleDeleteTask = async () => {
     await deleteTask({
@@ -29,14 +40,32 @@ const ColumnTask = (props: TaskResponse) => {
     })
   }
 
+
+  const handleUpdateTask = async (value: Partial<CreateTaskRequest>) => {
+    await updateTask({
+      ...{
+        boardId: props.boardId,
+        columnId: props.columnId,
+        newColumnId: props.columnId,
+        taskId: props._id,
+        title: props.title,
+        order: props.order,
+        description: props.description,
+        userId: props.userId,
+        users: props.users,
+      },
+      ...value,
+    })
+  }
+
   return (
     <>
-      <Card variant='bordered' isHoverable css={{ flexShrink: '0' }}>
+      <Card variant="bordered" isHoverable css={{ flexShrink: '0', cursor: 'pointer' }}>
         <div onClick={openModal}>
           <Card.Header css={{ p: '$3' }}>
             <Text
               b
-              size='$lg'
+              size="$lg"
               css={{
                 br: '5px',
                 px: '10px',
@@ -47,7 +76,7 @@ const ColumnTask = (props: TaskResponse) => {
           {props.description && (
             <Card.Body css={{ pt: '$2', pb: '$6', px: '$8' }}>
               <Text css={{ lh: '1.3rem', mh: '43px', overflow: 'hidden' }}>
-                {props.description}
+                {addNewLine(props.description)}
               </Text>
             </Card.Body>
           )}
@@ -55,28 +84,49 @@ const ColumnTask = (props: TaskResponse) => {
       </Card>
       <Modal
         closeButton
-        aria-labelledby='modal-task'
+        aria-labelledby="modal-task"
         open={modalVisible}
         onClose={closeModal}>
-        <Modal.Header>
-          <Text id='modal-title' b size='$2xl'>
-            {props.title}
-          </Text>
+        <Modal.Header css={{ minHeight: '68px' }}>
+          {isEditTitle ? (
+            <InputEdit
+              fullWidth
+              editValue={props.title}
+              onClick={() => setIsEditTitle(!isEditTitle)}
+              onConfirmEdit={(title) => handleUpdateTask({ title: title })}
+            />) : (<Tooltip content={t('Edit title')} css={{ zIndex: 9999 }}>
+            <Text
+              onClick={() => setIsEditTitle(!isEditTitle)}
+              id="modal-title"
+              b
+              size="$2xl"
+              css={{ cursor: 'pointer' }}>
+              {props.title}
+            </Text>
+          </Tooltip>)
+          }
         </Modal.Header>
-        <Modal.Body>
-          <Text>{props.description}</Text>
+        <Modal.Body css={{ minHeight: '160px' }}>
+          {isEditDescription ? (<TextareaEdit
+            fullWidth
+            editValue={props.description}
+            onClick={() => setIsEditDescription(!isEditDescription)}
+            onConfirmEdit={(description) => handleUpdateTask({ description: description })}
+          />) : (
+            <Tooltip content={t('Edit description')} css={{ zIndex: 9999 }}>
+              <Text onClick={() => setIsEditDescription(!isEditDescription)}
+                    css={{ cursor: 'pointer' }}>{addNewLine(props.description)}</Text>
+            </Tooltip>
+          )}
+
         </Modal.Body>
         <Modal.Footer>
-          <Avatar
-            squared
-            src='https://i.pravatar.cc/150?u=a042581f4e29026024d'
-            size='lg'
-          />
-          <Spacer css={{ mr: 'auto' }} />
+          <Spacer css={{ mr: 'auto' }}/>
           <PopoverDeleteElement
             localeKeys={{
               text: 'Are you sure you want to delete this task?',
             }}
+            actionTrigger={closeEditInputs}
             action={handleDeleteTask}
           />
         </Modal.Footer>

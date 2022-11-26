@@ -115,11 +115,15 @@ export interface TaskOrderRequest {
 
 // Mutations
 export interface BoardTitleProps {
+  setIsEdit: (value: boolean) => void
+  isEdit: boolean
   title: string
   handleUpdateBoard: (value: Partial<BoardResponse>) => void
 }
 
 export interface BoardDescriptionProps {
+  setIsEdit: (value: boolean) => void
+  isEdit: boolean
   description: string
   handleUpdateBoard: (value: Partial<BoardResponse>) => void
 }

@@ -1,73 +1,59 @@
-import { Container, Input, Text, Textarea, Tooltip, useInput } from '@nextui-org/react';
-import SaveButton from '../Buttons/SaveButton';
-import EditButton from '../Buttons/EditButton';
-import { FC, useState } from 'react';
+import { Container, Text, Tooltip } from '@nextui-org/react';
+import { FC } from 'react';
 
 import { useTranslation } from 'next-i18next';
 import { BoardDescriptionProps } from '../../utils/interfaces';
+import TextareaEdit from '../Utilities/TextareaEdit';
+import { addNewLine } from '../../utils/helpers';
 
 const BoardCardDescription: FC<BoardDescriptionProps> = (props) => {
   const { t } = useTranslation('common');
-  const [isEdit, setIsEdit] = useState(false);
-  const { value: descriptionValue, bindings: descriptionBindings } = useInput('');
 
   const handleClick = () => {
-    setIsEdit(!isEdit);
+    props.setIsEdit(!props.isEdit);
   }
 
-  const updateBoardDescription = () => {
-    handleClick();
-
-    if (descriptionValue.trim()) {
-      props.handleUpdateBoard({title: descriptionValue.trim() })
-    }
+  const updateBoardDescription = (description: string) => {
+    props.handleUpdateBoard({ description: description })
   }
 
   return (
     <Container css={{
       display: 'flex',
       fw: 'nowrap',
-      alignItems: 'flex-start',
-      justifyContent: 'space-between',
-      gap: '10px',
-      h: '150px',
+      alignItems: 'center',
+      justifyContent: 'start',
+      h: '157px',
       p: 0,
     }}>
-      {isEdit
-        ? <>
-          <Textarea
-            {...descriptionBindings}
-            bordered
-            width='306px'
-            status="primary"
-            value={props.description}
-            css={{
-              display: 'flex',
-              justifyContent: 'flex-start',
-            }}
-          />
-
-          <Tooltip
-            content={t('Save new description')}
-            css={{ zIndex: 10 }}>
-            <SaveButton onClick={updateBoardDescription}/>
-          </Tooltip></>
-        : <>
-          <Container css={{
-            p: 0
-          }}>
-            <Text css={{
-              h: '148px',
-              overflow: 'auto'
-            }}
-              size="xl">
-              {props.description}</Text>
-          </Container>
-          <Tooltip
+      {props.isEdit
+        ?
+        <TextareaEdit
+          fullWidth
+          editValue={props.description}
+          onClick={handleClick}
+          onConfirmEdit={updateBoardDescription}
+        />
+        :
+        <Tooltip
           content={t('Edit description')}
           css={{ zIndex: 10 }}>
-          <EditButton onClick={handleClick}/>
-        </Tooltip> </>}
+          <Container
+            onClick={handleClick}
+            css={{
+              p: 0,
+              cursor: 'pointer',
+            }}>
+            <Text css={{
+              h: '148px',
+              overflow: 'auto',
+              display: 'block',
+              width: '100%',
+            }}
+                  size="xl">
+              {addNewLine(props.description)}</Text>
+          </Container>
+        </Tooltip>}
     </Container>)
 }
 
