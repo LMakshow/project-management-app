@@ -49,37 +49,42 @@ export default function Boards() {
 
   const [filterText, setFilterText] = useState('')
   const [searchSpinner, setSearchSpinner] = useState(false)
-  const [filteredBoards, setFilteredBoards] = useState<BoardResponse[]>([])
+  const [filteredBoards, setFilteredBoards] = useState<{
+    boards?: BoardResponse[]
+    tasks?: TaskResponse[]
+  }>({})
 
   const [searchTerm, setSearchTerm] = useState('')
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500)
+  console.log(debouncedSearchTerm)
 
   const onSearchChange = (value: string) => {
     setSearchSpinner(true)
     setSearchTerm(value)
-  } 
+  }
 
   useEffect(() => {
     if (debouncedSearchTerm) {
-      setFilterText(debouncedSearchTerm)
-
       const doSearch = async () => {
-        const boards = await searchTask(debouncedSearchTerm).unwrap()
+        const searchResult = await searchTask(debouncedSearchTerm).unwrap()
+
+        // Extracting unique boardIds from the search results
         const boardIds = new Set()
-
-        for (const board of boards) {
-          boardIds.add(board.boardId)
+        for (const task of searchResult) {
+          boardIds.add(task.boardId)
         }
-
         const boardIdsString = Array.from(boardIds).join(',')
-        const filteredBoards = await getBoardsSet(boardIdsString).unwrap()
-        setFilteredBoards(filteredBoards)
+        const boards = await getBoardsSet(boardIdsString).unwrap()
+
+        setFilterText(debouncedSearchTerm)
+        setFilteredBoards({ boards, tasks: searchResult })
         setSearchSpinner(false)
       }
       doSearch()
     } else {
-      setFilteredBoards(boardList!)
+      setFilterText('')
+      setFilteredBoards({})
       setSearchSpinner(false)
     }
   }, [boardList, debouncedSearchTerm, getBoardsSet, searchTask])
@@ -102,7 +107,11 @@ export default function Boards() {
             <>
               <Text h2>{t('Boards of', { user: userName })}</Text>
               <Spacer x={1} css={{ mr: 'auto' }} />
-              <Search filterText={filterText} setSearchTerm={onSearchChange} searchSpinner={searchSpinner} />
+              <Search
+                filterText={filterText}
+                setSearchTerm={onSearchChange}
+                searchSpinner={searchSpinner}
+              />
               <Spacer x={2} />
               <Popover
                 isBordered
@@ -132,27 +141,21 @@ export default function Boards() {
         </Row>
         {boardList &&
           !filterText &&
-          boardList.map((board) => (
-            <BoardCard
-              key={board._id}
-              description={board.description}
-              title={board.title}
-              owner={board.owner}
-              users={board.users}
-              _id={board._id}
-            />
+          boardList.map((board) => <BoardCard key={board._id} board={board} />)}
+        {filterText &&
+          (filteredBoards.boards ? (
+            filteredBoards.boards.map((board) => (
+              <BoardCard
+                key={board._id}
+                board={board}
+                tasks={filteredBoards?.tasks?.filter(
+                  (task) => task.boardId === board._id
+                )}
+              />
+            ))
+          ) : (
+            <Text size='$xl'>{t('No boards')}</Text>
           ))}
-        {filterText && (filteredBoards.length > 0 ?
-          filteredBoards.map((board) => (
-            <BoardCard
-              key={board._id}
-              description={board.description}
-              title={board.title}
-              owner={board.owner}
-              users={board.users}
-              _id={board._id}
-            />
-          )) : <Text size="$xl">{t('No boards')}</Text>)}
       </Container>
     </Layout>
   )

@@ -155,7 +155,7 @@ export const boardsApi = createApi({
       }),
       invalidatesTags: ['TaskList'],
     }),
-    searchTask: builder.mutation<TaskResponse, string>({
+    searchTask: builder.mutation<TaskResponse[], string>({
       query: (filterText) => ({
         url: `/tasksSet?search=${filterText}`,
         method: 'GET',
