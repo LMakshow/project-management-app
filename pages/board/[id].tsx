@@ -205,7 +205,7 @@ export default function Board() {
 
         <Spacer y={1}/>
         <DragDropContext onDragEnd={handleOnDragEnd}>
-          <Droppable droppableId="columns">
+          <Droppable droppableId="columns" direction='horizontal'>
             {(provided) => (
               <Grid.Container
                 justify='flex-start'
