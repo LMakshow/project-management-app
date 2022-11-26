@@ -100,7 +100,7 @@ export default function Boards() {
           gap: '32px',
           padding: '32px',
           justifyContent: 'flex-start',
-          alignItems: 'center',
+          alignItems: 'flex-start',
         }}>
         <Row wrap='wrap' css={{ display: 'flex', alignItems: 'center' }}>
           {boardList ? (

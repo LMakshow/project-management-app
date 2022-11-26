@@ -23,7 +23,6 @@ const BoardCardDescription: FC<BoardDescriptionProps> = (props) => {
       fw: 'nowrap',
       alignItems: 'center',
       justifyContent: 'start',
-      h: '157px',
       p: 0,
     }}>
       {props.isEdit
@@ -45,7 +44,7 @@ const BoardCardDescription: FC<BoardDescriptionProps> = (props) => {
               cursor: 'pointer',
             }}>
             <Text css={{
-              h: '148px',
+              h: '60px',
               overflow: 'auto',
               display: 'block',
               width: '100%',
