@@ -48,12 +48,17 @@ export default function Boards() {
   const [getBoardsSet] = useGetBoardsSetMutation()
 
   const [filterText, setFilterText] = useState('')
+  const [searchSpinner, setSearchSpinner] = useState(false)
   const [filteredBoards, setFilteredBoards] = useState<BoardResponse[]>([])
-  console.log(filteredBoards);
 
   const [searchTerm, setSearchTerm] = useState('')
 
-  const debouncedSearchTerm = useDebounce(searchTerm, 800)
+  const debouncedSearchTerm = useDebounce(searchTerm, 500)
+
+  const onSearchChange = (value: string) => {
+    setSearchSpinner(true)
+    setSearchTerm(value)
+  } 
 
   useEffect(() => {
     if (debouncedSearchTerm) {
@@ -70,10 +75,12 @@ export default function Boards() {
         const boardIdsString = Array.from(boardIds).join(',')
         const filteredBoards = await getBoardsSet(boardIdsString).unwrap()
         setFilteredBoards(filteredBoards)
+        setSearchSpinner(false)
       }
       doSearch()
     } else {
       setFilteredBoards(boardList!)
+      setSearchSpinner(false)
     }
   }, [boardList, debouncedSearchTerm, getBoardsSet, searchTask])
 
@@ -95,7 +102,7 @@ export default function Boards() {
             <>
               <Text h2>{t('Boards of', { user: userName })}</Text>
               <Spacer x={1} css={{ mr: 'auto' }} />
-              <Search filterText={filterText} setSearchTerm={setSearchTerm} />
+              <Search filterText={filterText} setSearchTerm={onSearchChange} searchSpinner={searchSpinner} />
               <Spacer x={2} />
               <Popover
                 isBordered

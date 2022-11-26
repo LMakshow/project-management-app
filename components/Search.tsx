@@ -1,22 +1,24 @@
-import { Input, Spacer } from '@nextui-org/react'
+import { Input, Loading, Spacer } from '@nextui-org/react'
 import { useTranslation } from 'next-i18next'
 import { IconSearch } from './icons/boardCard/icon_search'
 
 const Search = (props: {
   filterText: string
+  searchSpinner: boolean
   setSearchTerm: (value: string) => void
 }) => {
   const { t } = useTranslation('common')
-  const { filterText, setSearchTerm } = props
+  const { filterText, searchSpinner, setSearchTerm } = props
 
   return (
     <Input
       clearable
       bordered
       width={'300px'}
+      color="primary"
       labelPlaceholder={t('Search')}
       value={filterText}
-      contentLeft={<IconSearch fill='currentColor' />}
+      contentLeft={searchSpinner ? <Loading size="xs" /> : <IconSearch fill='currentColor' />}
       onChange={(e) => setSearchTerm(e.target.value)}
     />
   )
