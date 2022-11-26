@@ -29,5 +29,6 @@
   "Back": "Back",
   "Add New Column": "Add New Column",
   "Boards of": "Boards of {{user}}",
-  "Search": "Search"
+  "Search": "Search",
+  "No boards": "No boards matching your search request. Please try to change the query."
 }

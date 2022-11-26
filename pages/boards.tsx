@@ -49,6 +49,7 @@ export default function Boards() {
 
   const [filterText, setFilterText] = useState('')
   const [filteredBoards, setFilteredBoards] = useState<BoardResponse[]>([])
+  console.log(filteredBoards);
 
   const [searchTerm, setSearchTerm] = useState('')
 
@@ -134,7 +135,7 @@ export default function Boards() {
               _id={board._id}
             />
           ))}
-        {filterText &&
+        {filterText && (filteredBoards.length > 0 ?
           filteredBoards.map((board) => (
             <BoardCard
               key={board._id}
@@ -144,7 +145,7 @@ export default function Boards() {
               users={board.users}
               _id={board._id}
             />
-          ))}
+          )) : <Text size="$xl">{t('No boards')}</Text>)}
       </Container>
     </Layout>
   )
