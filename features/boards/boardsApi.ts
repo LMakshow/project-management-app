@@ -169,6 +169,7 @@ export const {
   useCreateColumnMutation,
   useUpdateColumnMutation,
   useDeleteColumnMutation,
+  useChangeColumnOrderMutation,
 
   useGetTasksQuery,
   useCreateTaskMutation,
