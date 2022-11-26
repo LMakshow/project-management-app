@@ -27,13 +27,17 @@ import {
   useGetColumnsQuery,
   useGetSingleBoardQuery,
   useGetTasksQuery,
+  useChangeColumnOrderMutation,
 } from '../../features/boards/boardsApi'
 import { useAppSelector } from '../../features/hooks'
 import { CustomError } from '../../utils/interfaces'
 
+import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
+import { ColumnOrderRequest, ColumnResponse } from '../../utils/interfaces';
+
 export const getServerSideProps = async ({
-  locale,
-}: {
+                                           locale,
+                                         }: {
   locale: 'en' | 'ru'
 }) => ({
   props: {
@@ -51,6 +55,7 @@ export default function Board() {
   const boardId = String(router.query.id)
   const [login, { isSuccess: isSigned }] = useSignInMutation()
   const [deleteBoard] = useDeleteBoardMutation()
+  const [changeOrder] = useChangeColumnOrderMutation()
 
   // //autologin for testing purposes
   // useEffect(() => {
@@ -62,6 +67,7 @@ export default function Board() {
   //   }
   //   fetch()
   // }, [login])
+  const [columns, setColumns] = useState<ColumnResponse[]>([]);
 
   const [isCreateColumnOpen, setIsCreateColumnOpen] = useState(false)
   const userId = useAppSelector((state) => state.user._id) as string
@@ -73,12 +79,18 @@ export default function Board() {
     isSuccess: isColumnFetched,
   } = useGetColumnsQuery(userId ? boardId : skipToken)
   const { data: boardData } = useGetSingleBoardQuery(
-    userId ? boardId : skipToken
+    userId ? boardId : skipToken,
   )
   const { data: tasksList } = useGetTasksQuery(userId ? boardId : skipToken)
-  const nextColumnOrder = columnsList
-    ? columnsList?.reduce((a, b) => Math.max(a, b.order), 1)
+  const nextColumnOrder = columnsList?.length
+    ? 1 + columnsList?.reduce((a, b) => Math.max(a, b.order), 0)
     : 0
+
+  useEffect(() => {
+    const array: ColumnResponse[] = columnsList ? [...columnsList].sort((a, b) => a.order - b.order) : [];
+
+    setColumns(array);
+  }, [columnsList]);
 
   useEffect(() => {
     if (!usertoken) router.push('/')
@@ -86,6 +98,44 @@ export default function Board() {
 
   const handleDeleteElement = async () => {
     await deleteBoard(boardId)
+  }
+
+  console.log(columnsList);
+
+  const handleOnDragEnd = async (result: DropResult) => {
+    console.log(result)
+    if (!result.destination) {
+      return;
+    }
+
+    const items: ColumnResponse[] = columns.reduce((array: ColumnResponse[], item: ColumnResponse) => {
+      if (item._id === result.draggableId) {
+        array.push({...item, order: columns[result?.destination?.index || 0].order});
+        return array;
+      }
+
+      array.push({...item, order: (item.order >= columns[result?.destination?.index || 0].order) ? item.order + 1 : item.order})
+      return array;
+    }, [])
+
+    const element = items.findIndex((item) => item._id === result.draggableId);
+
+    //if (!result.destination || !columns || !element) return;
+    const itemsSort: ColumnResponse[] = items.sort((a, b) => a.order - b.order);
+    console.log(itemsSort);
+
+    // items.splice(result.source.index, 1);
+    // items.splice(result.destination.index, 0, element);
+    // const array: ColumnResponse[] = items.map((item, index) => ({...item, order: index}));
+    //
+    const arrayRequest: ColumnOrderRequest[] = itemsSort.map((column) => ({_id: column._id, order: column.order}));
+    // items[element] = { ...items[element], order: result.destination.index };
+    //
+    // console.log(columnsList);
+    // //console.log(items.splice(result.destination.index, 0, element));
+    // //console.log(array)
+    setColumns(itemsSort);
+    await changeOrder(arrayRequest);
   }
 
   return (
@@ -100,12 +150,12 @@ export default function Board() {
           py: '$8',
           alignItems: 'center',
         }}>
-        <Row align='flex-end' wrap='wrap'>
+        <Row align="flex-end" wrap="wrap">
           {boardData ? (
             <>
-              <BoardTitle boardData={boardData} />
-              <Spacer x={1} />
-              <BoardDescription boardData={boardData} />
+              <BoardTitle boardData={boardData}/>
+              <Spacer x={1}/>
+              <BoardDescription boardData={boardData}/>
             </>
           ) : error ? (
             <Loading size='lg' color='error'>
@@ -166,32 +216,51 @@ export default function Board() {
           </div>
         </Row>
 
-        <Spacer y={1} />
-
-        <Grid.Container
-          justify='flex-start'
-          gap={1}
-          wrap='nowrap'
-          css={{
-            overflowX: 'auto',
-            maxHeight: 'calc(-175px + 100vh)',
-            oy: 'visible',
-            m: '-50px',
-            p: '40px',
-            w: 'auto',
-          }}>
-          {columnsList &&
-            columnsList.map((column) => (
-              <Grid key={column._id} sm={3} css={{ display: 'inherit' }}>
-                <Column
-                  tasks={tasksList?.filter(
-                    (task) => task.columnId === column._id
-                  )}
-                  column={column}
-                />
-              </Grid>
-            ))}
-        </Grid.Container>
+        <Spacer y={1}/>
+        <DragDropContext onDragEnd={handleOnDragEnd}>
+          <Droppable droppableId="columns">
+            {(provided) => (
+              <Grid.Container
+                justify='flex-start'
+                gap={1}
+                wrap='nowrap'
+                css={{
+                  overflowX: 'auto',
+                  maxHeight: 'calc(-175px + 100vh)',
+                  oy: 'visible',
+                  m: '-50px',
+                  p: '40px',
+                  w: 'auto',
+                }}
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+              >
+                {columns &&
+                  columns.map((column, index) => (
+                    <Draggable key={column._id} draggableId={column._id} index={index}>
+                      {(provided) => (
+                        <Grid
+                          sm={3}
+                          css={{ display: 'inherit' }}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          ref={provided.innerRef}
+                        >
+                          <Column
+                            tasks={tasksList?.filter(
+                              (task) => task.columnId === column._id,
+                            )}
+                            column={column}
+                          />
+                        </Grid>
+                      )}
+                    </Draggable>
+                  ))}
+                {provided.placeholder}
+              </Grid.Container>
+            )}
+          </Droppable>
+        </DragDropContext>
       </Container>
     </Layout>
   )
