@@ -87,17 +87,13 @@ export default function Board() {
 
   const handleChangeOrder = async (array: ColumnOrderRequest[]) => {
     await changeOrder(array.map((column) => ({_id: column._id, order: column.order})));
-  }
 
-  console.log(columnsList?.map((column) => ({_id: column._id, order: column.order})));
+    console.log(columnsList);
+    console.log(columnsList?.map((column) => ({_id: column._id, order: column.order})));
+  }
 
   const [columns, setColumns] = useState<ColumnResponse[]>([])
 
-  console.log(columnsList);
-
-  useEffect(() => {
-    handleChangeOrder(columns.map((column, index) => ({_id: column._id, order: index})));
-  }, [columns])
 
   return (
     <Layout>
@@ -174,7 +170,12 @@ export default function Board() {
         </Row>
 
         <Spacer y={1} />
-        <Reorder.Group axis='x' onReorder={setColumns} values={columnsList ? columnsList : []} as='div'>
+        <Reorder.Group
+          axis='x'
+          onReorder={setColumns}
+          values={columnsList ? columnsList : []}
+          as='div'
+          onMouseUp={() => {handleChangeOrder(columns.map((column, index) => ({_id: column._id, order: index})))}}>
         <Grid.Container
           justify='flex-start'
           gap={1}
