@@ -27,13 +27,18 @@ import {
   useGetColumnsQuery,
   useGetSingleBoardQuery,
   useGetTasksQuery,
-  useChangeColumnOrderMutation,
+  useChangeColumnOrderMutation, useChangeTaskOrderMutation,
 } from '../../features/boards/boardsApi'
 import { useAppSelector } from '../../features/hooks'
 import { CustomError } from '../../utils/interfaces'
 
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
-import { ColumnOrderRequest, ColumnResponse } from '../../utils/interfaces';
+import {
+  ColumnOrderRequest,
+  ColumnResponse,
+  TaskOrderRequest,
+  TaskResponse,
+} from '../../utils/interfaces';
 
 export const getServerSideProps = async ({
                                            locale,
@@ -55,7 +60,8 @@ export default function Board() {
   const boardId = String(router.query.id)
   const [login, { isSuccess: isSigned }] = useSignInMutation()
   const [deleteBoard] = useDeleteBoardMutation()
-  const [changeOrder] = useChangeColumnOrderMutation()
+  const [changeColumnOrder] = useChangeColumnOrderMutation()
+  const [changeTaskOrder] = useChangeTaskOrderMutation()
 
   // //autologin for testing purposes
   // useEffect(() => {
@@ -68,6 +74,7 @@ export default function Board() {
   //   fetch()
   // }, [login])
   const [columns, setColumns] = useState<ColumnResponse[]>([]);
+  const [tasks, setTasks] = useState<TaskResponse[]>([]);
 
   const [isCreateColumnOpen, setIsCreateColumnOpen] = useState(false)
   const userId = useAppSelector((state) => state.user._id) as string
@@ -87,10 +94,12 @@ export default function Board() {
     : 0
 
   useEffect(() => {
-    const array: ColumnResponse[] = columnsList ? [...columnsList].sort((a, b) => a.order - b.order) : [];
+    const columnArray: ColumnResponse[] = columnsList ? [...columnsList].sort((a, b) => a.order - b.order) : [];
+    const taskArray: TaskResponse[] = tasksList ? [...tasksList].sort((a, b) => a.order - b.order) : [];
 
-    setColumns(array);
-  }, [columnsList]);
+    setColumns(columnArray);
+    setTasks(taskArray);
+  }, [columnsList, tasksList]);
 
   useEffect(() => {
     if (!usertoken) router.push('/')
@@ -101,21 +110,99 @@ export default function Board() {
   }
 
   const handleOnDragEnd = async (result: DropResult) => {
-    const items: ColumnResponse[] = [...columns];
-    const element = items.find((item) => item._id === result.draggableId);
+    console.log(result)
+    const { destination, source, draggableId, type } = result;
+    if (!destination) {
+      return;
+    }
 
-    if (!result.destination || !columns || !element) return;
+    if (source.index === destination.index && source.droppableId === destination.droppableId) {
+      return;
+    }
 
-    items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, element);
-    const array: ColumnResponse[] = items
-      .map((item, index) => ({...item, order: index}))
-      .sort((a, b) => a.order - b.order);
-    //
-    const arrayRequest: ColumnOrderRequest[] = array.map((column) => ({_id: column._id, order: column.order}));
+    if (type === 'columns') {
+      const items: ColumnResponse[] = [...columns];
+      const element = items.find((item) => item._id === result.draggableId);
 
-    setColumns(array);
-    await changeOrder(arrayRequest);
+      if (!columns || !element || source.index === destination.index) return;
+
+      items.splice(source.index, 1);
+      items.splice(destination.index, 0, element);
+      const array: ColumnResponse[] = items
+        .map((item, index) => ({...item, order: index}))
+        .sort((a, b) => a.order - b.order);
+      //
+      const arrayRequest: ColumnOrderRequest[] = array.map((column) => ({_id: column._id, order: column.order}));
+
+      setColumns(array);
+      await changeColumnOrder(arrayRequest);
+    }
+
+    if (type === 'tasks' && tasks?.length) {
+      if (source.droppableId === destination.droppableId) {
+        const currentColumnTasksArray: TaskResponse[] = [...tasks].filter((task) => task.columnId === destination.droppableId);
+        const otherColumnsTasksArray: TaskResponse[] = [...tasks].filter((task) => task.columnId !== destination.droppableId) || [];
+
+        const element = currentColumnTasksArray.find((item) => item._id === result.draggableId);
+
+        if (!element) {
+          return;
+        }
+
+        currentColumnTasksArray.splice(source.index, 1);
+        currentColumnTasksArray.splice(destination.index, 0, element);
+        const array: TaskResponse[] = [...currentColumnTasksArray, ...otherColumnsTasksArray]
+          .map((item, index) => ({ ...item, order: index }))
+          .sort((a, b) => a.order - b.order);
+
+        const arrayRequest: TaskOrderRequest[] = array.map((task) => ({
+          _id: task._id,
+          order: task.order,
+          columnId: task.columnId,
+        }));
+
+        setTasks(array);
+        await changeTaskOrder(arrayRequest);
+      } else {
+        const startColumnTasksArray: TaskResponse[] = [...tasks].filter((task) => task.columnId === source.droppableId);
+        const finishColumnTasksArray: TaskResponse[] = [...tasks].filter((task) => task.columnId === destination.droppableId);
+        const otherColumnTasksArray: TaskResponse[] = [...tasks].filter((task) => (task.columnId !== destination.droppableId) && (task.columnId !== source.droppableId)) || [];
+
+        const element = startColumnTasksArray.find((item) => item._id === result.draggableId);
+
+        startColumnTasksArray.splice(source.index, 1);
+
+        if (startColumnTasksArray.length) {
+          startColumnTasksArray.map((item, index) => ({ ...item, order: index }));
+        }
+
+        if (!element) {
+          return;
+        }
+
+        finishColumnTasksArray.splice(destination.index, 0, { ...element, columnId: destination.droppableId });
+        finishColumnTasksArray.map((item, index) => ({ ...item, order: index }));
+
+        const array: TaskResponse[] = [...startColumnTasksArray || [], ...finishColumnTasksArray, ...otherColumnTasksArray]
+          .map((item, index) => ({ ...item, order: index }))
+          .sort((a, b) => a.order - b.order);
+
+        const arrayRequest: TaskOrderRequest[] = array.map((task) => ({
+          _id: task._id,
+          order: task.order,
+          columnId: task.columnId,
+        }));
+
+        setTasks(array);
+        await changeTaskOrder(arrayRequest);
+      }
+
+
+    }
+
+
+
+
     // const items: ColumnResponse[] = columns.reduce((array: ColumnResponse[], item: ColumnResponse) => {
     //   if (item._id === result.draggableId) {
     //     array.push({...item, order: columns[result?.destination?.index || 0].order});
@@ -125,14 +212,9 @@ export default function Board() {
     //   array.push({...item, order: (item.order >= columns[result?.destination?.index || 0].order) ? item.order + 1 : item.order})
     //   return array;
     // }, [])
-
-
     //
-
     //const itemsSort: ColumnResponse[] = items.sort((a, b) => a.order - b.order);
     // console.log(itemsSort);
-
-
     // items[element] = { ...items[element], order: result.destination.index };
     //
     // console.log(columnsList);
@@ -220,7 +302,7 @@ export default function Board() {
 
         <Spacer y={1}/>
         <DragDropContext onDragEnd={handleOnDragEnd}>
-          <Droppable droppableId={boardId} direction='horizontal'>
+          <Droppable droppableId={boardId} direction='horizontal' type='columns'>
             {(provided) => (
               <Grid.Container
                 justify='flex-start'
@@ -229,7 +311,7 @@ export default function Board() {
                 css={{
                   overflowX: 'auto',
                   maxHeight: 'calc(-175px + 100vh)',
-                  oy: 'visible',
+                  //oy: 'visible',
                   m: '-50px',
                   p: '40px',
                   w: 'auto',
@@ -245,14 +327,14 @@ export default function Board() {
                           sm={3}
                           css={{ display: 'inherit' }}
                           {...provided.draggableProps}
-                          {...provided.dragHandleProps}
                           ref={provided.innerRef}
                         >
                           <Column
-                            tasks={tasksList?.filter(
+                            tasks={tasks?.filter(
                               (task) => task.columnId === column._id,
                             )}
                             column={column}
+                            dragHandleProps={provided.dragHandleProps}
                           />
                         </Grid>
                       )}

@@ -193,6 +193,7 @@ export const {
   useCreateTaskMutation,
   useUpdateTaskMutation,
   useDeleteTaskMutation,
+  useChangeTaskOrderMutation,
 
   useSearchTaskMutation,
   useGetBoardsSetMutation,
