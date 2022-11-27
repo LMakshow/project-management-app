@@ -57,7 +57,6 @@ export default function Boards() {
   const [searchTerm, setSearchTerm] = useState('')
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500)
-  console.log(debouncedSearchTerm)
 
   const onSearchChange = (value: string) => {
     setSearchSpinner(true)
@@ -88,7 +87,6 @@ export default function Boards() {
       setSearchSpinner(false)
     }
   }, [boardList, debouncedSearchTerm, getBoardsSet, searchTask])
-  console.log(filteredBoards.boards)
   return (
     <Layout>
       <Head>
