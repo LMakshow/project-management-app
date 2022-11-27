@@ -88,7 +88,7 @@ export default function Boards() {
       setSearchSpinner(false)
     }
   }, [boardList, debouncedSearchTerm, getBoardsSet, searchTask])
-
+  console.log(filteredBoards.boards)
   return (
     <Layout>
       <Head>
@@ -143,7 +143,7 @@ export default function Boards() {
           !filterText &&
           boardList.map((board) => <BoardCard key={board._id} board={board} />)}
         {filterText &&
-          (filteredBoards.boards ? (
+          (filteredBoards.boards?.length ? (
             filteredBoards.boards.map((board) => (
               <BoardCard
                 key={board._id}
