@@ -28,7 +28,11 @@ const Benefits = () => {
               backgroundColor: '$primaryLightHover',
             }}>
             <Text h3>{t('benefitsInterface')}</Text>
-            <Image src={interfaceImg} alt='Interface' />
+            <Image
+              src={interfaceImg}
+              alt='Interface'
+              style={{ height: 'auto' }}
+            />
             <Spacer y={1} />
             <Text h5>{t('benefitsInterfaceDetails1')}</Text>
             <Text h5>{t('benefitsInterfaceDetails2')}</Text>
@@ -44,7 +48,11 @@ const Benefits = () => {
               backgroundColor: '$primaryLightHover',
             }}>
             <Text h3>{t('benefitsNoLimits')}</Text>
-            <Image src={noLimitsImg} alt='No limits' />
+            <Image
+              src={noLimitsImg}
+              alt='No limits'
+              style={{ height: 'auto' }}
+            />
             <Spacer y={1} />
             <Text h5>{t('benefitsNoLimitsDetails1')}</Text>
             <Text h5>{t('benefitsNoLimitsDetails2')}</Text>
@@ -60,7 +68,11 @@ const Benefits = () => {
               backgroundColor: '$primaryLightHover',
             }}>
             <Text h3>{t('benefitsSearch')}</Text>
-            <Image src={searchImg} alt='No limits' />
+            <Image
+              src={searchImg}
+              alt='User Experience'
+              style={{ height: 'auto' }}
+            />
             <Spacer y={1} />
             <Text h5>{t('benefitsSearchDetails1')}</Text>
             <Text h5>{t('benefitsSearchDetails2')}</Text>
