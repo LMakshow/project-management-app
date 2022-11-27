@@ -1,17 +1,24 @@
-import { Text } from '@nextui-org/react'
-import { Button } from '@nextui-org/react'
+import { Button, Text, useTheme } from '@nextui-org/react'
 import Image from 'next/image'
 
 import { useTranslation } from 'next-i18next'
 
-import heroImg from '../../assets/icon/hero-img.svg'
+import heroImg from '../../assets/images/heroImage.png'
 
 import styles from './hero.module.scss'
 
 const Hero = () => {
   const { t } = useTranslation('home-page')
+  const { theme } = useTheme();
 
   const heroStyles = {
+    hero: {
+      padding: '60px 0 180px',
+      display: 'flex',
+      gap: '60px',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
     title: {
       fontSize: '39px',
       fontFamily: '"Comfortaa", sans-serif',
@@ -43,7 +50,7 @@ const Hero = () => {
     },
   }
   return (
-    <section className={styles.hero}>
+    <section style={heroStyles.hero}>
       <div className={styles.hero__text}>
         <Text h1 css={heroStyles.title}>
           {t('heroTitle')}
@@ -57,6 +64,7 @@ const Hero = () => {
         priority
         style={{
           height: '100%',
+          marginRight: '-100px'
         }}
       />
     </section>

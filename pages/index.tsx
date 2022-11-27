@@ -1,4 +1,4 @@
-import { Container } from '@nextui-org/react'
+import { Container, useTheme } from '@nextui-org/react'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Head from 'next/head'
 import Benefits from '../components/Benefits/Benefits'
@@ -17,8 +17,10 @@ export const getStaticProps = async ({ locale }: { locale: 'en' | 'ru' }) => ({
 })
 
 export default function Home() {
+  const { theme } = useTheme();
+
   return (
-    <Layout>
+    <Layout style={{ backgroundColor: theme?.colors.primaryLight.value }}>
       <Head>
         <title>{siteTitle}</title>
       </Head>

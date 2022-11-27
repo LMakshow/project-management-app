@@ -82,7 +82,19 @@ export default function Header() {
 
   return (
     <>
-      <Navbar variant='sticky' isCompact={scroll}>
+      <Navbar
+        variant='sticky'
+        isCompact={scroll}
+        css={{
+          transition: 'all 0.3s',
+          background: 'var(--nextui--navbarBlurBackgroundColor)',
+          height: 'var(--nextui--navbarHeight)',
+          backdropFilter: 'saturate(180%) blur(var(--nextui--navbarBlur))',
+          '& .nextui-navbar-container': {
+            background: 'none',
+            backdropFilter: 'none',
+          }
+        }}>
         <Navbar.Toggle showIn='xs' />
         <Navbar.Brand css={{ '@sm': { marginRight: '$12' } }}>
           <NextLink passHref legacyBehavior href='/'>
