@@ -1,36 +1,10 @@
 import { Avatar, Card, Grid, Row, Spacer, Text } from '@nextui-org/react'
-import Image from 'next/image'
-
 import { useTranslation } from 'next-i18next'
-
-import styles from './team.module.scss'
-
-import teamBella from '../../../assets/images/team-bella.jpg'
-import teamChristina from '../../../assets/images/team-christina.jpg'
-import teamMaksym from '../../../assets/images/team-maksym.jpg'
+import NextLink from 'next/link'
 
 const Team = () => {
   const { t } = useTranslation('home-page')
 
-  const teamStyles = {
-    title: {
-      marginBottom: '140px',
-      textAlign: 'center',
-      fontFamily: '"Inter", cursive',
-    },
-    image: {},
-    itemTitle: {
-      fontFamily: '"Inter", cursive',
-      fontSize: '18px',
-      lineHeight: '22px',
-    },
-    itemText: {
-      textAlign: 'center',
-      fontFamily: '"Inter", cursive',
-      fontSize: '16px',
-      lineHeight: '19px',
-    },
-  }
   return (
     <>
       <Row>
@@ -49,9 +23,18 @@ const Team = () => {
               backgroundColor: '$secondaryLightHover',
             }}>
             <Text h3>{t('teamBella')}</Text>
-            <Avatar src='/images/team-bella.jpg' alt='Bella' zoomed css={{ size: '$40' }} />
+            <NextLink href='https://github.com/rgvder'>
+            <Avatar
+              src='/images/team-bella.jpg'
+              alt='Bella'
+              zoomed
+              css={{ size: '$40', '&:hover': { cursor: 'pointer' }  }}
+            />
+            </NextLink>
             <Spacer y={1} />
-            <Text h6 i>{t('teamBellaText1')}</Text>
+            <Text h6 i>
+              {t('teamBellaText1')}
+            </Text>
             <Text h5>{t('teamBellaText2')}</Text>
           </Card>
         </Grid>
@@ -64,9 +47,18 @@ const Team = () => {
               backgroundColor: '$secondaryLightHover',
             }}>
             <Text h3>{t('teamMaxim')}</Text>
-            <Avatar src='/images/team-maksym.jpg' alt='Maksym' zoomed css={{ size: '$40' }} />
+            <NextLink href='https://github.com/LMakshow'>
+            <Avatar
+              src='/images/team-maksym.jpg'
+              alt='Maksym'
+              zoomed
+              css={{ size: '$40', '&:hover': { cursor: 'pointer' }  }}
+            />
+            </NextLink>
             <Spacer y={1} />
-            <Text h6 i>{t('teamMaximText1')}</Text>
+            <Text h6 i>
+              {t('teamMaximText1')}
+            </Text>
             <Text h5>{t('teamMaximText2')}</Text>
           </Card>
         </Grid>
@@ -79,9 +71,18 @@ const Team = () => {
               backgroundColor: '$secondaryLightHover',
             }}>
             <Text h3>{t('teamChristina')}</Text>
-            <Avatar src='/images/team-christina.jpg' alt='Christina' zoomed css={{ size: '$40' }} />
+            <NextLink href='https://github.com/krvknv'>
+              <Avatar
+                src='/images/team-christina.jpg'
+                alt='Christina'
+                zoomed
+                css={{ size: '$40', '&:hover': { cursor: 'pointer' } }}
+              />
+            </NextLink>
             <Spacer y={1} />
-            <Text h6 i>{t('teamChristinaText1')}</Text>
+            <Text h6 i>
+              {t('teamChristinaText1')}
+            </Text>
             <Text h5>{t('teamChristinaText2')}</Text>
           </Card>
         </Grid>
