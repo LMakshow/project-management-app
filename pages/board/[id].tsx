@@ -91,42 +91,44 @@ export default function Board() {
     await deleteBoard(boardId)
   }
 
-  console.log(columnsList);
-
   const handleOnDragEnd = async (result: DropResult) => {
-    console.log(result)
-    if (!result.destination) {
-      return;
-    }
+    const items: ColumnResponse[] = [...columns];
+    const element = items.find((item) => item._id === result.draggableId);
 
-    const items: ColumnResponse[] = columns.reduce((array: ColumnResponse[], item: ColumnResponse) => {
-      if (item._id === result.draggableId) {
-        array.push({...item, order: columns[result?.destination?.index || 0].order});
-        return array;
-      }
+    if (!result.destination || !columns || !element) return;
 
-      array.push({...item, order: (item.order >= columns[result?.destination?.index || 0].order) ? item.order + 1 : item.order})
-      return array;
-    }, [])
-
-    const element = items.findIndex((item) => item._id === result.draggableId);
-
-    //if (!result.destination || !columns || !element) return;
-    const itemsSort: ColumnResponse[] = items.sort((a, b) => a.order - b.order);
-    console.log(itemsSort);
-
-    // items.splice(result.source.index, 1);
-    // items.splice(result.destination.index, 0, element);
-    // const array: ColumnResponse[] = items.map((item, index) => ({...item, order: index}));
+    items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, element);
+    const array: ColumnResponse[] = items
+      .map((item, index) => ({...item, order: index}))
+      .sort((a, b) => a.order - b.order);
     //
-    const arrayRequest: ColumnOrderRequest[] = itemsSort.map((column) => ({_id: column._id, order: column.order}));
+    const arrayRequest: ColumnOrderRequest[] = array.map((column) => ({_id: column._id, order: column.order}));
+
+    setColumns(array);
+    await changeOrder(arrayRequest);
+    // const items: ColumnResponse[] = columns.reduce((array: ColumnResponse[], item: ColumnResponse) => {
+    //   if (item._id === result.draggableId) {
+    //     array.push({...item, order: columns[result?.destination?.index || 0].order});
+    //     return array;
+    //   }
+    //
+    //   array.push({...item, order: (item.order >= columns[result?.destination?.index || 0].order) ? item.order + 1 : item.order})
+    //   return array;
+    // }, [])
+
+
+    //
+
+    //const itemsSort: ColumnResponse[] = items.sort((a, b) => a.order - b.order);
+    // console.log(itemsSort);
+
+
     // items[element] = { ...items[element], order: result.destination.index };
     //
     // console.log(columnsList);
     // //console.log(items.splice(result.destination.index, 0, element));
     // //console.log(array)
-    setColumns(itemsSort);
-    await changeOrder(arrayRequest);
   }
 
   return (
@@ -205,7 +207,7 @@ export default function Board() {
 
         <Spacer y={1}/>
         <DragDropContext onDragEnd={handleOnDragEnd}>
-          <Droppable droppableId="columns" direction='horizontal'>
+          <Droppable droppableId={boardId} direction='horizontal'>
             {(provided) => (
               <Grid.Container
                 justify='flex-start'
