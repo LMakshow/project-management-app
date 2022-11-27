@@ -10,10 +10,12 @@ import {
 import { ColumnResponse, TaskResponse } from '../../utils/interfaces'
 import PopoverDeleteElement from '../PopoverDeleteElement'
 import InputEdit from '../Utilities/InputEdit'
+import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 
 const ColumnTitle = (props: {
   column: ColumnResponse
   tasks: TaskResponse[] | undefined
+  dragHandleProps: DraggableProvidedDragHandleProps | undefined
 }) => {
   const { t } = useTranslation('common')
   const [isEdit, setIsEdit] = useState(false)

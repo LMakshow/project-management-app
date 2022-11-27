@@ -175,4 +175,5 @@ export const {
   useCreateTaskMutation,
   useUpdateTaskMutation,
   useDeleteTaskMutation,
+  useChangeTaskOrderMutation,
 } = boardsApi

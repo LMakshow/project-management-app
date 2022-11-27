@@ -1,21 +1,26 @@
 import { Button, Card, Popover } from '@nextui-org/react'
 import { useState } from 'react'
 import { useTranslation } from 'next-i18next'
-import { ColumnResponse, TaskResponse } from '../../utils/interfaces'
+import {
+  ColumnResponse,
+  TaskResponse,
+} from '../../utils/interfaces'
 import { IconPlus } from '../icons/boardCard/icon_plus'
 import ColumnTask from './ColumnTask'
 import ColumnTitle from './ColumnTitle'
 import PopoverAddTask from './PopoverAddTask'
+import { Droppable, Draggable, DraggableProvidedDragHandleProps } from 'react-beautiful-dnd'
 
 const Column = (props: {
   column: ColumnResponse
-  tasks: TaskResponse[] | undefined
+  tasks: TaskResponse[] | undefined,
+  dragHandleProps: DraggableProvidedDragHandleProps | undefined
 }) => {
   const { t } = useTranslation('common')
   const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false)
   const { tasks } = props
-  const nextTaskOrder = tasks
-    ? tasks?.reduce((a, b) => Math.max(a, b.order), 1)
+  const nextTaskOrder = tasks?.length
+    ? 1 + tasks?.reduce((a, b) => Math.max(a, b.order), 0)
     : 0
 
   return (
@@ -29,16 +34,37 @@ const Column = (props: {
         pl: '10px',
         overflowY: 'auto',
       }}>
-      <Card.Header css={{ p: '$4', minHeight: '60px' }}>
+      <Card.Header css={{ p: '$4', minHeight: '60px' }} { ...props.dragHandleProps }>
         <ColumnTitle {...props} />
       </Card.Header>
 
       <Card.Divider/>
-
-      <Card.Body css={{ py: '$6', px: '0', pr: '5px', gap: '$2' }}>
-        {props.tasks &&
-          props.tasks.map((task) => <ColumnTask key={task._id} {...task} />)}
-      </Card.Body>
+        <Droppable droppableId={props.column._id} type='tasks'>
+          {(provided) => (
+            <Card.Body
+              css={{ py: '$6', px: '0', pr: '5px', gap: '$2' }}
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {props.tasks &&
+                props.tasks.map((task, index) => (
+                  <Draggable key={task._id} draggableId={task._id} index={index}>
+                    {(provided) => (
+                      <div
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        ref={provided.innerRef}>
+                      <ColumnTask
+                        {...task}
+                        />
+                      </div>
+                    )}
+                    </Draggable>
+                    ))}
+              {provided.placeholder}
+            </Card.Body>
+          )}
+        </Droppable>
       <Card.Footer css={{ pl: 0 }}>
         <Popover
           isBordered
