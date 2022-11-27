@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 import { useTranslation } from 'next-i18next'
 
-import heroImg from '../../assets/images/heroImage.png'
+import heroImg from '../../../assets/images/heroImage.png'
 
 import styles from './hero.module.scss'
 

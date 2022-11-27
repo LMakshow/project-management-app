@@ -34,7 +34,6 @@ import ReactDOM from 'react-dom'
 import PopoverAddBoard from './Popover-add-board'
 
 import { useRouter } from 'next/router'
-import { current } from '@reduxjs/toolkit'
 
 export default function Header() {
   const { setTheme } = useNextTheme()

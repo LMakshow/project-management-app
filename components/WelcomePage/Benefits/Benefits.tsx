@@ -3,11 +3,9 @@ import Image from 'next/image'
 
 import { useTranslation } from 'next-i18next'
 
-import styles from './benefits.module.scss'
-
-import interfaceImg from '../../assets/images/benefits-interface.png'
-import noLimitsImg from '../../assets/images/benefits-noLimits.png'
-import searchImg from '../../assets/images/benefits-search.png'
+import interfaceImg from '../../../assets/images/benefits-interface.png'
+import noLimitsImg from '../../../assets/images/benefits-noLimits.png'
+import searchImg from '../../../assets/images/benefits-search.png'
 
 const Benefits = () => {
   const { t } = useTranslation('home-page')
