@@ -13,7 +13,7 @@ const Hero = () => {
 
   const heroStyles = {
     hero: {
-      padding: '60px 0 180px',
+      padding: '60px 0 60px',
       display: 'flex',
       gap: '60px',
       justifyContent: 'center',
