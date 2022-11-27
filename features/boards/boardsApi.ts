@@ -10,7 +10,7 @@ import {
   CreateTaskRequest,
   TaskOrderRequest,
   TaskRequest,
-  TaskResponse
+  TaskResponse,
 } from '../../utils/interfaces'
 import { RootState } from '../store'
 
@@ -155,6 +155,18 @@ export const boardsApi = createApi({
       }),
       invalidatesTags: ['TaskList'],
     }),
+    searchTask: builder.mutation<TaskResponse[], string>({
+      query: (filterText) => ({
+        url: `/tasksSet?search=${filterText}`,
+        method: 'GET',
+      }),
+    }),
+    getBoardsSet: builder.mutation<BoardResponse[], string>({
+      query: (str) => ({
+        url: `/boardsSet?ids=${str}`,
+        method: 'GET',
+      }),
+    }),
   }),
 })
 
@@ -174,4 +186,7 @@ export const {
   useCreateTaskMutation,
   useUpdateTaskMutation,
   useDeleteTaskMutation,
+
+  useSearchTaskMutation,
+  useGetBoardsSetMutation,
 } = boardsApi

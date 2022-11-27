@@ -9,15 +9,23 @@ import {
 } from '@nextui-org/react'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Layout, { siteTitle } from '../components/layout'
-import { useGetBoardsQuery } from '../features/boards/boardsApi'
+import {
+  useGetBoardsQuery,
+  useGetBoardsSetMutation,
+  useGetSingleBoardQuery,
+  useSearchTaskMutation,
+} from '../features/boards/boardsApi'
 import { useAppSelector } from '../features/hooks'
 import BoardCard from '../components/board-list-page/BoardCard'
 import Head from 'next/head'
-import { t } from 'i18next'
 import { useTranslation } from 'next-i18next'
 import { IconKanbanAdd } from '../components/icons/icon_kanban_add'
 import PopoverAddBoard from '../components/Popover-add-board'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import Search from '../components/Search'
+import { BoardResponse, TaskResponse } from '../utils/interfaces'
+import { useDebounce } from '../features/hooks'
+import { IconSearch } from '../components/icons/boardCard/icon_search'
 
 export const getStaticProps = async ({ locale }: { locale: 'en' | 'ru' }) => ({
   props: {
@@ -36,6 +44,49 @@ export default function Boards() {
   const { data: boardList, error, isLoading } = useGetBoardsQuery(userId)
   const [isCreateBoardOpen, setIsCreateBoardOpen] = useState(false)
 
+  const [searchTask] = useSearchTaskMutation()
+  const [getBoardsSet] = useGetBoardsSetMutation()
+
+  const [filterText, setFilterText] = useState('')
+  const [searchSpinner, setSearchSpinner] = useState(false)
+  const [filteredBoards, setFilteredBoards] = useState<{
+    boards?: BoardResponse[]
+    tasks?: TaskResponse[]
+  }>({})
+
+  const [searchTerm, setSearchTerm] = useState('')
+
+  const debouncedSearchTerm = useDebounce(searchTerm, 500)
+
+  const onSearchChange = (value: string) => {
+    setSearchSpinner(true)
+    setSearchTerm(value)
+  }
+
+  useEffect(() => {
+    if (debouncedSearchTerm) {
+      const doSearch = async () => {
+        const searchResult = await searchTask(debouncedSearchTerm).unwrap()
+
+        // Extracting unique boardIds from the search results
+        const boardIds = new Set()
+        for (const task of searchResult) {
+          boardIds.add(task.boardId)
+        }
+        const boardIdsString = Array.from(boardIds).join(',')
+        const boards = await getBoardsSet(boardIdsString).unwrap()
+
+        setFilterText(debouncedSearchTerm)
+        setFilteredBoards({ boards, tasks: searchResult })
+        setSearchSpinner(false)
+      }
+      doSearch()
+    } else {
+      setFilterText('')
+      setFilteredBoards({})
+      setSearchSpinner(false)
+    }
+  }, [boardList, debouncedSearchTerm, getBoardsSet, searchTask])
   return (
     <Layout>
       <Head>
@@ -47,13 +98,19 @@ export default function Boards() {
           gap: '32px',
           padding: '32px',
           justifyContent: 'flex-start',
-          alignItems: 'center',
+          alignItems: 'flex-start',
         }}>
-        <Row wrap='wrap'>
+        <Row wrap='wrap' css={{ display: 'flex', alignItems: 'center' }}>
           {boardList ? (
             <>
               <Text h2>{t('Boards of', { user: userName })}</Text>
               <Spacer x={1} css={{ mr: 'auto' }} />
+              <Search
+                filterText={filterText}
+                setSearchTerm={onSearchChange}
+                searchSpinner={searchSpinner}
+              />
+              <Spacer x={2} />
               <Popover
                 isBordered
                 isOpen={isCreateBoardOpen}
@@ -80,17 +137,22 @@ export default function Boards() {
             <Loading size='lg'> Loading </Loading>
           )}
         </Row>
-
         {boardList &&
-          boardList.map((board) => (
-            <BoardCard
-              key={board._id}
-              description={board.description}
-              title={board.title}
-              owner={board.owner}
-              users={board.users}
-              _id={board._id}
-            />
+          !filterText &&
+          boardList.map((board) => <BoardCard key={board._id} board={board} />)}
+        {filterText &&
+          (filteredBoards.boards?.length ? (
+            filteredBoards.boards.map((board) => (
+              <BoardCard
+                key={board._id}
+                board={board}
+                tasks={filteredBoards?.tasks?.filter(
+                  (task) => task.boardId === board._id
+                )}
+              />
+            ))
+          ) : (
+            <Text size='$xl'>{t('No boards')}</Text>
           ))}
       </Container>
     </Layout>

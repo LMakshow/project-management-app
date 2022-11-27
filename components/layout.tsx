@@ -1,24 +1,13 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import styles from './layout.module.css'
-import { Container, Row, Col } from '@nextui-org/react'
-import Link from 'next/link'
-import Navbar from './Navbar'
 import Footer from './Footer'
+import Navbar from './Navbar'
 
 export const siteTitle = 'Project Management App'
 
-export default function Layout({
-  children,
-  home,
-}: {
-  children: React.ReactNode
-  home?: boolean
-}) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div
       style={{
-        height: '100vh',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',

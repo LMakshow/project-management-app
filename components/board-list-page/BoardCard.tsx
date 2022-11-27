@@ -1,5 +1,5 @@
-import { Button, Card } from '@nextui-org/react'
-import { BoardResponse } from '../../utils/interfaces'
+import { Button, Card, Spacer, Text } from '@nextui-org/react'
+import { BoardResponse, TaskResponse } from '../../utils/interfaces'
 import { FC, useState } from 'react'
 
 import { useTranslation } from 'next-i18next'
@@ -11,27 +11,34 @@ import {
   useUpdateBoardMutation,
 } from '../../features/boards/boardsApi'
 import { useRouter } from 'next/router'
+import ColumnTask from '../BoardTasks/ColumnTask'
 
-const BoardCard: FC<BoardResponse> = (board) => {
+interface BoardCardProps {
+  board: BoardResponse
+  tasks?: TaskResponse[]
+}
+
+const BoardCard = (props: BoardCardProps) => {
+  const { board } = props
   const { t } = useTranslation('common')
   const router = useRouter()
   const [updateBoard] = useUpdateBoardMutation()
   const [deleteBoard] = useDeleteBoardMutation()
 
-  const [isEditTitle, setIsEditTitle] = useState(false);
-  const [isEditDescription, setIsEditDescription] = useState(false);
+  const [isEditTitle, setIsEditTitle] = useState(false)
+  const [isEditDescription, setIsEditDescription] = useState(false)
 
   const setIsEditTitleProps = (value: boolean) => {
-    setIsEditTitle(value);
+    setIsEditTitle(value)
   }
 
   const setIsEditDescriptionProps = (value: boolean) => {
-    setIsEditDescription(value);
+    setIsEditDescription(value)
   }
 
   const closeEditInputs = () => {
-    setIsEditTitle(false);
-    setIsEditDescription(false);
+    setIsEditTitle(false)
+    setIsEditDescription(false)
   }
 
   const handleUpdateBoard = async (value: Partial<BoardResponse>) => {
@@ -48,7 +55,7 @@ const BoardCard: FC<BoardResponse> = (board) => {
   }
 
   const handleDeleteElement = async () => {
-    await deleteBoard(board._id);
+    await deleteBoard(board._id)
   }
 
   return (
@@ -89,6 +96,14 @@ const BoardCard: FC<BoardResponse> = (board) => {
           description={board.description}
           handleUpdateBoard={handleUpdateBoard}
         />
+        {props.tasks && 
+        <>
+        <Text>{t('Tasks found')}</Text>
+        <Spacer y={0.5} />
+        </>}
+        {props.tasks
+          ? props.tasks.map((task) => <ColumnTask key={task._id} {...task} />)
+          : null}
       </Card.Body>
       <Card.Footer
         css={{
@@ -96,10 +111,13 @@ const BoardCard: FC<BoardResponse> = (board) => {
           alignItems: 'center',
           justifyContent: 'space-between',
         }}>
-        <Button onClick={() => {
-          router.push(`/board/${board._id}`);
-          closeEditInputs();
-        }} color="primary" flat>
+        <Button
+          onClick={() => {
+            router.push(`/board/${board._id}`)
+            closeEditInputs()
+          }}
+          color='primary'
+          flat>
           {t('Open Board')}
         </Button>
         <PopoverDeleteElement
@@ -114,4 +132,4 @@ const BoardCard: FC<BoardResponse> = (board) => {
   )
 }
 
-export default BoardCard;
+export default BoardCard
