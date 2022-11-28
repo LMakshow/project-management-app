@@ -9,6 +9,7 @@ export type TModalProps = {
   isShowing: boolean
   hide: () => void
   action: string
+  setAction: (value: string) => void
 }
 
 export type helperColor =

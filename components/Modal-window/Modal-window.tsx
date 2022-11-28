@@ -2,6 +2,7 @@ import {
   Button,
   Input,
   Modal,
+  Row,
   Spacer,
   Text,
   Tooltip,
@@ -25,7 +26,7 @@ import { validateEmail, validatePassword } from './validation'
 import { useEditProfileMutation } from '../../features/profileApi'
 import { setUser } from '../../features/auth/userSlice'
 
-const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
+const ModalWindow = ({ isShowing, hide, action, setAction }: TModalProps) => {
   const dispatch = useAppDispatch()
 
   const userName = useAppSelector((state) => state.user.name) as string
@@ -216,6 +217,42 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
         </Modal.Body>
 
         <Modal.Footer>
+          {action !== 'edit' && (
+            <Row
+              css={{
+                display: 'flex',
+                alignItems: 'baseline',
+                justifyContent: 'center',
+                gap: '5px',
+              }}>
+              {action !== 'signUp' ? (
+                <>
+                  <Text>{t('subtitle-signIn')}</Text>
+                  <Button
+                    light
+                    color='primary'
+                    auto
+                    css={{ padding: '0' }}
+                    onClick={() => setAction('signUp')}>
+                    {t('registration')}
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Text>{t('subtitle-signUp')}</Text>
+                  <Button
+                    light
+                    color='primary'
+                    auto
+                    css={{ padding: '0' }}
+                    onClick={() => setAction('signIn')}>
+                    {t('enter')}
+                  </Button>
+                </>
+              )}
+            </Row>
+          )}
+
           <Tooltip content={t('demo-tooltip')} css={{ zIndex: 9999 }}>
             {action !== 'edit' && (
               <Button auto flat onClick={handleSignInDemo}>

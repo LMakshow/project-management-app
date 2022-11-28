@@ -14,5 +14,9 @@
   "Close": "Close",
   "btnSignIn": "Sign In",
   "btnSignUp": "Sign Up",
-  "btnEdit": "Edit"
+  "btnEdit": "Edit",
+  "subtitle-signIn": "Don't have a profile?",
+  "subtitle-signUp": "Already with us?",
+  "registration": "Registration",
+  "enter": "Enter"
 }
