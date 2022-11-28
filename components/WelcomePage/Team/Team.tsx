@@ -22,14 +22,14 @@ const Team = () => {
               p: '20px',
               backgroundColor: '$secondaryLightHover',
             }}>
-            <Text h3>{t('teamBella')}</Text>
+            <Text h3 css={{ ta: 'center' }}>{t('teamBella')}</Text>
             <NextLink href='https://github.com/rgvder'>
-            <Avatar
-              src='/images/team-bella.jpg'
-              alt='Bella'
-              zoomed
-              css={{ size: '$40', '&:hover': { cursor: 'pointer' }  }}
-            />
+              <Avatar
+                src='/images/team-bella.jpg'
+                alt='Bella'
+                zoomed
+                css={{ size: '$40', '&:hover': { cursor: 'pointer' } }}
+              />
             </NextLink>
             <Spacer y={1} />
             <Text h6 i>
@@ -46,14 +46,14 @@ const Team = () => {
               p: '20px',
               backgroundColor: '$secondaryLightHover',
             }}>
-            <Text h3>{t('teamMaxim')}</Text>
+            <Text h3 css={{ ta: 'center' }}>{t('teamMaxim')}</Text>
             <NextLink href='https://github.com/LMakshow'>
-            <Avatar
-              src='/images/team-maksym.jpg'
-              alt='Maksym'
-              zoomed
-              css={{ size: '$40', '&:hover': { cursor: 'pointer' }  }}
-            />
+              <Avatar
+                src='/images/team-maksym.jpg'
+                alt='Maksym'
+                zoomed
+                css={{ size: '$40', '&:hover': { cursor: 'pointer' } }}
+              />
             </NextLink>
             <Spacer y={1} />
             <Text h6 i>
@@ -70,7 +70,9 @@ const Team = () => {
               p: '20px',
               backgroundColor: '$secondaryLightHover',
             }}>
-            <Text h3>{t('teamChristina')}</Text>
+            <Text h3 css={{ ta: 'center' }}>
+              {t('teamChristina')}
+            </Text>
             <NextLink href='https://github.com/krvknv'>
               <Avatar
                 src='/images/team-christina.jpg'
