@@ -299,7 +299,7 @@ export default function Board() {
                 css={{
                   overflowX: 'auto',
                   maxHeight: 'calc(-175px + 100vh)',
-                  //oy: 'visible',
+                  oy: 'visible',
                   m: '-50px',
                   p: '40px',
                   w: 'auto',
