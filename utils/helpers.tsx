@@ -4,5 +4,5 @@ export const addNewLine = (string: string) => {
   if (!string) {
     return;
   }
-  parse(string.replaceAll(/\n/g, '<br>'))
+  return parse(string.replaceAll(/\n/g, '<br>'));
 };

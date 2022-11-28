@@ -43,12 +43,12 @@ const BoardCardDescription: FC<BoardDescriptionProps> = (props) => {
             css={{
               p: 0,
               cursor: 'pointer',
+              minHeight: '140px',
+              minWidth: '386px',
+              overflow: 'auto',
             }}>
             <Text css={{
-              h: '148px',
               overflow: 'auto',
-              display: 'block',
-              width: '100%',
             }}
                   size="xl">
               {addNewLine(props.description)}</Text>
