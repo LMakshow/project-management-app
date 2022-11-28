@@ -1,10 +1,12 @@
+import { CSS } from '@nextui-org/react'
+import { CSSProperties } from '@nextui-org/react/types/theme'
 import Head from 'next/head'
 import Footer from './Footer'
 import Navbar from './Navbar'
 
 export const siteTitle = 'Project Management App'
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({ children, style }: { children: React.ReactNode, style?: CSSProperties }) {
   return (
     <div
       style={{
@@ -22,7 +24,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <link rel='icon' href='/favicon.svg' />
       </Head>
       <Navbar />
-      <main style={{ minHeight: 'calc(100vh - 150px)' }}>{children}</main>
+      <main style={{ minHeight: 'calc(100vh - 150px)', ...style}}>{children}</main>
       <Footer />
     </div>
   )

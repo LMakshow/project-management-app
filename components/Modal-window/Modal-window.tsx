@@ -153,7 +153,6 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
     <div>
       <Modal
         closeButton
-        blur
         aria-labelledby='modal-title'
         open={isShowing}
         onClose={hide}>

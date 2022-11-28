@@ -1,10 +1,11 @@
-import { Container } from '@nextui-org/react'
+import { Container, useTheme } from '@nextui-org/react'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Head from 'next/head'
-import Benefits from '../components/Benefits/Benefits'
-import Hero from '../components/Hero/Hero'
 import Layout, { siteTitle } from '../components/layout'
-import Team from '../components/Team/Team'
+import Benefits from '../components/WelcomePage/Benefits/Benefits'
+import Hero from '../components/WelcomePage/Hero/Hero'
+import Team from '../components/WelcomePage/Team/Team'
+import TechStack from '../components/WelcomePage/TechStack/TechStack'
 
 export const getStaticProps = async ({ locale }: { locale: 'en' | 'ru' }) => ({
   props: {
@@ -17,8 +18,10 @@ export const getStaticProps = async ({ locale }: { locale: 'en' | 'ru' }) => ({
 })
 
 export default function Home() {
+  const { theme } = useTheme();
+
   return (
-    <Layout>
+    <Layout style={{ backgroundColor: theme?.colors.primaryLight.value }}>
       <Head>
         <title>{siteTitle}</title>
       </Head>
@@ -26,6 +29,7 @@ export default function Home() {
         <Hero />
         <Benefits />
         <Team />
+        <TechStack />
       </Container>
     </Layout>
   )
