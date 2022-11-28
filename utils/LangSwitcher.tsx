@@ -7,7 +7,7 @@ export default function LangSwitcher() {
   const { locale, pathname, asPath, query, push } = useRouter()
 
   const langChange = (key: Key) => {
-    push({ pathname, query }, asPath, { locale: key as string })
+    push({ pathname, query }, asPath, { locale: key as string, scroll: false })
   }
 
   return (

@@ -15,10 +15,26 @@ const Search = (props: {
       clearable
       bordered
       width={'300px'}
-      color="primary"
+      color='primary'
       labelPlaceholder={t('Search')}
       value={filterText}
-      contentLeft={searchSpinner ? <Loading size="xs" /> : <IconSearch fill='currentColor' />}
+      css={{
+        '& .nextui-input-content--left': {
+          ml: '0',
+          dflex: 'center',
+        },
+        '& .nextui-input': {
+          ml: '0',
+          pl: '0',
+        },
+      }}
+      contentLeft={
+        searchSpinner ? (
+          <Loading size='xs' />
+        ) : (
+          <IconSearch fill='var(--nextui-colors-accents6)' />
+        )
+      }
       onChange={(e) => setSearchTerm(e.target.value)}
     />
   )
