@@ -25,6 +25,7 @@ import { User } from '../icons/modal/icon_user'
 import { validateEmail, validatePassword } from './validation'
 import { useEditProfileMutation } from '../../features/profileApi'
 import { setUser } from '../../features/auth/userSlice'
+import { useRouter } from 'next/router'
 
 const ModalWindow = ({ isShowing, hide, action, setAction }: TModalProps) => {
   const dispatch = useAppDispatch()
@@ -36,6 +37,8 @@ const ModalWindow = ({ isShowing, hide, action, setAction }: TModalProps) => {
   const usertoken = useAppSelector((state) => state.user.token) as string
 
   const { t } = useTranslation('modal-window')
+
+  const router = useRouter()
 
   const { value: nameValue, bindings: nameBindings } = useInput('')
   const { value: loginValue, bindings: emailBindings } = useInput('')
@@ -93,6 +96,7 @@ const ModalWindow = ({ isShowing, hide, action, setAction }: TModalProps) => {
       dispatch(setUser({ ...userData, password: passwordValue }))
 
       hide()
+      router.push('/boards')
     } catch (error) {
       setIsError(true)
     }
@@ -124,6 +128,8 @@ const ModalWindow = ({ isShowing, hide, action, setAction }: TModalProps) => {
       dispatch(setUser({ ...userData, password: 'TestUserPwd' }))
 
       hide()
+
+      router.push('/boards')
     } catch (error) {
       setIsError(true)
     }
