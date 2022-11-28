@@ -1,15 +1,21 @@
-import { Button, Grid, Text, useTheme } from '@nextui-org/react'
+import { Button, Grid, Text } from '@nextui-org/react'
 import Image from 'next/image'
+import ReactDOM from 'react-dom'
 
 import { useTranslation } from 'next-i18next'
 
 import heroImg from '../../../assets/images/heroImage.png'
 
+import { useAppSelector, useModal } from '../../../features/hooks'
+import ModalWindow from '../../Modal-window/Modal-window'
 import styles from './hero.module.scss'
+import { useRouter } from 'next/router'
 
 const Hero = () => {
+  const router = useRouter()
   const { t } = useTranslation('home-page')
-  const { theme } = useTheme()
+  const isSigned = useAppSelector((state) => state.user.token)
+  const { isShowing: isModalShowing, toggle: toggleModal } = useModal()
 
   const heroStyles = {
     hero: {
@@ -54,6 +60,12 @@ const Hero = () => {
       },
     },
   }
+
+  const handleStartButton = () => {
+    if (isSigned) router.push('/boards')
+    if (!isSigned) toggleModal()
+  }
+
   return (
     <>
       <Grid.Container gap={5} css={{ ai: 'center' }}>
@@ -62,7 +74,7 @@ const Hero = () => {
             {t('heroTitle')}
           </Text>
           <Text css={heroStyles.text}>{t(`heroText`)}</Text>
-          <Button css={heroStyles.button}>{t('heroBtn')}</Button>
+          <Button css={heroStyles.button} onPress={handleStartButton}>{t('heroBtn')}</Button>
         </Grid>
         <Grid sm={7}>
           <Image
@@ -73,6 +85,15 @@ const Hero = () => {
           />
         </Grid>
       </Grid.Container>
+      {isModalShowing &&
+        ReactDOM.createPortal(
+          <ModalWindow
+            isShowing={isModalShowing}
+            hide={toggleModal}
+            action='signUp'
+          />,
+          document.body
+        )}
     </>
   )
 }
