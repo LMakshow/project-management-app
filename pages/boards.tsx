@@ -26,6 +26,7 @@ import Search from '../components/Search'
 import { BoardResponse, TaskResponse } from '../utils/interfaces'
 import { useDebounce } from '../features/hooks'
 import { IconSearch } from '../components/icons/boardCard/icon_search'
+import { useRouter } from 'next/router'
 
 export const getStaticProps = async ({ locale }: { locale: 'en' | 'ru' }) => ({
   props: {
@@ -58,12 +59,16 @@ export default function Boards() {
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500)
 
+  const router = useRouter()
+
   const onSearchChange = (value: string) => {
     setSearchSpinner(true)
     setSearchTerm(value)
   }
 
   useEffect(() => {
+    if (!isSigned) router.push('/')
+
     if (debouncedSearchTerm) {
       const doSearch = async () => {
         const searchResult = await searchTask(debouncedSearchTerm).unwrap()
@@ -86,7 +91,14 @@ export default function Boards() {
       setFilteredBoards({})
       setSearchSpinner(false)
     }
-  }, [boardList, debouncedSearchTerm, getBoardsSet, searchTask])
+  }, [
+    boardList,
+    debouncedSearchTerm,
+    getBoardsSet,
+    isSigned,
+    router,
+    searchTask,
+  ])
   return (
     <Layout>
       <Head>
