@@ -18,6 +18,7 @@ const TechStack = () => {
   const { t } = useTranslation('home-page')
   const { isDark } = useTheme()
   const TechComponent = styled(User, {
+    p: 0,
     '& .nextui-avatar-img': { objectFit: 'contain', p: '3px' },
   })
 
@@ -30,17 +31,16 @@ const TechStack = () => {
       </Row>
       <Spacer y={1} />
       <Grid.Container gap={4} justify='center'>
-        <Grid xs={6}>
+        <Grid sm={7}>
           <Card
             css={{
               fd: 'row',
-              fw: 'wrap',
               alignItems: 'center',
               p: '20px',
               backgroundColor: '$primaryLightHover',
             }}>
             <Grid.Container gap={2} justify='center'>
-              <Grid md={3} xs={6}>
+              <Grid md={3} sm={6} xs>
                 <TechComponent
                   squared
                   src='/logo/logo-typescript.svg'
@@ -50,7 +50,7 @@ const TechStack = () => {
                   </User.Link>
                 </TechComponent>
               </Grid>
-              <Grid md={3} xs={6}>
+              <Grid md={3} sm={6} xs>
                 <TechComponent
                   squared
                   src='/logo/logo-react.svg'
@@ -58,14 +58,14 @@ const TechStack = () => {
                   <User.Link href='https://reactjs.org/'>reactjs.org</User.Link>
                 </TechComponent>
               </Grid>
-              <Grid md={3} xs={6}>
+              <Grid md={3} sm={6} xs>
                 <TechComponent squared src='/logo/logo-redux.svg' name='Redux'>
                   <User.Link href='https://redux.js.org/'>
                     redux.js.org
                   </User.Link>
                 </TechComponent>
               </Grid>
-              <Grid md={3} sm={6}>
+              <Grid md={3} sm={6} xs>
                 <TechComponent
                   squared
                   src='/logo/logo-rtkq.jpg'
@@ -75,7 +75,7 @@ const TechStack = () => {
                   </User.Link>
                 </TechComponent>
               </Grid>
-              <Grid md={3} xs={6}>
+              <Grid md={3} sm={6} xs>
                 <TechComponent
                   squared
                   src='/logo/logo-nextjs.svg'
@@ -83,7 +83,7 @@ const TechStack = () => {
                   <User.Link href='https://nextjs.org/'>nextjs.org</User.Link>
                 </TechComponent>
               </Grid>
-              <Grid md={3} xs={6}>
+              <Grid md={3} sm={6} xs>
                 <TechComponent
                   squared
                   src='/logo/logo-nextui.png'
@@ -91,7 +91,7 @@ const TechStack = () => {
                   <User.Link href='https://nextui.org/'>nextui.org</User.Link>
                 </TechComponent>
               </Grid>
-              <Grid md={3} xs={6}>
+              <Grid md={3} sm={6} xs>
                 <TechComponent
                   squared
                   src='/logo/logo-i18next.png'
@@ -104,7 +104,7 @@ const TechStack = () => {
             </Grid.Container>
           </Card>
         </Grid>
-        <Grid xs={6}>
+        <Grid sm={5}>
           <Card
             css={{
               fd: 'column',

@@ -14,7 +14,7 @@ const Team = () => {
       </Row>
       <Spacer y={1} />
       <Grid.Container gap={4} justify='center'>
-        <Grid xs={4}>
+        <Grid sm={4}>
           <Card
             css={{
               fd: 'column',
@@ -38,7 +38,7 @@ const Team = () => {
             <Text h5>{t('teamBellaText2')}</Text>
           </Card>
         </Grid>
-        <Grid xs={4}>
+        <Grid sm={4}>
           <Card
             css={{
               fd: 'column',
@@ -62,7 +62,7 @@ const Team = () => {
             <Text h5>{t('teamMaximText2')}</Text>
           </Card>
         </Grid>
-        <Grid xs={4}>
+        <Grid sm={4}>
           <Card
             css={{
               fd: 'column',

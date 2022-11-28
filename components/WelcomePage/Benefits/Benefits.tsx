@@ -19,7 +19,7 @@ const Benefits = () => {
       </Row>
       <Spacer y={1} />
       <Grid.Container gap={4} justify='center'>
-        <Grid xs={4}>
+        <Grid sm={4}>
           <Card
             css={{
               fd: 'column',
@@ -39,7 +39,7 @@ const Benefits = () => {
             <Text h5>{t('benefitsInterfaceDetails3')}</Text>
           </Card>
         </Grid>
-        <Grid xs={4}>
+        <Grid sm={4}>
           <Card
             css={{
               fd: 'column',
@@ -59,7 +59,7 @@ const Benefits = () => {
             <Text h5>{t('benefitsNoLimitsDetails3')}</Text>
           </Card>
         </Grid>
-        <Grid xs={4}>
+        <Grid sm={4}>
           <Card
             css={{
               fd: 'column',
