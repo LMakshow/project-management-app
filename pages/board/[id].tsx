@@ -109,29 +109,55 @@ export default function Board() {
     await deleteBoard(boardId)
   }
 
+  console.log(tasks);
+
   const handleOnDragEnd = async (result: DropResult) => {
     console.log(result)
-    const { destination, source, draggableId, type } = result;
-    if (!destination) {
+    const { destination, source, type } = result;
+    if (!destination || source.index === destination.index && source.droppableId === destination.droppableId) {
       return;
     }
 
-    if (source.index === destination.index && source.droppableId === destination.droppableId) {
-      return;
+    const spliceArray = (array: ColumnResponse[] | TaskResponse[], element: ColumnResponse | TaskResponse) => {
+      array.splice(source.index, 1);
+      array.splice(destination.index, 0, element);
     }
+
+    const mapSortArray: (array: ColumnResponse[] | TaskResponse[]) => ColumnResponse[] | TaskResponse[] = (array) => {
+      return array
+        .map((item, index) => ({...item, order: index}))
+        .sort((a, b) => a.order - b.order);
+    }
+
+    const mapArray: (array: ColumnResponse[] | TaskResponse[]) => ColumnResponse[] | TaskResponse[] = (array) => {
+      return array.map((item, index) => ({...item, order: index}));
+    }
+
+    const sortArray: (array: ColumnResponse[] | TaskResponse[]) => ColumnResponse[] | TaskResponse[] = (array) => {
+      return array.sort((a, b) => a.order - b.order);
+    }
+
+    const setTasksArrayForRequest: (array: TaskResponse[]) => TaskOrderRequest[] = (array) => {
+      return array.map((task) => ({
+        _id: task._id,
+        order: task.order,
+        columnId: task.columnId,
+      }));
+    }
+
+
 
     if (type === 'columns') {
       const items: ColumnResponse[] = [...columns];
       const element = items.find((item) => item._id === result.draggableId);
 
-      if (!columns || !element || source.index === destination.index) return;
+      if (!columns || !element || source.index === destination.index) {
+        return;
+      }
 
-      items.splice(source.index, 1);
-      items.splice(destination.index, 0, element);
-      const array: ColumnResponse[] = items
-        .map((item, index) => ({...item, order: index}))
-        .sort((a, b) => a.order - b.order);
-      //
+      spliceArray(items, element);
+      const array: ColumnResponse[] = mapSortArray(items);
+
       const arrayRequest: ColumnOrderRequest[] = array.map((column) => ({_id: column._id, order: column.order}));
 
       setColumns(array);
@@ -148,21 +174,13 @@ export default function Board() {
         if (!element) {
           return;
         }
+        spliceArray(currentColumnTasksArray, element);
 
-        currentColumnTasksArray.splice(source.index, 1);
-        currentColumnTasksArray.splice(destination.index, 0, element);
-        const array: TaskResponse[] = [...currentColumnTasksArray, ...otherColumnsTasksArray]
-          .map((item, index) => ({ ...item, order: index }))
-          .sort((a, b) => a.order - b.order);
 
-        const arrayRequest: TaskOrderRequest[] = array.map((task) => ({
-          _id: task._id,
-          order: task.order,
-          columnId: task.columnId,
-        }));
+        const array: TaskResponse[] = sortArray([...(mapArray(currentColumnTasksArray) as TaskResponse[]), ...otherColumnsTasksArray]) as TaskResponse[];
 
         setTasks(array);
-        await changeTaskOrder(arrayRequest);
+        await changeTaskOrder(setTasksArrayForRequest(array));
       } else {
         const startColumnTasksArray: TaskResponse[] = [...tasks].filter((task) => task.columnId === source.droppableId);
         const finishColumnTasksArray: TaskResponse[] = [...tasks].filter((task) => task.columnId === destination.droppableId);
@@ -170,56 +188,26 @@ export default function Board() {
 
         const element = startColumnTasksArray.find((item) => item._id === result.draggableId);
 
-        startColumnTasksArray.splice(source.index, 1);
-
-        if (startColumnTasksArray.length) {
-          startColumnTasksArray.map((item, index) => ({ ...item, order: index }));
-        }
-
         if (!element) {
           return;
         }
 
+        startColumnTasksArray.splice(source.index, 1);
+
+        if (startColumnTasksArray.length) {
+          mapArray(startColumnTasksArray);
+        }
+
         finishColumnTasksArray.splice(destination.index, 0, { ...element, columnId: destination.droppableId });
-        finishColumnTasksArray.map((item, index) => ({ ...item, order: index }));
 
-        const array: TaskResponse[] = [...startColumnTasksArray || [], ...finishColumnTasksArray, ...otherColumnTasksArray]
-          .map((item, index) => ({ ...item, order: index }))
-          .sort((a, b) => a.order - b.order);
+        const array: TaskResponse[] = sortArray([...startColumnTasksArray || [], ...mapArray(finishColumnTasksArray), ...otherColumnTasksArray]) as TaskResponse[];
 
-        const arrayRequest: TaskOrderRequest[] = array.map((task) => ({
-          _id: task._id,
-          order: task.order,
-          columnId: task.columnId,
-        }));
+        console.log(array);
 
         setTasks(array);
-        await changeTaskOrder(arrayRequest);
+        await changeTaskOrder(setTasksArrayForRequest(array));
       }
-
-
     }
-
-
-
-
-    // const items: ColumnResponse[] = columns.reduce((array: ColumnResponse[], item: ColumnResponse) => {
-    //   if (item._id === result.draggableId) {
-    //     array.push({...item, order: columns[result?.destination?.index || 0].order});
-    //     return array;
-    //   }
-    //
-    //   array.push({...item, order: (item.order >= columns[result?.destination?.index || 0].order) ? item.order + 1 : item.order})
-    //   return array;
-    // }, [])
-    //
-    //const itemsSort: ColumnResponse[] = items.sort((a, b) => a.order - b.order);
-    // console.log(itemsSort);
-    // items[element] = { ...items[element], order: result.destination.index };
-    //
-    // console.log(columnsList);
-    // //console.log(items.splice(result.destination.index, 0, element));
-    // //console.log(array)
   }
 
   return (
