@@ -101,6 +101,16 @@ const TechStack = () => {
                   </User.Link>
                 </TechComponent>
               </Grid>
+              <Grid md={3} sm={6} xs>
+                <TechComponent
+                  squared
+                  src='/logo/logo-beautiful-dnd.png'
+                  name='RBD'>
+                  <User.Link href='https://github.com/atlassian/react-beautiful-dnd'>
+                    react-beautiful-dnd
+                  </User.Link>
+                </TechComponent>
+              </Grid>
             </Grid.Container>
           </Card>
         </Grid>

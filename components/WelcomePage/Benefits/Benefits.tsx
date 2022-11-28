@@ -34,9 +34,9 @@ const Benefits = () => {
               style={{ height: 'auto' }}
             />
             <Spacer y={1} />
-            <Text h5>{t('benefitsInterfaceDetails1')}</Text>
-            <Text h5>{t('benefitsInterfaceDetails2')}</Text>
-            <Text h5>{t('benefitsInterfaceDetails3')}</Text>
+            <Text h5 css={{ '@lgMax': { as: 'flex-start' }}}>{t('benefitsInterfaceDetails1')}</Text>
+            <Text h5 css={{ '@lgMax': { as: 'flex-start' }}}>{t('benefitsInterfaceDetails2')}</Text>
+            <Text h5 css={{ '@lgMax': { as: 'flex-start' }}}>{t('benefitsInterfaceDetails3')}</Text>
           </Card>
         </Grid>
         <Grid sm={4}>
@@ -54,9 +54,9 @@ const Benefits = () => {
               style={{ height: 'auto' }}
             />
             <Spacer y={1} />
-            <Text h5>{t('benefitsNoLimitsDetails1')}</Text>
-            <Text h5>{t('benefitsNoLimitsDetails2')}</Text>
-            <Text h5>{t('benefitsNoLimitsDetails3')}</Text>
+            <Text h5 css={{ '@lgMax': { as: 'flex-start' }}}>{t('benefitsNoLimitsDetails1')}</Text>
+            <Text h5 css={{ '@lgMax': { as: 'flex-start' }}}>{t('benefitsNoLimitsDetails2')}</Text>
+            <Text h5 css={{ '@lgMax': { as: 'flex-start' }}}>{t('benefitsNoLimitsDetails3')}</Text>
           </Card>
         </Grid>
         <Grid sm={4}>
@@ -74,9 +74,9 @@ const Benefits = () => {
               style={{ height: 'auto' }}
             />
             <Spacer y={1} />
-            <Text h5>{t('benefitsSearchDetails1')}</Text>
-            <Text h5>{t('benefitsSearchDetails2')}</Text>
-            <Text h5>{t('benefitsSearchDetails3')}</Text>
+            <Text h5 css={{ '@lgMax': { as: 'flex-start' }}}>{t('benefitsSearchDetails1')}</Text>
+            <Text h5 css={{ '@lgMax': { as: 'flex-start' }}}>{t('benefitsSearchDetails2')}</Text>
+            <Text h5 css={{ '@lgMax': { as: 'flex-start' }}}>{t('benefitsSearchDetails3')}</Text>
           </Card>
         </Grid>
       </Grid.Container>
