@@ -29,6 +29,7 @@ import {
   useGetTasksQuery,
 } from '../../features/boards/boardsApi'
 import { useAppSelector } from '../../features/hooks'
+import { CustomError } from '../../utils/interfaces'
 
 export const getServerSideProps = async ({
   locale,
@@ -66,9 +67,11 @@ export default function Board() {
   const userId = useAppSelector((state) => state.user._id) as string
   const usertoken = useAppSelector((state) => state.user.token) as string
 
-  const { data: columnsList, isSuccess: isColumnFetched } = useGetColumnsQuery(
-    userId ? boardId : skipToken
-  )
+  const {
+    data: columnsList,
+    error,
+    isSuccess: isColumnFetched,
+  } = useGetColumnsQuery(userId ? boardId : skipToken)
   const { data: boardData } = useGetSingleBoardQuery(
     userId ? boardId : skipToken
   )
@@ -104,6 +107,10 @@ export default function Board() {
               <Spacer x={1} />
               <BoardDescription boardData={boardData} />
             </>
+          ) : error ? (
+            <Loading size='lg' color='error'>
+              {(error as CustomError).data.message}
+            </Loading>
           ) : (
             <Loading size='lg'> Loading </Loading>
           )}

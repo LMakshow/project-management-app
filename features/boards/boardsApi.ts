@@ -1,4 +1,9 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import {
+  BaseQueryFn,
+  createApi,
+  FetchArgs,
+  fetchBaseQuery,
+} from '@reduxjs/toolkit/query/react'
 import { SERVER } from '../../utils/constants'
 import {
   BoardRequest,
@@ -8,6 +13,7 @@ import {
   ColumnResponse,
   CreateColumnRequest,
   CreateTaskRequest,
+  CustomError,
   TaskOrderRequest,
   TaskRequest,
   TaskResponse,
@@ -26,7 +32,7 @@ export const boardsApi = createApi({
       }
       return headers
     },
-  }),
+  }) as BaseQueryFn<string | FetchArgs, unknown, CustomError, {}>,
   tagTypes: ['BoardList', 'ColumnList', 'TaskList'],
   endpoints: (builder) => ({
     // Boards

@@ -23,7 +23,7 @@ import { IconKanbanAdd } from '../components/icons/icon_kanban_add'
 import PopoverAddBoard from '../components/Popover-add-board'
 import { useEffect, useState } from 'react'
 import Search from '../components/Search'
-import { BoardResponse, TaskResponse } from '../utils/interfaces'
+import { BoardResponse, CustomError, TaskResponse } from '../utils/interfaces'
 import { useDebounce } from '../features/hooks'
 import { IconSearch } from '../components/icons/boardCard/icon_search'
 import { useRouter } from 'next/router'
@@ -145,9 +145,13 @@ export default function Boards() {
                 </Popover.Content>
               </Popover>
             </>
-          ) : (
+          ) : isLoading ? (
             <Loading size='lg'> Loading </Loading>
-          )}
+          ) : error ? (
+            <Loading size='lg' color='error'>
+              {(error as CustomError).data.message}
+            </Loading>
+          ) : null}
         </Row>
         {boardList &&
           !filterText &&
