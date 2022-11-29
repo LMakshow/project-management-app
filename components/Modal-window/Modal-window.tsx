@@ -176,7 +176,8 @@ const ModalWindow = ({ isShowing, hide, action, setAction }: TModalProps) => {
           </Text>
         </Modal.Header>
 
-        <Modal.Body css={{ gap: '10px', overflow: 'visible' }}>
+        <Modal.Body
+          css={{ gap: '10px', overflow: 'visible', paddingBottom: '0' }}>
           {(action === 'signUp' || action === 'edit') && (
             <Input
               {...nameBindings}
@@ -221,7 +222,7 @@ const ModalWindow = ({ isShowing, hide, action, setAction }: TModalProps) => {
           {isExist && <span style={{ color: 'red' }}> {t('exist')}</span>}
         </Modal.Body>
 
-        <Modal.Footer>
+        <Modal.Footer css={{ paddingTop: '0' }}>
           {action !== 'edit' && (
             <Row
               css={{
@@ -229,6 +230,7 @@ const ModalWindow = ({ isShowing, hide, action, setAction }: TModalProps) => {
                 alignItems: 'baseline',
                 justifyContent: 'center',
                 gap: '5px',
+                marginBottom: '15px',
               }}>
               {action !== 'signUp' ? (
                 <>
