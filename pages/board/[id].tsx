@@ -112,7 +112,7 @@ export default function Board() {
               {(error as CustomError).data.message}
             </Loading>
           ) : (
-            <Loading size='lg'> Loading </Loading>
+            <Loading size='lg'> {t('Loading')} </Loading>
           )}
 
           <div style={{ display: 'flex', flexGrow: '1', maxWidth: '100%' }}>

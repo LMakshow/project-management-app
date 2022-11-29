@@ -146,7 +146,7 @@ export default function Boards() {
               </Popover>
             </>
           ) : isLoading ? (
-            <Loading size='lg'> Loading </Loading>
+            <Loading size='lg'>{t('Loading')}</Loading>
           ) : error ? (
             <Loading size='lg' color='error'>
               {(error as CustomError).data.message}
