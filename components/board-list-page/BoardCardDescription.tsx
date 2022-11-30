@@ -23,6 +23,8 @@ const BoardCardDescription: FC<BoardDescriptionProps> = (props) => {
       fw: 'nowrap',
       alignItems: 'center',
       justifyContent: 'start',
+      h: '157px',
+      overflow: 'auto',
       p: 0,
     }}>
       {props.isEdit
@@ -43,11 +45,25 @@ const BoardCardDescription: FC<BoardDescriptionProps> = (props) => {
               p: 0,
               cursor: 'pointer',
               minHeight: '140px',
-              minWidth: '386px',
               overflow: 'auto',
+              minWidth: '280px',
+              maxWidth: '500px',
+              '@xs': {
+                minWidth: '206px',
+              },
+              '@sm': {
+                minWidth: '370px',
+              },
+              '@md': {
+                minWidth: '320px',
+              },
+              '@lg': {
+                minWidth: '370px',
+              },
             }}>
             <Text css={{
               overflow: 'auto',
+              display: 'block'
             }}
                   size="xl">
               {addNewLine(props.description)}</Text>
