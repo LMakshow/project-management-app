@@ -149,6 +149,7 @@ export default function Boards() {
             <Loading size='lg'>{t('Loading')}</Loading>
           ) : error ? (
             <Loading size='lg' color='error'>
+              {t('ErrorText')}
               {(error as CustomError).data.message}
             </Loading>
           ) : null}
