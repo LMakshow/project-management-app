@@ -134,7 +134,7 @@ export default function Board() {
 
           <div style={{ display: 'flex', flexGrow: '1', maxWidth: '100%', alignItems: 'center' }}>
             <Spacer x={1} css={{ mr: 'auto' }}/>
-            {(isTaskLoading || isColumnLoading || isDeleteColumn) && <Loading/>}
+            {(isTaskLoading || isColumnLoading || isDeleteColumn) ? <Loading css={{ pl: '2px', pr: '2px' }}/> : <Container css={{ p: 0, width: '40px' }} />}
             <Spacer x={1}/>
             <Button
               color='secondary'
