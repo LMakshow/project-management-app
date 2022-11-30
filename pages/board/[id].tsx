@@ -34,11 +34,10 @@ import { CustomError } from '../../utils/interfaces'
 
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import {
-  ColumnOrderRequest,
   ColumnResponse,
-  TaskOrderRequest,
   TaskResponse,
 } from '../../utils/interfaces';
+import onDragEnd from '../../utils/onDragEnd';
 
 export const getServerSideProps = async ({
                                            locale,
@@ -99,98 +98,8 @@ export default function Board() {
     await deleteBoard(boardId)
   }
 
-  console.log(tasks);
-
   const handleOnDragEnd = async (result: DropResult) => {
-    console.log(result)
-    const { destination, source, type } = result;
-    if (!destination || source.index === destination.index && source.droppableId === destination.droppableId) {
-      return;
-    }
-
-    const spliceArray = (array: ColumnResponse[] | TaskResponse[], element: ColumnResponse | TaskResponse) => {
-      array.splice(source.index, 1);
-      array.splice(destination.index, 0, element);
-    }
-
-    const mapSortArray: (array: ColumnResponse[] | TaskResponse[]) => ColumnResponse[] | TaskResponse[] = (array) => {
-      return array
-        .map((item, index) => ({...item, order: index}))
-        .sort((a, b) => a.order - b.order);
-    }
-
-    const mapArray: (array: ColumnResponse[] | TaskResponse[]) => ColumnResponse[] | TaskResponse[] = (array) => {
-      return array.map((item, index) => ({...item, order: index}));
-    }
-
-    const sortArray: (array: ColumnResponse[] | TaskResponse[]) => ColumnResponse[] | TaskResponse[] = (array) => {
-      return array.sort((a, b) => a.order - b.order);
-    }
-
-    const setTasksArrayForRequest: (array: TaskResponse[]) => TaskOrderRequest[] = (array) => {
-      return array.map((task) => ({
-        _id: task._id,
-        order: task.order,
-        columnId: task.columnId,
-      }));
-    }
-
-    if (type === 'columns') {
-      const items: ColumnResponse[] = [...columns];
-      const element = items.find((item) => item._id === result.draggableId);
-
-      if (!columns || !element || source.index === destination.index) {
-        return;
-      }
-
-      spliceArray(items, element);
-      const array: ColumnResponse[] = mapSortArray(items);
-      const arrayRequest: ColumnOrderRequest[] = array.map((column) => ({_id: column._id, order: column.order}));
-
-      setColumns(array);
-      await changeColumnOrder(arrayRequest);
-    }
-
-    if (type === 'tasks' && tasks?.length) {
-      if (source.droppableId === destination.droppableId) {
-        const currentColumnTasksArray: TaskResponse[] = [...tasks].filter((task) => task.columnId === destination.droppableId);
-        const otherColumnsTasksArray: TaskResponse[] = [...tasks].filter((task) => task.columnId !== destination.droppableId) || [];
-
-        const element = currentColumnTasksArray.find((item) => item._id === result.draggableId);
-
-        if (!element) {
-          return;
-        }
-        spliceArray(currentColumnTasksArray, element);
-
-
-        const array: TaskResponse[] = sortArray([...(mapArray(currentColumnTasksArray) as TaskResponse[]), ...otherColumnsTasksArray]) as TaskResponse[];
-
-        setTasks(array);
-        await changeTaskOrder(setTasksArrayForRequest(array));
-      } else {
-        const startColumnTasksArray: TaskResponse[] = [...tasks].filter((task) => task.columnId === source.droppableId);
-        const finishColumnTasksArray: TaskResponse[] = [...tasks].filter((task) => task.columnId === destination.droppableId);
-        const otherColumnTasksArray: TaskResponse[] = [...tasks].filter((task) => (task.columnId !== destination.droppableId) && (task.columnId !== source.droppableId)) || [];
-
-        const element = startColumnTasksArray.find((item) => item._id === result.draggableId);
-
-        if (!element) {
-          return;
-        }
-
-        startColumnTasksArray.splice(source.index, 1);
-
-        finishColumnTasksArray.splice(destination.index, 0, { ...element, columnId: destination.droppableId });
-
-        const array: TaskResponse[] = sortArray([...mapArray(startColumnTasksArray) || [], ...mapArray(finishColumnTasksArray), ...otherColumnTasksArray]) as TaskResponse[];
-
-        console.log(array);
-
-        setTasks(array);
-        await changeTaskOrder(setTasksArrayForRequest(array));
-      }
-    }
+    await onDragEnd(result, columns, tasks, setColumns, changeColumnOrder, setTasks, changeTaskOrder);
   }
 
   return (
@@ -223,7 +132,7 @@ export default function Board() {
 
           <div style={{ display: 'flex', flexGrow: '1', maxWidth: '100%', alignItems: 'center' }}>
             <Spacer x={1} css={{ mr: 'auto' }}/>
-            { (isTaskLoading || isColumnLoading) && <Loading /> }
+            {(isTaskLoading || isColumnLoading) && <Loading/>}
             <Spacer x={1}/>
             <Button
               color='secondary'
@@ -275,12 +184,12 @@ export default function Board() {
 
         <Spacer y={1}/>
         <DragDropContext onDragEnd={handleOnDragEnd}>
-          <Droppable droppableId={boardId} direction='horizontal' type='columns'>
+          <Droppable droppableId={boardId} direction="horizontal" type="columns">
             {(provided) => (
               <Grid.Container
-                justify='flex-start'
+                justify="flex-start"
                 gap={1}
-                wrap='nowrap'
+                wrap="nowrap"
                 css={{
                   overflowX: 'auto',
                   maxHeight: 'calc(-175px + 100vh)',

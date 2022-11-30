@@ -6,3 +6,4 @@ export const addNewLine = (string: string) => {
   }
   return parse(string.replaceAll(/\n/g, '<br>'));
 };
+
