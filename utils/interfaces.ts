@@ -66,6 +66,11 @@ export interface ColumnOrderRequest {
   order: number
 }
 
+export interface ColumnOrderRequestData {
+  list: ColumnOrderRequest[]
+  boardId: string
+}
+
 export interface ColumnResponse {
   _id: string
   title: string

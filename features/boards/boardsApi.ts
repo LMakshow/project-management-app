@@ -3,14 +3,14 @@ import { SERVER } from '../../utils/constants'
 import {
   BoardRequest,
   BoardResponse,
-  ColumnOrderRequest,
+  ColumnOrderRequest, ColumnOrderRequestData,
   ColumnRequest,
   ColumnResponse,
   CreateColumnRequest,
   CreateTaskRequest,
   TaskOrderRequest,
   TaskRequest,
-  TaskResponse
+  TaskResponse,
 } from '../../utils/interfaces'
 import { RootState } from '../store'
 
@@ -83,16 +83,27 @@ export const boardsApi = createApi({
       }),
       invalidatesTags: ['ColumnList'],
     }),
-    changeColumnOrder: builder.mutation<ColumnResponse[], ColumnOrderRequest[]>(
+    changeColumnOrder: builder.mutation<ColumnResponse[], ColumnOrderRequestData>(
       {
         query: (payload) => ({
           url: `/columnsSet`,
           method: 'PATCH',
-          body: payload,
+          body: payload.list,
         }),
+        async onQueryStarted(payload, { dispatch, queryFulfilled }) {
+          const patchResult = dispatch(
+            boardsApi.util.updateQueryData('getColumns', payload.boardId, (draft) => {
+              Object.assign(draft, payload.list)
+            })
+          )
+          try {
+            await queryFulfilled
+          } catch {
+            patchResult.undo()
+          }
+        },
         invalidatesTags: ['ColumnList'],
-      }
-    ),
+      }),
     deleteColumn: builder.mutation<BoardResponse, ColumnRequest>({
       query: ({ boardId, columnId }) => ({
         url: `/boards/${boardId}/columns/${columnId}`,

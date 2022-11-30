@@ -148,8 +148,13 @@ export default function Board() {
       const array: ColumnResponse[] = mapSortArray(items);
       const arrayRequest: ColumnOrderRequest[] = array.map((column) => ({_id: column._id, order: column.order}));
 
+      const arrayRequestData: ColumnOrderRequestData = {
+        list: arrayRequest,
+        boardId
+      }
+
       setColumns(array);
-      await changeColumnOrder(arrayRequest);
+      await changeColumnOrder(arrayRequestData);
     }
 
     if (type === 'tasks' && tasks?.length) {
