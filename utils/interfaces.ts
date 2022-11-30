@@ -114,6 +114,11 @@ export interface TaskOrderRequest {
   columnId: string
 }
 
+export interface TaskOrderRequestData {
+  list: TaskOrderRequest[]
+  boardId: string
+}
+
 // Mutations
 export interface BoardTitleProps {
   setIsEdit: (value: boolean) => void

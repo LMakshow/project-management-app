@@ -8,7 +8,7 @@ import {
   ColumnResponse,
   CreateColumnRequest,
   CreateTaskRequest,
-  TaskOrderRequest,
+  TaskOrderRequest, TaskOrderRequestData,
   TaskRequest,
   TaskResponse,
 } from '../../utils/interfaces'
@@ -65,7 +65,7 @@ export const boardsApi = createApi({
     // Columns
     getColumns: builder.query<ColumnResponse[], string>({
       query: (boardId) => `/boards/${boardId}/columns`,
-      providesTags: ['ColumnList'],
+      providesTags: (result, error, boardId) => ([{type: 'ColumnList', id: boardId }]),
     }),
     createColumn: builder.mutation<ColumnResponse, CreateColumnRequest>({
       query: ({ boardId, title, order }) => ({
@@ -93,7 +93,8 @@ export const boardsApi = createApi({
         async onQueryStarted(payload, { dispatch, queryFulfilled }) {
           const patchResult = dispatch(
             boardsApi.util.updateQueryData('getColumns', payload.boardId, (draft) => {
-              Object.assign(draft, payload.list)
+              console.log(draft)
+              Object.assign(draft , payload.list)
             })
           )
           try {
@@ -102,7 +103,7 @@ export const boardsApi = createApi({
             patchResult.undo()
           }
         },
-        invalidatesTags: ['ColumnList'],
+        invalidatesTags: (result, error, { boardId }) => ([{type: 'ColumnList', id: boardId }]),
       }),
     deleteColumn: builder.mutation<BoardResponse, ColumnRequest>({
       query: ({ boardId, columnId }) => ({
@@ -151,12 +152,24 @@ export const boardsApi = createApi({
       }),
       invalidatesTags: ['TaskList'],
     }),
-    changeTaskOrder: builder.mutation<TaskResponse[], TaskOrderRequest[]>({
+    changeTaskOrder: builder.mutation<TaskResponse[], TaskOrderRequestData>({
       query: (payload) => ({
         url: `/tasksSet`,
         method: 'PATCH',
-        body: payload,
+        body: payload.list,
       }),
+      async onQueryStarted(payload, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          boardsApi.util.updateQueryData('getTasks', payload.boardId, (draft) => {
+            Object.assign(draft, payload.list)
+          })
+        )
+        try {
+          await queryFulfilled
+        } catch {
+          patchResult.undo()
+        }
+      },
       invalidatesTags: ['TaskList'],
     }),
     deleteTask: builder.mutation<TaskResponse, TaskRequest>({

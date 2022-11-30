@@ -35,7 +35,7 @@ import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautif
 import {
   ColumnOrderRequest, ColumnOrderRequestData,
   ColumnResponse,
-  TaskOrderRequest,
+  TaskOrderRequest, TaskOrderRequestData,
   TaskResponse,
 } from '../../utils/interfaces';
 
@@ -100,7 +100,8 @@ export default function Board() {
     await deleteBoard(boardId)
   }
 
-  console.log(tasks);
+  //console.log(tasks);
+  console.log(columns);
 
   const handleOnDragEnd = async (result: DropResult) => {
     console.log(result)
@@ -136,11 +137,11 @@ export default function Board() {
       }));
     }
 
-    if (type === 'columns') {
-      const items: ColumnResponse[] = [...columns];
+    if (type === 'columns' && columnsList) {
+      const items: ColumnResponse[] = [...columnsList];
       const element = items.find((item) => item._id === result.draggableId);
 
-      if (!columns || !element || source.index === destination.index) {
+      if (!element || source.index === destination.index) {
         return;
       }
 
@@ -153,7 +154,7 @@ export default function Board() {
         boardId
       }
 
-      setColumns(array);
+      //setColumns(array);
       await changeColumnOrder(arrayRequestData);
     }
 
@@ -171,9 +172,13 @@ export default function Board() {
 
 
         const array: TaskResponse[] = sortArray([...(mapArray(currentColumnTasksArray) as TaskResponse[]), ...otherColumnsTasksArray]) as TaskResponse[];
+        const arrayRequestData: TaskOrderRequestData = {
+          list: setTasksArrayForRequest(array),
+          boardId
+        }
 
         setTasks(array);
-        await changeTaskOrder(setTasksArrayForRequest(array));
+        await changeTaskOrder(arrayRequestData);
       } else {
         const startColumnTasksArray: TaskResponse[] = [...tasks].filter((task) => task.columnId === source.droppableId);
         const finishColumnTasksArray: TaskResponse[] = [...tasks].filter((task) => task.columnId === destination.droppableId);
@@ -191,10 +196,13 @@ export default function Board() {
 
         const array: TaskResponse[] = sortArray([...mapArray(startColumnTasksArray) || [], ...mapArray(finishColumnTasksArray), ...otherColumnTasksArray]) as TaskResponse[];
 
-        console.log(array);
+        const arrayRequestData: TaskOrderRequestData = {
+          list: setTasksArrayForRequest(array),
+          boardId
+        }
 
         setTasks(array);
-        await changeTaskOrder(setTasksArrayForRequest(array));
+        await changeTaskOrder(arrayRequestData);
       }
     }
   }
@@ -292,8 +300,8 @@ export default function Board() {
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
-                {columns &&
-                  columns.map((column, index) => (
+                {columnsList &&
+                  columnsList.map((column, index) => (
                     <Draggable key={column._id} draggableId={column._id} index={index}>
                       {(provided) => (
                         <Grid
