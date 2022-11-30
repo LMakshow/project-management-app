@@ -34,7 +34,7 @@ import { CustomError } from '../../utils/interfaces'
 
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import {
-  ColumnOrderRequest, ColumnOrderRequestData,
+  ColumnOrderRequest,
   ColumnResponse,
   TaskOrderRequest,
   TaskResponse,
@@ -60,19 +60,9 @@ export default function Board() {
   const boardId = String(router.query.id)
   const [login, { isSuccess: isSigned }] = useSignInMutation()
   const [deleteBoard] = useDeleteBoardMutation()
-  const [changeColumnOrder] = useChangeColumnOrderMutation()
-  const [changeTaskOrder] = useChangeTaskOrderMutation()
+  const [changeColumnOrder, { isLoading: isColumnLoading }] = useChangeColumnOrderMutation()
+  const [changeTaskOrder, { isLoading: isTaskLoading }] = useChangeTaskOrderMutation()
 
-  // //autologin for testing purposes
-  // useEffect(() => {
-  //   const fetch = async () => {
-  //     await login({
-  //       login: 'TestUser',
-  //       password: 'TestUserPwd',
-  //     })
-  //   }
-  //   fetch()
-  // }, [login])
   const [columns, setColumns] = useState<ColumnResponse[]>([]);
   const [tasks, setTasks] = useState<TaskResponse[]>([]);
 
@@ -231,8 +221,10 @@ export default function Board() {
             <Loading size='lg'> {t('Loading')} </Loading>
           )}
 
-          <div style={{ display: 'flex', flexGrow: '1', maxWidth: '100%' }}>
-            <Spacer x={1} css={{ mr: 'auto' }} />
+          <div style={{ display: 'flex', flexGrow: '1', maxWidth: '100%', alignItems: 'center' }}>
+            <Spacer x={1} css={{ mr: 'auto' }}/>
+            { (isTaskLoading || isColumnLoading) && <Loading /> }
+            <Spacer x={1}/>
             <Button
               color='secondary'
               css={{ my: '6px' }}
