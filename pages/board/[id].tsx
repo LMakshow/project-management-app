@@ -33,7 +33,7 @@ import { useAppSelector } from '../../features/hooks'
 
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import {
-  ColumnOrderRequest,
+  ColumnOrderRequest, ColumnOrderRequestData,
   ColumnResponse,
   TaskOrderRequest,
   TaskResponse,
@@ -136,8 +136,6 @@ export default function Board() {
       }));
     }
 
-
-
     if (type === 'columns') {
       const items: ColumnResponse[] = [...columns];
       const element = items.find((item) => item._id === result.draggableId);
@@ -148,7 +146,6 @@ export default function Board() {
 
       spliceArray(items, element);
       const array: ColumnResponse[] = mapSortArray(items);
-
       const arrayRequest: ColumnOrderRequest[] = array.map((column) => ({_id: column._id, order: column.order}));
 
       setColumns(array);
@@ -185,13 +182,9 @@ export default function Board() {
 
         startColumnTasksArray.splice(source.index, 1);
 
-        if (startColumnTasksArray.length) {
-          mapArray(startColumnTasksArray);
-        }
-
         finishColumnTasksArray.splice(destination.index, 0, { ...element, columnId: destination.droppableId });
 
-        const array: TaskResponse[] = sortArray([...startColumnTasksArray || [], ...mapArray(finishColumnTasksArray), ...otherColumnTasksArray]) as TaskResponse[];
+        const array: TaskResponse[] = sortArray([...mapArray(startColumnTasksArray) || [], ...mapArray(finishColumnTasksArray), ...otherColumnTasksArray]) as TaskResponse[];
 
         console.log(array);
 
