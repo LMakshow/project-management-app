@@ -16,6 +16,7 @@ const Column = (props: {
   column: ColumnResponse
   tasks: TaskResponse[] | undefined
   dragHandleProps: DraggableProvidedDragHandleProps | undefined
+  setDeleteColumn: (value: boolean) => void
 }) => {
   const { t } = useTranslation('common')
   const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false)

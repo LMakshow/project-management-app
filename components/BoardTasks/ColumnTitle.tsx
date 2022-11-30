@@ -1,5 +1,5 @@
 import { Spacer, Text, Tooltip } from '@nextui-org/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useTranslation } from 'next-i18next'
 import {
@@ -15,13 +15,17 @@ import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 const ColumnTitle = (props: {
   column: ColumnResponse
   tasks: TaskResponse[] | undefined
-  dragHandleProps: DraggableProvidedDragHandleProps | undefined
+  setDeleteColumn: (value: boolean) => void
 }) => {
   const { t } = useTranslation('common')
   const [isEdit, setIsEdit] = useState(false)
   const [updateColumn] = useUpdateColumnMutation()
-  const [deleteColumn] = useDeleteColumnMutation()
+  const [deleteColumn, { isLoading }] = useDeleteColumnMutation()
   const [deleteTask] = useDeleteTaskMutation()
+
+  useEffect(() => {
+    props.setDeleteColumn(isLoading)
+  }, [isLoading])
 
   const handleClick = () => {
     setIsEdit(!isEdit)

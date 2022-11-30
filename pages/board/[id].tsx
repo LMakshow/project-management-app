@@ -57,6 +57,7 @@ export default function Board() {
   const router = useRouter()
   const { t } = useTranslation('common')
   const boardId = String(router.query.id)
+
   const [login, { isSuccess: isSigned }] = useSignInMutation()
   const [deleteBoard] = useDeleteBoardMutation()
   const [changeColumnOrder, { isLoading: isColumnLoading }] = useChangeColumnOrderMutation()
@@ -64,6 +65,7 @@ export default function Board() {
 
   const [columns, setColumns] = useState<ColumnResponse[]>([]);
   const [tasks, setTasks] = useState<TaskResponse[]>([]);
+  const [isDeleteColumn, setDeleteColumn] = useState<boolean>(false);
 
   const [isCreateColumnOpen, setIsCreateColumnOpen] = useState(false)
   const userId = useAppSelector((state) => state.user._id) as string
@@ -132,7 +134,7 @@ export default function Board() {
 
           <div style={{ display: 'flex', flexGrow: '1', maxWidth: '100%', alignItems: 'center' }}>
             <Spacer x={1} css={{ mr: 'auto' }}/>
-            {(isTaskLoading || isColumnLoading) && <Loading/>}
+            {(isTaskLoading || isColumnLoading || isDeleteColumn) && <Loading/>}
             <Spacer x={1}/>
             <Button
               color='secondary'
@@ -217,6 +219,7 @@ export default function Board() {
                             )}
                             column={column}
                             dragHandleProps={provided.dragHandleProps}
+                            setDeleteColumn={setDeleteColumn}
                           />
                         </Grid>
                       )}
