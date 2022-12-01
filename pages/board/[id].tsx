@@ -39,7 +39,7 @@ import {
   Draggable,
   DropResult,
 } from 'react-beautiful-dnd'
-import { ColumnResponse, TaskResponse } from '../../utils/interfaces'
+import { ColumnResponse, CustomError, TaskResponse } from '../../utils/interfaces'
 import onDragEnd from '../../utils/onDragEnd'
 
 export const getServerSideProps = async ({
@@ -63,9 +63,9 @@ export default function Board() {
 
   const [login, { isSuccess: isSigned }] = useSignInMutation()
   const [deleteBoard] = useDeleteBoardMutation()
-  const [changeColumnOrder, { isLoading: isColumnLoading }] =
+  const [changeColumnOrder, { isLoading: isColumnLoading, error: errorColumn } ] =
     useChangeColumnOrderMutation()
-  const [changeTaskOrder, { isLoading: isTaskLoading }] =
+  const [changeTaskOrder, { isLoading: isTaskLoading, error: errorTask }] =
     useChangeTaskOrderMutation()
 
   const [columns, setColumns] = useState<ColumnResponse[]>([])
@@ -161,11 +161,14 @@ export default function Board() {
               alignItems: 'center',
             }}>
             <Spacer x={1} css={{ mr: 'auto' }} />
-            {isTaskLoading || isColumnLoading || isDeleteColumn ? (
-              <Loading size='sm' css={{ pl: '2px', pr: '2px' }} />
-            ) : (
-              <Container css={{ p: 0, width: '40px' }} />
-            )}
+            {isTaskLoading || isColumnLoading || isDeleteColumn
+              ? <Loading size='sm' css={{ pl: '2px', pr: '2px' }} />
+              : errorColumn || errorTask
+                ? <Loading size='sm' css={{ pl: '2px', pr: '2px' }} color='error'>
+                  {t('Connection error')}
+                </Loading>
+              : <Container css={{ p: 0, width: '121px' }} />
+            }
             <Spacer x={1} />
             <Button
               color='secondary'

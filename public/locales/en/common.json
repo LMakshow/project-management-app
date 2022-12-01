@@ -33,5 +33,6 @@
   "Tasks found": "Tasks found: ",
   "No boards": "No boards matching your search request. Please try to change the query.",
   "Loading": "Loading",
-  "ErrorText": "The error occurred while loading data: "
+  "ErrorText": "The error occurred while loading data: ",
+  "Connection error": "Connection error"
 }
