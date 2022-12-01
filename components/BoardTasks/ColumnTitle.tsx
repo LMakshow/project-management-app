@@ -10,7 +10,6 @@ import {
 import { ColumnResponse, TaskResponse } from '../../utils/interfaces'
 import PopoverDeleteElement from '../PopoverDeleteElement'
 import InputEdit from '../Utilities/InputEdit'
-import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 
 const ColumnTitle = (props: {
   column: ColumnResponse
@@ -86,8 +85,7 @@ const ColumnTitle = (props: {
           <Spacer css={{ mr: 'auto' }}/>
           <PopoverDeleteElement
             localeKeys={{
-              // t('Are you sure you want to delete the column and all accociated tasks?')
-              text: 'Are you sure you want to delete the column and all accociated tasks?',
+              text: 'Are you sure you want to delete the column and all associated tasks?',
             }}
             action={handleDeleteColumn}
           />
