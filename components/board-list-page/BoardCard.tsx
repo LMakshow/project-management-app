@@ -62,8 +62,8 @@ const BoardCard = (props: BoardCardProps) => {
     <Card
       key={board._id}
       css={{
-        pl: '10px',
-        pr: '10px',
+        pl: '15px',
+        pr: '15px',
         pb: '15px',
         '@xs': {
           mw: '276px',

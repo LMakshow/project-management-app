@@ -23,6 +23,7 @@ const BoardCardTitle: FC<BoardTitleProps> = (props) => {
       justifyContent: 'space-between',
       minHeight: '76px',
       flexWrap: 'nowrap',
+      overflow: 'auto',
       p: 0,
     }}>
       {props.isEdit

@@ -1,5 +1,5 @@
 import {
-  Card,
+  Card, Container,
   Modal,
   Spacer,
   Text, Tooltip,
@@ -114,8 +114,15 @@ const ColumnTask = (props: TaskResponse) => {
             onConfirmEdit={(description) => handleUpdateTask({ description: description })}
           />) : (
             <Tooltip content={t('Edit description')} css={{ zIndex: 9999 }}>
-              <Text onClick={() => setIsEditDescription(!isEditDescription)}
-                    css={{ cursor: 'pointer' }}>{addNewLine(props.description)}</Text>
+              <Container onClick={() => setIsEditDescription(!isEditDescription)} css={{
+                minHeight: '140px',
+                minWidth: '352px',
+                cursor: 'pointer',
+                overflow: 'auto',
+                p: 0
+              }}>
+                <Text>{addNewLine(props.description)}</Text>
+              </Container>
             </Tooltip>
           )}
 

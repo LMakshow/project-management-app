@@ -21,19 +21,29 @@ import { IconBack } from '../../components/icons/boardCard/icon_back'
 import { IconPlus } from '../../components/icons/boardCard/icon_plus'
 import Layout, { siteTitle } from '../../components/layout'
 import PopoverDeleteElement from '../../components/PopoverDeleteElement'
-import { useSignInMutation } from '../../features/auth/authApi'
 import {
   useDeleteBoardMutation,
   useGetColumnsQuery,
   useGetSingleBoardQuery,
   useGetTasksQuery,
+  useChangeColumnOrderMutation,
+  useChangeTaskOrderMutation,
 } from '../../features/boards/boardsApi'
 import { useAppSelector } from '../../features/hooks'
 import { CustomError } from '../../utils/interfaces'
 
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from 'react-beautiful-dnd'
+import { ColumnResponse, TaskResponse } from '../../utils/interfaces'
+import onDragEnd from '../../utils/onDragEnd'
+
 export const getServerSideProps = async ({
-  locale,
-}: {
+                                           locale,
+                                         }: {
   locale: 'en' | 'ru'
 }) => ({
   props: {
@@ -49,19 +59,16 @@ export default function Board() {
   const router = useRouter()
   const { t } = useTranslation('common')
   const boardId = String(router.query.id)
-  const [login, { isSuccess: isSigned }] = useSignInMutation()
-  const [deleteBoard] = useDeleteBoardMutation()
 
-  // //autologin for testing purposes
-  // useEffect(() => {
-  //   const fetch = async () => {
-  //     await login({
-  //       login: 'TestUser',
-  //       password: 'TestUserPwd',
-  //     })
-  //   }
-  //   fetch()
-  // }, [login])
+  const [deleteBoard] = useDeleteBoardMutation()
+  const [changeColumnOrder, { isLoading: isColumnLoading, isError: isColumnError }] =
+    useChangeColumnOrderMutation()
+  const [changeTaskOrder, { isLoading: isTaskLoading, isError: isTaskError }] =
+    useChangeTaskOrderMutation()
+
+  const [columns, setColumns] = useState<ColumnResponse[]>([])
+  const [tasks, setTasks] = useState<TaskResponse[]>([])
+  const [isDeleteColumn, setDeleteColumn] = useState<boolean>(false)
 
   const [isCreateColumnOpen, setIsCreateColumnOpen] = useState(false)
   const userId = useAppSelector((state) => state.user._id) as string
@@ -73,12 +80,28 @@ export default function Board() {
     isSuccess: isColumnFetched,
   } = useGetColumnsQuery(userId ? boardId : skipToken)
   const { data: boardData } = useGetSingleBoardQuery(
-    userId ? boardId : skipToken
+    userId ? boardId : skipToken,
   )
   const { data: tasksList } = useGetTasksQuery(userId ? boardId : skipToken)
-  const nextColumnOrder = columnsList
-    ? columnsList?.reduce((a, b) => Math.max(a, b.order), 1)
+  const nextColumnOrder = columnsList?.length
+    ? 1 + columnsList?.reduce((a, b) => Math.max(a, b.order), 0)
     : 0
+
+  useEffect(() => {
+    if (!(isColumnLoading || isTaskLoading)) {
+      const columnArray: ColumnResponse[] = columnsList
+        ? [...columnsList].sort((a, b) => a.order - b.order)
+        : []
+      const taskArray: TaskResponse[] = tasksList
+        ? [...tasksList].sort((a, b) => a.order - b.order)
+        : []
+
+      setColumns(columnArray)
+      setTasks(taskArray)
+    }
+    // We don't use isColumnLoading and isTaskLoading as deps here to prevent extra refetching
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [columnsList, tasksList])
 
   useEffect(() => {
     if (!usertoken) router.push('/')
@@ -86,6 +109,18 @@ export default function Board() {
 
   const handleDeleteElement = async () => {
     await deleteBoard(boardId)
+  }
+
+  const handleOnDragEnd = async (result: DropResult) => {
+    await onDragEnd(
+      result,
+      columns,
+      tasks,
+      setColumns,
+      changeColumnOrder,
+      setTasks,
+      changeTaskOrder,
+    )
   }
 
   return (
@@ -100,12 +135,12 @@ export default function Board() {
           py: '$8',
           alignItems: 'center',
         }}>
-        <Row align='flex-end' wrap='wrap'>
+        <Row align="flex-end" wrap="wrap">
           {boardData ? (
             <>
-              <BoardTitle boardData={boardData} />
-              <Spacer x={1} />
-              <BoardDescription boardData={boardData} />
+              <BoardTitle boardData={boardData}/>
+              <Spacer x={1}/>
+              <BoardDescription boardData={boardData}/>
             </>
           ) : error ? (
             <Loading size='lg' color='error'>
@@ -116,18 +151,33 @@ export default function Board() {
             <Loading size='lg'> {t('Loading')} </Loading>
           )}
 
-          <div style={{ display: 'flex', flexGrow: '1', maxWidth: '100%' }}>
-            <Spacer x={1} css={{ mr: 'auto' }} />
+          <div
+            style={{
+              display: 'flex',
+              flexGrow: '1',
+              maxWidth: '100%',
+              alignItems: 'center',
+            }}>
+            <Spacer x={1} css={{ mr: 'auto' }}/>
+            {isTaskLoading || isColumnLoading || isDeleteColumn
+              ? <Loading size="sm" css={{ pl: '2px', pr: '2px' }}/>
+              : isColumnError || isTaskError
+                ? <Loading size="sm" css={{ pl: '2px', pr: '2px' }} color="error">
+                  {t('Connection error')}
+                </Loading>
+                : <Container css={{ p: 0, width: '121px' }}/>
+            }
+            <Spacer x={1}/>
             <Button
-              color='secondary'
+              color="secondary"
               css={{ my: '6px' }}
               onClick={() => router.push('/boards')}
               auto
               flat
-              icon={<IconBack fill='currentColor' />}>
+              icon={<IconBack fill="currentColor"/>}>
               {t('Back')}
             </Button>
-            <Spacer x={1} />
+            <Spacer x={1}/>
 
             <Popover
               isBordered
@@ -135,11 +185,11 @@ export default function Board() {
               onOpenChange={setIsCreateColumnOpen}>
               <Popover.Trigger>
                 <Button
-                  color='primary'
+                  color="primary"
                   css={{ my: '6px' }}
                   auto
                   flat
-                  icon={<IconPlus fill='currentColor' />}>
+                  icon={<IconPlus fill="currentColor"/>}>
                   {t('Add New Column')}
                 </Button>
               </Popover.Trigger>
@@ -153,12 +203,11 @@ export default function Board() {
               </Popover.Content>
             </Popover>
 
-            <Spacer x={1} />
+            <Spacer x={1}/>
             <div style={{ margin: '6px 0' }}>
               <PopoverDeleteElement
                 action={handleDeleteElement}
                 localeKeys={{
-                  // t('Popover delete board')
                   text: 'Popover delete board',
                 }}
               />
@@ -166,32 +215,56 @@ export default function Board() {
           </div>
         </Row>
 
-        <Spacer y={1} />
-
-        <Grid.Container
-          justify='flex-start'
-          gap={1}
-          wrap='nowrap'
-          css={{
-            overflowX: 'auto',
-            maxHeight: 'calc(-175px + 100vh)',
-            oy: 'visible',
-            m: '-50px',
-            p: '40px',
-            w: 'auto',
-          }}>
-          {columnsList &&
-            columnsList.map((column) => (
-              <Grid key={column._id} sm={3} css={{ display: 'inherit' }}>
-                <Column
-                  tasks={tasksList?.filter(
-                    (task) => task.columnId === column._id
-                  )}
-                  column={column}
-                />
-              </Grid>
-            ))}
-        </Grid.Container>
+        <Spacer y={1}/>
+        <DragDropContext onDragEnd={handleOnDragEnd}>
+          <Droppable
+            droppableId={boardId}
+            direction="horizontal"
+            type="columns">
+            {(provided) => (
+              <Grid.Container
+                justify="flex-start"
+                gap={1}
+                wrap="nowrap"
+                css={{
+                  overflowX: 'auto',
+                  maxHeight: 'calc(-175px + 100vh)',
+                  oy: 'visible',
+                  m: '-50px',
+                  p: '40px',
+                  w: 'auto',
+                }}
+                {...provided.droppableProps}
+                ref={provided.innerRef}>
+                {columns &&
+                  columns.map((column, index) => (
+                    <Draggable
+                      key={column._id}
+                      draggableId={column._id}
+                      index={index}>
+                      {(provided) => (
+                        <Grid
+                          sm={3}
+                          css={{ display: 'inherit' }}
+                          {...provided.draggableProps}
+                          ref={provided.innerRef}>
+                          <Column
+                            tasks={tasks?.filter(
+                              (task) => task.columnId === column._id,
+                            )}
+                            column={column}
+                            dragHandleProps={provided.dragHandleProps}
+                            setDeleteColumn={setDeleteColumn}
+                          />
+                        </Grid>
+                      )}
+                    </Draggable>
+                  ))}
+                {provided.placeholder}
+              </Grid.Container>
+            )}
+          </Droppable>
+        </DragDropContext>
       </Container>
     </Layout>
   )

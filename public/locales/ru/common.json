@@ -5,7 +5,7 @@
   "Save new title": "Сохранить новое наименование",
   "Edit title": "Редактировать наименование",
   "Add New Task": "Добавить задачу",
-  "Are you sure you want to delete the column and all accociated tasks?": "Вы уверены, что хотите удалить доску и все связанные с ней задачи?",
+  "Are you sure you want to delete the column and all associated tasks?": "Вы уверены, что хотите удалить доску и все связанные с ней задачи?",
   "Create New Column": "Создать новую колонку",
   "Name (required)": "Название (обязательно)",
   "Close": "Закрыть",
@@ -33,5 +33,6 @@
   "Tasks found": "Найденные задачи: ",
   "No boards": "Нет досок с задачами, соответствующих вашему поиску. Пожалуйста, уточните запрос.",
   "Loading": "Загрузка",
-  "ErrorText": "Произошла ошибка при загрузки данных: "
+  "ErrorText": "Произошла ошибка при загрузке данных: ",
+  "Connection error": "Ошибка соединения"
 }

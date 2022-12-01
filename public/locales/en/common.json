@@ -5,7 +5,7 @@
   "Save new title": "Save new title",
   "Edit title": "Edit title",
   "Add New Task": "Add New Task",
-  "Are you sure you want to delete the column and all accociated tasks?": "Are you sure you want to delete the column and all accociated tasks?",
+  "Are you sure you want to delete the column and all associated tasks?": "Are you sure you want to delete the column and all associated tasks?",
   "Create New Column": "Create New Column",
   "Name (required)": "Title (required)",
   "Close": "Close",
@@ -33,5 +33,6 @@
   "Tasks found": "Tasks found: ",
   "No boards": "No boards matching your search request. Please try to change the query.",
   "Loading": "Loading",
-  "ErrorText": "The error occurred while loading data: "
+  "ErrorText": "The error occurred while loading data: ",
+  "Connection error": "Connection error"
 }

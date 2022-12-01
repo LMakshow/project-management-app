@@ -1,5 +1,5 @@
 import { Spacer, Text, Tooltip } from '@nextui-org/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useTranslation } from 'next-i18next'
 import {
@@ -14,12 +14,17 @@ import InputEdit from '../Utilities/InputEdit'
 const ColumnTitle = (props: {
   column: ColumnResponse
   tasks: TaskResponse[] | undefined
+  setDeleteColumn: (value: boolean) => void
 }) => {
   const { t } = useTranslation('common')
   const [isEdit, setIsEdit] = useState(false)
   const [updateColumn] = useUpdateColumnMutation()
-  const [deleteColumn] = useDeleteColumnMutation()
+  const [deleteColumn, { isLoading }] = useDeleteColumnMutation()
   const [deleteTask] = useDeleteTaskMutation()
+
+  useEffect(() => {
+    props.setDeleteColumn(isLoading)
+  }, [isLoading])
 
   const handleClick = () => {
     setIsEdit(!isEdit)
@@ -80,8 +85,7 @@ const ColumnTitle = (props: {
           <Spacer css={{ mr: 'auto' }}/>
           <PopoverDeleteElement
             localeKeys={{
-              // t('Are you sure you want to delete the column and all accociated tasks?')
-              text: 'Are you sure you want to delete the column and all accociated tasks?',
+              text: 'Are you sure you want to delete the column and all associated tasks?',
             }}
             action={handleDeleteColumn}
           />

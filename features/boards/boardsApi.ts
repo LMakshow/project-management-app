@@ -187,11 +187,13 @@ export const {
   useCreateColumnMutation,
   useUpdateColumnMutation,
   useDeleteColumnMutation,
+  useChangeColumnOrderMutation,
 
   useGetTasksQuery,
   useCreateTaskMutation,
   useUpdateTaskMutation,
   useDeleteTaskMutation,
+  useChangeTaskOrderMutation,
 
   useSearchTaskMutation,
   useGetBoardsSetMutation,
