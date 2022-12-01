@@ -19,15 +19,17 @@ export interface UserSignIn {
   password: string
 }
 
+export interface CustomError {
+  data: { statusCode: number; message: string }
+  status: number
+}
+
 export interface UserSignInResponse {
   token: string
   name: string
   login: string
   _id: string
-  error: {
-    data: { statusCode: number; message: string }
-    status: number
-  }
+  error: Error
 }
 
 // Boards

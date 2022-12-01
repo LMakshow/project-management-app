@@ -2,6 +2,7 @@ import {
   Button,
   Input,
   Modal,
+  Row,
   Spacer,
   Text,
   Tooltip,
@@ -24,8 +25,9 @@ import { User } from '../icons/modal/icon_user'
 import { validateEmail, validatePassword } from './validation'
 import { useEditProfileMutation } from '../../features/profileApi'
 import { setUser } from '../../features/auth/userSlice'
+import { useRouter } from 'next/router'
 
-const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
+const ModalWindow = ({ isShowing, hide, action, setAction }: TModalProps) => {
   const dispatch = useAppDispatch()
 
   const userName = useAppSelector((state) => state.user.name) as string
@@ -35,6 +37,8 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
   const usertoken = useAppSelector((state) => state.user.token) as string
 
   const { t } = useTranslation('modal-window')
+
+  const router = useRouter()
 
   const { value: nameValue, bindings: nameBindings } = useInput('')
   const { value: loginValue, bindings: emailBindings } = useInput('')
@@ -92,6 +96,7 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
       dispatch(setUser({ ...userData, password: passwordValue }))
 
       hide()
+      router.push('/boards')
     } catch (error) {
       setIsError(true)
     }
@@ -123,6 +128,8 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
       dispatch(setUser({ ...userData, password: 'TestUserPwd' }))
 
       hide()
+
+      router.push('/boards')
     } catch (error) {
       setIsError(true)
     }
@@ -169,7 +176,8 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
           </Text>
         </Modal.Header>
 
-        <Modal.Body css={{ gap: '10px', overflow: 'visible' }}>
+        <Modal.Body
+          css={{ gap: '10px', overflow: 'visible', paddingBottom: '0' }}>
           {(action === 'signUp' || action === 'edit') && (
             <Input
               {...nameBindings}
@@ -214,7 +222,44 @@ const ModalWindow = ({ isShowing, hide, action }: TModalProps) => {
           {isExist && <span style={{ color: 'red' }}> {t('exist')}</span>}
         </Modal.Body>
 
-        <Modal.Footer>
+        <Modal.Footer css={{ paddingTop: '0' }}>
+          {action !== 'edit' && (
+            <Row
+              css={{
+                display: 'flex',
+                alignItems: 'baseline',
+                justifyContent: 'center',
+                gap: '5px',
+                marginBottom: '15px',
+              }}>
+              {action !== 'signUp' ? (
+                <>
+                  <Text>{t('subtitle-signIn')}</Text>
+                  <Button
+                    light
+                    color='primary'
+                    auto
+                    css={{ padding: '0' }}
+                    onClick={() => setAction('signUp')}>
+                    {t('registration')}
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Text>{t('subtitle-signUp')}</Text>
+                  <Button
+                    light
+                    color='primary'
+                    auto
+                    css={{ padding: '0' }}
+                    onClick={() => setAction('signIn')}>
+                    {t('enter')}
+                  </Button>
+                </>
+              )}
+            </Row>
+          )}
+
           <Tooltip content={t('demo-tooltip')} css={{ zIndex: 9999 }}>
             {action !== 'edit' && (
               <Button auto flat onClick={handleSignInDemo}>

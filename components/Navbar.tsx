@@ -303,6 +303,7 @@ export default function Header() {
             isShowing={isModalShowing}
             hide={toggleModal}
             action={signUserAction}
+            setAction={setSignUserAction}
           />,
           document.body
         )}

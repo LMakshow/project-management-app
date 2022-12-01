@@ -14,5 +14,9 @@
   "Close": "Закрыть",
   "btnSignIn": "Войти",
   "btnSignUp": "Регистрация",
-  "btnEdit": "Редактировать"
+  "btnEdit": "Редактировать",
+  "subtitle-signIn": "Нет профиля?",
+  "subtitle-signUp": "Уже с нами?",
+  "registration": "Регистрация",
+  "enter": "Вход"
 }

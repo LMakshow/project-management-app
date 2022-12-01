@@ -31,5 +31,7 @@
   "Boards of": "Boards of {{user}}",
   "Search": "Search tasks",
   "Tasks found": "Tasks found: ",
-  "No boards": "No boards matching your search request. Please try to change the query."
+  "No boards": "No boards matching your search request. Please try to change the query.",
+  "Loading": "Loading",
+  "ErrorText": "The error occurred while loading data: "
 }
