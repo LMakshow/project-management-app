@@ -10,12 +10,15 @@ import { useAppSelector, useModal } from '../../../features/hooks'
 import ModalWindow from '../../Modal-window/Modal-window'
 import styles from './hero.module.scss'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 
 const Hero = () => {
   const router = useRouter()
   const { t } = useTranslation('home-page')
   const isSigned = useAppSelector((state) => state.user.token)
   const { isShowing: isModalShowing, toggle: toggleModal } = useModal()
+
+  const [signUserAction, setSignUserAction] = useState('')
 
   const heroStyles = {
     hero: {
@@ -63,7 +66,10 @@ const Hero = () => {
 
   const handleStartButton = () => {
     if (isSigned) router.push('/boards')
-    if (!isSigned) toggleModal()
+    if (!isSigned) {
+      setSignUserAction('signUp')
+      toggleModal()
+    }
   }
 
   return (
@@ -74,7 +80,9 @@ const Hero = () => {
             {t('heroTitle')}
           </Text>
           <Text css={heroStyles.text}>{t(`heroText`)}</Text>
-          <Button css={heroStyles.button} onPress={handleStartButton}>{t('heroBtn')}</Button>
+          <Button css={heroStyles.button} onPress={handleStartButton}>
+            {t('heroBtn')}
+          </Button>
         </Grid>
         <Grid sm={7}>
           <Image
@@ -90,7 +98,8 @@ const Hero = () => {
           <ModalWindow
             isShowing={isModalShowing}
             hide={toggleModal}
-            action='signUp'
+            action={signUserAction}
+            setAction={setSignUserAction}
           />,
           document.body
         )}
