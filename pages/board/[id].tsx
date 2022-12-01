@@ -21,7 +21,6 @@ import { IconBack } from '../../components/icons/boardCard/icon_back'
 import { IconPlus } from '../../components/icons/boardCard/icon_plus'
 import Layout, { siteTitle } from '../../components/layout'
 import PopoverDeleteElement from '../../components/PopoverDeleteElement'
-import { useSignInMutation } from '../../features/auth/authApi'
 import {
   useDeleteBoardMutation,
   useGetColumnsQuery,
@@ -62,9 +61,9 @@ export default function Board() {
   const boardId = String(router.query.id)
 
   const [deleteBoard] = useDeleteBoardMutation()
-  const [changeColumnOrder, { isLoading: isColumnLoading, error: errorColumn }] =
+  const [changeColumnOrder, { isLoading: isColumnLoading, isError: isColumnError }] =
     useChangeColumnOrderMutation()
-  const [changeTaskOrder, { isLoading: isTaskLoading, error: errorTask }] =
+  const [changeTaskOrder, { isLoading: isTaskLoading, isError: isTaskError }] =
     useChangeTaskOrderMutation()
 
   const [columns, setColumns] = useState<ColumnResponse[]>([])
@@ -162,7 +161,7 @@ export default function Board() {
             <Spacer x={1} css={{ mr: 'auto' }}/>
             {isTaskLoading || isColumnLoading || isDeleteColumn
               ? <Loading size="sm" css={{ pl: '2px', pr: '2px' }}/>
-              : errorColumn || errorTask
+              : isColumnError || isTaskError
                 ? <Loading size="sm" css={{ pl: '2px', pr: '2px' }} color="error">
                   {t('Connection error')}
                 </Loading>

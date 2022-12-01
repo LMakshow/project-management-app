@@ -33,10 +33,11 @@ const Column = (props: {
         minWidth: '200px',
         mw: '300px',
         p: '10px',
+        pt: 0,
         overflowY: 'auto',
       }}>
       <Card.Header
-        css={{ p: '$4', minHeight: '60px' }}
+        css={{ p: '$4', pt: '22px', minHeight: '60px' }}
         {...props.dragHandleProps}>
         <ColumnTitle {...props} />
       </Card.Header>
