@@ -27,21 +27,24 @@ import {
   useGetColumnsQuery,
   useGetSingleBoardQuery,
   useGetTasksQuery,
-  useChangeColumnOrderMutation, useChangeTaskOrderMutation,
+  useChangeColumnOrderMutation,
+  useChangeTaskOrderMutation,
 } from '../../features/boards/boardsApi'
 import { useAppSelector } from '../../features/hooks'
 import { CustomError } from '../../utils/interfaces'
 
-import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import {
-  ColumnResponse,
-  TaskResponse,
-} from '../../utils/interfaces';
-import onDragEnd from '../../utils/onDragEnd';
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from 'react-beautiful-dnd'
+import { ColumnResponse, TaskResponse } from '../../utils/interfaces'
+import onDragEnd from '../../utils/onDragEnd'
 
 export const getServerSideProps = async ({
-                                           locale,
-                                         }: {
+  locale,
+}: {
   locale: 'en' | 'ru'
 }) => ({
   props: {
@@ -60,12 +63,14 @@ export default function Board() {
 
   const [login, { isSuccess: isSigned }] = useSignInMutation()
   const [deleteBoard] = useDeleteBoardMutation()
-  const [changeColumnOrder, { isLoading: isColumnLoading }] = useChangeColumnOrderMutation()
-  const [changeTaskOrder, { isLoading: isTaskLoading }] = useChangeTaskOrderMutation()
+  const [changeColumnOrder, { isLoading: isColumnLoading }] =
+    useChangeColumnOrderMutation()
+  const [changeTaskOrder, { isLoading: isTaskLoading }] =
+    useChangeTaskOrderMutation()
 
-  const [columns, setColumns] = useState<ColumnResponse[]>([]);
-  const [tasks, setTasks] = useState<TaskResponse[]>([]);
-  const [isDeleteColumn, setDeleteColumn] = useState<boolean>(false);
+  const [columns, setColumns] = useState<ColumnResponse[]>([])
+  const [tasks, setTasks] = useState<TaskResponse[]>([])
+  const [isDeleteColumn, setDeleteColumn] = useState<boolean>(false)
 
   const [isCreateColumnOpen, setIsCreateColumnOpen] = useState(false)
   const userId = useAppSelector((state) => state.user._id) as string
@@ -77,7 +82,7 @@ export default function Board() {
     isSuccess: isColumnFetched,
   } = useGetColumnsQuery(userId ? boardId : skipToken)
   const { data: boardData } = useGetSingleBoardQuery(
-    userId ? boardId : skipToken,
+    userId ? boardId : skipToken
   )
   const { data: tasksList } = useGetTasksQuery(userId ? boardId : skipToken)
   const nextColumnOrder = columnsList?.length
@@ -85,12 +90,20 @@ export default function Board() {
     : 0
 
   useEffect(() => {
-    const columnArray: ColumnResponse[] = columnsList ? [...columnsList].sort((a, b) => a.order - b.order) : [];
-    const taskArray: TaskResponse[] = tasksList ? [...tasksList].sort((a, b) => a.order - b.order) : [];
+    if (!(isColumnLoading || isTaskLoading)) {
+      const columnArray: ColumnResponse[] = columnsList
+        ? [...columnsList].sort((a, b) => a.order - b.order)
+        : []
+      const taskArray: TaskResponse[] = tasksList
+        ? [...tasksList].sort((a, b) => a.order - b.order)
+        : []
 
-    setColumns(columnArray);
-    setTasks(taskArray);
-  }, [columnsList, tasksList]);
+      setColumns(columnArray)
+      setTasks(taskArray)
+    }
+  // We don't use isColumnLoading and isTaskLoading as deps here to prevent extra refetching
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [columnsList, tasksList])
 
   useEffect(() => {
     if (!usertoken) router.push('/')
@@ -101,7 +114,15 @@ export default function Board() {
   }
 
   const handleOnDragEnd = async (result: DropResult) => {
-    await onDragEnd(result, columns, tasks, setColumns, changeColumnOrder, setTasks, changeTaskOrder);
+    await onDragEnd(
+      result,
+      columns,
+      tasks,
+      setColumns,
+      changeColumnOrder,
+      setTasks,
+      changeTaskOrder
+    )
   }
 
   return (
@@ -116,12 +137,12 @@ export default function Board() {
           py: '$8',
           alignItems: 'center',
         }}>
-        <Row align="flex-end" wrap="wrap">
+        <Row align='flex-end' wrap='wrap'>
           {boardData ? (
             <>
-              <BoardTitle boardData={boardData}/>
-              <Spacer x={1}/>
-              <BoardDescription boardData={boardData}/>
+              <BoardTitle boardData={boardData} />
+              <Spacer x={1} />
+              <BoardDescription boardData={boardData} />
             </>
           ) : error ? (
             <Loading size='lg' color='error'>
@@ -132,10 +153,20 @@ export default function Board() {
             <Loading size='lg'> {t('Loading')} </Loading>
           )}
 
-          <div style={{ display: 'flex', flexGrow: '1', maxWidth: '100%', alignItems: 'center' }}>
-            <Spacer x={1} css={{ mr: 'auto' }}/>
-            {(isTaskLoading || isColumnLoading || isDeleteColumn) ? <Loading css={{ pl: '2px', pr: '2px' }}/> : <Container css={{ p: 0, width: '40px' }} />}
-            <Spacer x={1}/>
+          <div
+            style={{
+              display: 'flex',
+              flexGrow: '1',
+              maxWidth: '100%',
+              alignItems: 'center',
+            }}>
+            <Spacer x={1} css={{ mr: 'auto' }} />
+            {isTaskLoading || isColumnLoading || isDeleteColumn ? (
+              <Loading size='sm' css={{ pl: '2px', pr: '2px' }} />
+            ) : (
+              <Container css={{ p: 0, width: '40px' }} />
+            )}
+            <Spacer x={1} />
             <Button
               color='secondary'
               css={{ my: '6px' }}
@@ -184,14 +215,17 @@ export default function Board() {
           </div>
         </Row>
 
-        <Spacer y={1}/>
+        <Spacer y={1} />
         <DragDropContext onDragEnd={handleOnDragEnd}>
-          <Droppable droppableId={boardId} direction="horizontal" type="columns">
+          <Droppable
+            droppableId={boardId}
+            direction='horizontal'
+            type='columns'>
             {(provided) => (
               <Grid.Container
-                justify="flex-start"
+                justify='flex-start'
                 gap={1}
-                wrap="nowrap"
+                wrap='nowrap'
                 css={{
                   overflowX: 'auto',
                   maxHeight: 'calc(-175px + 100vh)',
@@ -201,21 +235,22 @@ export default function Board() {
                   w: 'auto',
                 }}
                 {...provided.droppableProps}
-                ref={provided.innerRef}
-              >
+                ref={provided.innerRef}>
                 {columns &&
                   columns.map((column, index) => (
-                    <Draggable key={column._id} draggableId={column._id} index={index}>
+                    <Draggable
+                      key={column._id}
+                      draggableId={column._id}
+                      index={index}>
                       {(provided) => (
                         <Grid
                           sm={3}
                           css={{ display: 'inherit' }}
                           {...provided.draggableProps}
-                          ref={provided.innerRef}
-                        >
+                          ref={provided.innerRef}>
                           <Column
                             tasks={tasks?.filter(
-                              (task) => task.columnId === column._id,
+                              (task) => task.columnId === column._id
                             )}
                             column={column}
                             dragHandleProps={provided.dragHandleProps}
