@@ -32,8 +32,7 @@ const Column = (props: {
       css={{
         minWidth: '200px',
         mw: '300px',
-        p: '5px',
-        pl: '10px',
+        p: '10px',
         overflowY: 'auto',
       }}>
       <Card.Header
@@ -56,7 +55,7 @@ const Column = (props: {
         )}>
         {(provided) => (
           <Card.Body
-            css={{ py: '$6', px: '0', pr: '5px', gap: '$2' }}
+            css={{ py: '$6', px: '0', gap: '$2' }}
             {...provided.droppableProps}
             ref={provided.innerRef}>
             {props.tasks &&
@@ -76,7 +75,7 @@ const Column = (props: {
           </Card.Body>
         )}
       </Droppable>
-      <Card.Footer css={{ pl: 0 }}>
+      <Card.Footer css={{ pl: 0, pr: 0 }}>
         <Popover
           isBordered
           isOpen={isCreateTaskOpen}
@@ -86,7 +85,7 @@ const Column = (props: {
               color='primary'
               flat
               icon={<IconPlus fill='currentColor' />}
-              css={{ flexShrink: '0', width: '100%' }}>
+              css={{ flexShrink: '0', width: '100%', pl: 0, pr: 0 }}>
               {t('Add New Task')}
             </Button>
           </Popover.Trigger>
