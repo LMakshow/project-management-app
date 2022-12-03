@@ -11,7 +11,7 @@ import {
   useUpdateBoardMutation,
 } from '../../../features/boards/boardsApi'
 import { useRouter } from 'next/router'
-import ColumnTask from '../../BoardTasks/ColumnTask'
+import ColumnTask from '../BoardTasks/ColumnTask'
 
 interface BoardCardProps {
   board: BoardResponse

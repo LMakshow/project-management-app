@@ -6,10 +6,10 @@ import {
   useDeleteColumnMutation,
   useDeleteTaskMutation,
   useUpdateColumnMutation,
-} from '../../features/boards/boardsApi'
-import { ColumnResponse, TaskResponse } from '../core/Utilities/interfaces'
-import PopoverDeleteElement from '../core/Popover/PopoverDeleteElement'
-import InputEdit from '../core/Utilities/InputEdit'
+} from '../../../features/boards/boardsApi'
+import { ColumnResponse, TaskResponse } from '../../core/Utilities/interfaces'
+import PopoverDeleteElement from '../../core/Popover/PopoverDeleteElement'
+import InputEdit from '../../core/Utilities/InputEdit'
 
 const ColumnTitle = (props: {
   column: ColumnResponse

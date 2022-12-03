@@ -7,12 +7,12 @@ import {
 import { useState } from 'react'
 
 import { useTranslation } from 'next-i18next'
-import { CreateTaskRequest, TaskResponse } from '../core/Utilities/interfaces'
-import PopoverDeleteElement from '../core/Popover/PopoverDeleteElement'
-import { useDeleteTaskMutation, useUpdateTaskMutation } from '../../features/boards/boardsApi'
-import InputEdit from '../core/Utilities/InputEdit';
-import TextareaEdit from '../core/Utilities/TextareaEdit'
-import { addNewLine } from '../core/Utilities/helpers';
+import { CreateTaskRequest, TaskResponse } from '../../core/Utilities/interfaces'
+import PopoverDeleteElement from '../../core/Popover/PopoverDeleteElement'
+import { useDeleteTaskMutation, useUpdateTaskMutation } from '../../../features/boards/boardsApi'
+import InputEdit from '../../core/Utilities/InputEdit';
+import TextareaEdit from '../../core/Utilities/TextareaEdit'
+import { addNewLine } from '../../core/Utilities/helpers';
 
 const ColumnTask = (props: TaskResponse) => {
   const { t } = useTranslation('common')
