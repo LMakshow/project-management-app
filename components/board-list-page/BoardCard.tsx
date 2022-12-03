@@ -1,6 +1,6 @@
-import { Button, Card, Spacer, Text } from '@nextui-org/react'
+import { Button, Card, Spacer, StyledLoading, Text } from '@nextui-org/react'
 import { BoardResponse, TaskResponse } from '../../utils/interfaces'
-import { FC, useState } from 'react'
+import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react'
 
 import { useTranslation } from 'next-i18next'
 import BoardCardTitle from './BoardCardTitle'
@@ -16,17 +16,28 @@ import ColumnTask from '../BoardTasks/ColumnTask'
 interface BoardCardProps {
   board: BoardResponse
   tasks?: TaskResponse[]
+  setLoading: Dispatch<SetStateAction<boolean>>
 }
 
 const BoardCard = (props: BoardCardProps) => {
   const { board } = props
   const { t } = useTranslation('common')
   const router = useRouter()
-  const [updateBoard] = useUpdateBoardMutation()
-  const [deleteBoard] = useDeleteBoardMutation()
+  const [updateBoard, { isLoading: isBoardUpdating }] = useUpdateBoardMutation()
+  const [deleteBoard, { isLoading: isBoardDeleting }] = useDeleteBoardMutation()
 
   const [isEditTitle, setIsEditTitle] = useState(false)
   const [isEditDescription, setIsEditDescription] = useState(false)
+
+  useEffect(() => {
+    if (isBoardUpdating || isBoardDeleting) {
+      console.log('setTrue!')
+      props.setLoading(true)
+    } else {
+      console.log('setFalse!')
+      props.setLoading(false)
+    }
+  }, [isBoardDeleting, isBoardUpdating, props])
 
   const setIsEditTitleProps = (value: boolean) => {
     setIsEditTitle(value)
@@ -96,11 +107,12 @@ const BoardCard = (props: BoardCardProps) => {
           description={board.description}
           handleUpdateBoard={handleUpdateBoard}
         />
-        {props.tasks && 
-        <>
-        <Text>{t('Tasks found')}</Text>
-        <Spacer y={0.5} />
-        </>}
+        {props.tasks && (
+          <>
+            <Text>{t('Tasks found')}</Text>
+            <Spacer y={0.5} />
+          </>
+        )}
         {props.tasks
           ? props.tasks.map((task) => <ColumnTask key={task._id} {...task} />)
           : null}

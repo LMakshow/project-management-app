@@ -42,8 +42,14 @@ export default function Boards() {
   const isSigned = useAppSelector((state) => state.user.token)
   const userId = useAppSelector((state) => state.user._id) as string
   const userName = useAppSelector((state) => state.user.name) as string
-  const { data: boardList, error, isLoading } = useGetBoardsQuery(userId)
+  const {
+    data: boardList,
+    error,
+    isFetching: isBoardFetching,
+    isLoading: isBoardLoading,
+  } = useGetBoardsQuery(userId)
   const [isCreateBoardOpen, setIsCreateBoardOpen] = useState(false)
+  const [isBoardUpdating, setIsBoardUpdating] = useState(true)
 
   const [searchTask] = useSearchTaskMutation()
   const [getBoardsSet] = useGetBoardsSetMutation()
@@ -56,7 +62,6 @@ export default function Boards() {
   }>({})
 
   const [searchTerm, setSearchTerm] = useState('')
-
   const debouncedSearchTerm = useDebounce(searchTerm, 500)
 
   const router = useRouter()
@@ -117,6 +122,12 @@ export default function Boards() {
             <>
               <Text h2>{t('Boards of', { user: userName })}</Text>
               <Spacer x={1} css={{ mr: 'auto' }} />
+              {(isBoardFetching || isBoardUpdating) && (
+                <>
+                  <Loading size='sm' />
+                  <Spacer x={1} />
+                </>
+              )}
               <Search
                 filterText={filterText}
                 setSearchTerm={onSearchChange}
@@ -145,7 +156,7 @@ export default function Boards() {
                 </Popover.Content>
               </Popover>
             </>
-          ) : isLoading ? (
+          ) : isBoardLoading ? (
             <Loading size='lg'>{t('Loading')}</Loading>
           ) : error ? (
             <Loading size='lg' color='error'>
@@ -156,13 +167,20 @@ export default function Boards() {
         </Row>
         {boardList &&
           !filterText &&
-          boardList.map((board) => <BoardCard key={board._id} board={board} />)}
+          boardList.map((board) => (
+            <BoardCard
+              key={board._id}
+              board={board}
+              setLoading={setIsBoardUpdating}
+            />
+          ))}
         {filterText &&
           (filteredBoards.boards?.length ? (
             filteredBoards.boards.map((board) => (
               <BoardCard
                 key={board._id}
                 board={board}
+                setLoading={setIsBoardUpdating}
                 tasks={filteredBoards?.tasks?.filter(
                   (task) => task.boardId === board._id
                 )}
