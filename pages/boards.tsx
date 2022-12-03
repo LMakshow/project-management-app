@@ -5,28 +5,25 @@ import {
   Popover,
   Row,
   Spacer,
-  Text,
+  Text
 } from '@nextui-org/react'
+import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import BoardCard from '../components/board-list-page/BoardCard'
+import { IconKanbanAdd } from '../components/icons/icon_kanban_add'
 import Layout, { siteTitle } from '../components/layout'
+import PopoverAddBoard from '../components/Popover-add-board'
+import Search from '../components/Search'
 import {
   useGetBoardsQuery,
   useGetBoardsSetMutation,
-  useGetSingleBoardQuery,
-  useSearchTaskMutation,
+  useSearchTaskMutation
 } from '../features/boards/boardsApi'
-import { useAppSelector } from '../features/hooks'
-import BoardCard from '../components/board-list-page/BoardCard'
-import Head from 'next/head'
-import { useTranslation } from 'next-i18next'
-import { IconKanbanAdd } from '../components/icons/icon_kanban_add'
-import PopoverAddBoard from '../components/Popover-add-board'
-import { useEffect, useState } from 'react'
-import Search from '../components/Search'
+import { useAppSelector, useDebounce } from '../features/hooks'
 import { BoardResponse, CustomError, TaskResponse } from '../utils/interfaces'
-import { useDebounce } from '../features/hooks'
-import { IconSearch } from '../components/icons/boardCard/icon_search'
-import { useRouter } from 'next/router'
 
 export const getStaticProps = async ({ locale }: { locale: 'en' | 'ru' }) => ({
   props: {
@@ -122,7 +119,7 @@ export default function Boards() {
             <>
               <Text h2>{t('Boards of', { user: userName })}</Text>
               <Spacer x={1} css={{ mr: 'auto' }} />
-              {(isBoardFetching || isBoardUpdating) && (
+              {(isBoardLoading || isBoardFetching || isBoardUpdating) && (
                 <>
                   <Loading size='sm' />
                   <Spacer x={1} />

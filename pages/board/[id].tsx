@@ -42,8 +42,8 @@ import { ColumnResponse, TaskResponse } from '../../utils/interfaces'
 import onDragEnd from '../../utils/onDragEnd'
 
 export const getServerSideProps = async ({
-                                           locale,
-                                         }: {
+  locale,
+}: {
   locale: 'en' | 'ru'
 }) => ({
   props: {
@@ -61,8 +61,10 @@ export default function Board() {
   const boardId = String(router.query.id)
 
   const [deleteBoard] = useDeleteBoardMutation()
-  const [changeColumnOrder, { isLoading: isColumnLoading, isError: isColumnError }] =
-    useChangeColumnOrderMutation()
+  const [
+    changeColumnOrder,
+    { isLoading: isColumnLoading, isError: isColumnError },
+  ] = useChangeColumnOrderMutation()
   const [changeTaskOrder, { isLoading: isTaskLoading, isError: isTaskError }] =
     useChangeTaskOrderMutation()
 
@@ -77,10 +79,11 @@ export default function Board() {
   const {
     data: columnsList,
     error,
-    isSuccess: isColumnFetched,
+    isFetching: isBoardFetching,
+    isLoading: isBoardLoading,
   } = useGetColumnsQuery(userId ? boardId : skipToken)
   const { data: boardData } = useGetSingleBoardQuery(
-    userId ? boardId : skipToken,
+    userId ? boardId : skipToken
   )
   const { data: tasksList } = useGetTasksQuery(userId ? boardId : skipToken)
   const nextColumnOrder = columnsList?.length
@@ -119,7 +122,7 @@ export default function Board() {
       setColumns,
       changeColumnOrder,
       setTasks,
-      changeTaskOrder,
+      changeTaskOrder
     )
   }
 
@@ -135,12 +138,12 @@ export default function Board() {
           py: '$8',
           alignItems: 'center',
         }}>
-        <Row align="flex-end" wrap="wrap">
+        <Row align='flex-end' wrap='wrap'>
           {boardData ? (
             <>
-              <BoardTitle boardData={boardData}/>
-              <Spacer x={1}/>
-              <BoardDescription boardData={boardData}/>
+              <BoardTitle boardData={boardData} />
+              <Spacer x={1} />
+              <BoardDescription boardData={boardData} />
             </>
           ) : error ? (
             <Loading size='lg' color='error'>
@@ -158,26 +161,31 @@ export default function Board() {
               maxWidth: '100%',
               alignItems: 'center',
             }}>
-            <Spacer x={1} css={{ mr: 'auto' }}/>
-            {isTaskLoading || isColumnLoading || isDeleteColumn
-              ? <Loading size="sm" css={{ pl: '2px', pr: '2px' }}/>
-              : isColumnError || isTaskError
-                ? <Loading size="sm" css={{ pl: '2px', pr: '2px' }} color="error">
-                  {t('Connection error')}
-                </Loading>
-                : <Container css={{ p: 0, width: '121px' }}/>
-            }
-            <Spacer x={1}/>
+            <Spacer x={1} css={{ mr: 'auto' }} />
+            {isBoardFetching ||
+            isBoardLoading ||
+            isTaskLoading ||
+            isColumnLoading ||
+            isDeleteColumn ? (
+              <Loading size='sm' css={{ pl: '2px', pr: '2px' }} />
+            ) : isColumnError || isTaskError ? (
+              <Loading size='sm' css={{ pl: '2px', pr: '2px' }} color='error'>
+                {t('Connection error')}
+              </Loading>
+            ) : (
+              <Container css={{ p: 0, width: '121px' }} />
+            )}
+            <Spacer x={1} />
             <Button
-              color="secondary"
+              color='secondary'
               css={{ my: '6px' }}
               onClick={() => router.push('/boards')}
               auto
               flat
-              icon={<IconBack fill="currentColor"/>}>
+              icon={<IconBack fill='currentColor' />}>
               {t('Back')}
             </Button>
-            <Spacer x={1}/>
+            <Spacer x={1} />
 
             <Popover
               isBordered
@@ -185,11 +193,11 @@ export default function Board() {
               onOpenChange={setIsCreateColumnOpen}>
               <Popover.Trigger>
                 <Button
-                  color="primary"
+                  color='primary'
                   css={{ my: '6px' }}
                   auto
                   flat
-                  icon={<IconPlus fill="currentColor"/>}>
+                  icon={<IconPlus fill='currentColor' />}>
                   {t('Add New Column')}
                 </Button>
               </Popover.Trigger>
@@ -203,7 +211,7 @@ export default function Board() {
               </Popover.Content>
             </Popover>
 
-            <Spacer x={1}/>
+            <Spacer x={1} />
             <div style={{ margin: '6px 0' }}>
               <PopoverDeleteElement
                 action={handleDeleteElement}
@@ -215,17 +223,17 @@ export default function Board() {
           </div>
         </Row>
 
-        <Spacer y={1}/>
+        <Spacer y={1} />
         <DragDropContext onDragEnd={handleOnDragEnd}>
           <Droppable
             droppableId={boardId}
-            direction="horizontal"
-            type="columns">
+            direction='horizontal'
+            type='columns'>
             {(provided) => (
               <Grid.Container
-                justify="flex-start"
+                justify='flex-start'
                 gap={1}
-                wrap="nowrap"
+                wrap='nowrap'
                 css={{
                   overflowX: 'auto',
                   maxHeight: 'calc(-175px + 100vh)',
@@ -250,7 +258,7 @@ export default function Board() {
                           ref={provided.innerRef}>
                           <Column
                             tasks={tasks?.filter(
-                              (task) => task.columnId === column._id,
+                              (task) => task.columnId === column._id
                             )}
                             column={column}
                             dragHandleProps={provided.dragHandleProps}

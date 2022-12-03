@@ -24,7 +24,7 @@ const ColumnTitle = (props: {
 
   useEffect(() => {
     props.setDeleteColumn(isLoading)
-  }, [isLoading])
+  }, [isLoading, props])
 
   const handleClick = () => {
     setIsEdit(!isEdit)

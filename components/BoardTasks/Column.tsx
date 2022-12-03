@@ -1,4 +1,4 @@
-import { Button, Card, Popover } from '@nextui-org/react'
+import { Button, Card, Popover, Spacer, useTheme } from '@nextui-org/react'
 import { useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import { ColumnResponse, TaskResponse } from '../../utils/interfaces'
@@ -19,6 +19,7 @@ const Column = (props: {
   setDeleteColumn: (value: boolean) => void
 }) => {
   const { t } = useTranslation('common')
+  const { theme } = useTheme()
   const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false)
   const { tasks } = props
   const nextTaskOrder = tasks?.length
@@ -37,9 +38,19 @@ const Column = (props: {
         overflowY: 'auto',
       }}>
       <Card.Header
-        css={{ p: '$4', pt: '22px', minHeight: '60px' }}
+        css={{ p: '$4', pt: '0', minHeight: '50px', fd: 'column' }}
         {...props.dragHandleProps}>
-        <ColumnTitle {...props} />
+        <div
+          style={{
+            margin: '10px',
+            marginBottom: '15px',
+            width: '100%',
+            height: '5px',
+            borderRadius: '10px',
+            backgroundColor: theme?.colors.neutralBorder.value,
+          }}
+        />
+        <div style={{ display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'space-between' }}><ColumnTitle {...props} /></div>
       </Card.Header>
 
       <Card.Divider />
@@ -51,7 +62,11 @@ const Column = (props: {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}>
-            <ColumnTask {...(props.tasks?.find(task => task._id === rubric.draggableId)) as TaskResponse } />
+            <ColumnTask
+              {...(props.tasks?.find(
+                (task) => task._id === rubric.draggableId
+              ) as TaskResponse)}
+            />
           </div>
         )}>
         {(provided) => (
