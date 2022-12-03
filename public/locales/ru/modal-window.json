@@ -18,5 +18,6 @@
   "subtitle-signIn": "Нет профиля?",
   "subtitle-signUp": "Уже с нами?",
   "registration": "Регистрация",
-  "enter": "Вход"
+  "enter": "Вход",
+  "Testuser-edit": "Нельзя менять профиль демо TestUser. Пожалуйста, зарегистрируйтесь"
 }

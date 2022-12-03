@@ -175,7 +175,6 @@ export default function Header() {
                 color='primary'
                 icon={<IconExit fill='currentColor' />}
                 onClick={signOutAction}>
-                {/* <Text>{`${t('Sign Out')}`}</Text> */}
               </Button>
             </>
           ) : (

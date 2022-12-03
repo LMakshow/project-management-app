@@ -18,5 +18,6 @@
   "subtitle-signIn": "Don't have a profile?",
   "subtitle-signUp": "Already with us?",
   "registration": "Registration",
-  "enter": "Enter"
+  "enter": "Enter",
+  "Testuser-edit": "Can't edit demo TestUser profile. You need to sign up first"
 }

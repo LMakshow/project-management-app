@@ -23,7 +23,6 @@ const BoardCardDescription: FC<BoardDescriptionProps> = (props) => {
       fw: 'nowrap',
       alignItems: 'center',
       justifyContent: 'start',
-      h: '157px',
       overflow: 'auto',
       p: 0,
     }}>
@@ -44,7 +43,7 @@ const BoardCardDescription: FC<BoardDescriptionProps> = (props) => {
             css={{
               p: 0,
               cursor: 'pointer',
-              minHeight: '140px',
+              minHeight: '80px',
               overflow: 'auto',
               minWidth: '280px',
               maxWidth: '500px',

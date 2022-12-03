@@ -107,6 +107,7 @@ const ProfileContent = () => {
             isShowing={isModalShowing}
             hide={toggleModal}
             action='edit'
+            setAction={() => {}}
           />,
           document.body
         )}

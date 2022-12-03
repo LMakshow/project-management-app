@@ -166,7 +166,7 @@ const ModalWindow = ({ isShowing, hide, action, setAction }: TModalProps) => {
         <Modal.Header>
           <Text id='modal-title' size={18}>
             {
-              // t('signIn')  t('signUp') t('edit')
+              // t('signIn')  t('signUp')  t('edit')
               t(action)
             }
             <Text b size={18}>
@@ -223,7 +223,9 @@ const ModalWindow = ({ isShowing, hide, action, setAction }: TModalProps) => {
         </Modal.Body>
 
         <Modal.Footer css={{ paddingTop: '0' }}>
-          {action !== 'edit' && (
+          {action === 'edit' ? (
+            <Spacer y={4} />
+          ) : (
             <Row
               css={{
                 display: 'flex',
@@ -297,6 +299,12 @@ const ModalWindow = ({ isShowing, hide, action, setAction }: TModalProps) => {
               }>
               {t('btnSignUp')}
             </Button>
+          ) : userLogin === 'TestUser' ? (
+            <Tooltip content={t('Testuser-edit')} css={{ zIndex: 9999 }}>
+                <Button auto disabled >
+                  {t('btnEdit')}
+                </Button>
+            </Tooltip>
           ) : (
             <Button auto type='submit' onClick={handleEdit}>
               {t('btnEdit')}
