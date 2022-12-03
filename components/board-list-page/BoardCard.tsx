@@ -31,10 +31,8 @@ const BoardCard = (props: BoardCardProps) => {
 
   useEffect(() => {
     if (isBoardUpdating || isBoardDeleting) {
-      console.log('setTrue!')
       props.setLoading(true)
     } else {
-      console.log('setFalse!')
       props.setLoading(false)
     }
   }, [isBoardDeleting, isBoardUpdating, props])

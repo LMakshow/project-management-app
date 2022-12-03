@@ -46,7 +46,7 @@ export default function Boards() {
     isLoading: isBoardLoading,
   } = useGetBoardsQuery(userId)
   const [isCreateBoardOpen, setIsCreateBoardOpen] = useState(false)
-  const [isBoardUpdating, setIsBoardUpdating] = useState(true)
+  const [isBoardUpdating, setIsBoardUpdating] = useState(false)
 
   const [searchTask] = useSearchTaskMutation()
   const [getBoardsSet] = useGetBoardsSetMutation()
