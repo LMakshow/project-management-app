@@ -4,7 +4,7 @@ import {
   FetchArgs,
   fetchBaseQuery,
 } from '@reduxjs/toolkit/query/react'
-import { SERVER } from '../../utils/constants'
+import { SERVER } from '../../components/core/Utilities/constants'
 import {
   BoardRequest,
   BoardResponse,
@@ -17,7 +17,7 @@ import {
   TaskOrderRequest,
   TaskRequest,
   TaskResponse,
-} from '../../utils/interfaces'
+} from '../../components/core/Utilities/interfaces'
 import { RootState } from '../store'
 
 export const boardsApi = createApi({

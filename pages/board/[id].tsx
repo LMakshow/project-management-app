@@ -17,10 +17,10 @@ import BoardDescription from '../../components/BoardTasks/BoardDescription'
 import BoardTitle from '../../components/BoardTasks/BoardTitle'
 import Column from '../../components/BoardTasks/Column'
 import PopoverAddColumn from '../../components/BoardTasks/PopoverAddColumn'
-import { IconBack } from '../../components/icons/boardCard/icon_back'
-import { IconPlus } from '../../components/icons/boardCard/icon_plus'
-import Layout, { siteTitle } from '../../components/layout'
-import PopoverDeleteElement from '../../components/PopoverDeleteElement'
+import { IconBack } from '../../components/core/Icons/boardCard/icon_back'
+import { IconPlus } from '../../components/core/Icons/boardCard/icon_plus'
+import Layout, { siteTitle } from '../../components/core/Layout/layout'
+import PopoverDeleteElement from '../../components/core/Popover/PopoverDeleteElement'
 import {
   useDeleteBoardMutation,
   useGetColumnsQuery,
@@ -30,7 +30,7 @@ import {
   useChangeTaskOrderMutation,
 } from '../../features/boards/boardsApi'
 import { useAppSelector } from '../../features/hooks'
-import { CustomError } from '../../utils/interfaces'
+import { CustomError } from '../../components/core/Utilities/interfaces'
 
 import {
   DragDropContext,
@@ -38,8 +38,8 @@ import {
   Draggable,
   DropResult,
 } from 'react-beautiful-dnd'
-import { ColumnResponse, TaskResponse } from '../../utils/interfaces'
-import onDragEnd from '../../utils/onDragEnd'
+import { ColumnResponse, TaskResponse } from '../../components/core/Utilities/interfaces'
+import onDragEnd from '../../components/core/Utilities/onDragEnd'
 
 export const getServerSideProps = async ({
   locale,

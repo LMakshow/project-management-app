@@ -7,9 +7,9 @@ import {
   useDeleteTaskMutation,
   useUpdateColumnMutation,
 } from '../../features/boards/boardsApi'
-import { ColumnResponse, TaskResponse } from '../../utils/interfaces'
-import PopoverDeleteElement from '../PopoverDeleteElement'
-import InputEdit from '../Utilities/InputEdit'
+import { ColumnResponse, TaskResponse } from '../core/Utilities/interfaces'
+import PopoverDeleteElement from '../core/Popover/PopoverDeleteElement'
+import InputEdit from '../core/Utilities/InputEdit'
 
 const ColumnTitle = (props: {
   column: ColumnResponse

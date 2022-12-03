@@ -1,8 +1,8 @@
 import { Text } from '@nextui-org/react'
 import { useState } from 'react'
 import { useUpdateBoardMutation } from '../../features/boards/boardsApi'
-import { BoardResponse } from '../../utils/interfaces'
-import InputEdit from '../Utilities/InputEdit'
+import { BoardResponse } from '../core/Utilities/interfaces'
+import InputEdit from '../core/Utilities/InputEdit'
 
 export default function BoardTitle(props: { boardData: BoardResponse }) {
   const [isEdit, setIsEdit] = useState(false)

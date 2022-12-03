@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { SERVER } from '../utils/constants'
-import { UserEdit, UserEditResponse } from '../utils/interfaces'
+import { SERVER } from '../components/core/Utilities/constants'
+import { UserEdit, UserEditResponse } from '../components/core/Utilities/interfaces'
 import { RootState } from './store'
 
 export const profileApi = createApi({

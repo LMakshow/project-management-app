@@ -12,18 +12,18 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import BoardCard from '../components/board-list-page/BoardCard'
-import { IconKanbanAdd } from '../components/icons/icon_kanban_add'
-import Layout, { siteTitle } from '../components/layout'
-import PopoverAddBoard from '../components/Popover-add-board'
-import Search from '../components/Search'
+import BoardCard from '../components/screens/board-list-page/BoardCard'
+import { IconKanbanAdd } from '../components/core/Icons/icon_kanban_add'
+import Layout, { siteTitle } from '../components/core/Layout/layout'
+import PopoverAddBoard from '../components/core/Popover/PopoverAddBoard'
+import Search from '../components/core/Utilities/Search'
 import {
   useGetBoardsQuery,
   useGetBoardsSetMutation,
   useSearchTaskMutation
 } from '../features/boards/boardsApi'
 import { useAppSelector, useDebounce } from '../features/hooks'
-import { BoardResponse, CustomError, TaskResponse } from '../utils/interfaces'
+import { BoardResponse, CustomError, TaskResponse } from '../components/core/Utilities/interfaces'
 
 export const getStaticProps = async ({ locale }: { locale: 'en' | 'ru' }) => ({
   props: {

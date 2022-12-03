@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { SERVER } from '../../utils/constants'
-import { UserSignIn, UserSignInResponse, UserSignUp, UserSignUpResponse } from '../../utils/interfaces'
+import { SERVER } from '../../components/core/Utilities/constants'
+import { UserSignIn, UserSignInResponse, UserSignUp, UserSignUpResponse } from '../../components/core/Utilities/interfaces'
 import { RootState } from '../store'
 import { setUser } from './userSlice'
 
