@@ -31,7 +31,7 @@ const BoardCardDescription: FC<BoardDescriptionProps> = (props) => {
         <TextareaEdit
           fullWidth
           editValue={props.description}
-          onClick={handleClick}
+          onPress={handleClick}
           onConfirmEdit={updateBoardDescription}
         />
         :

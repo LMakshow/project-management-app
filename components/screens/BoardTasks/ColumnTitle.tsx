@@ -61,7 +61,7 @@ const ColumnTitle = (props: {
         <InputEdit
           fullWidth
           editValue={props.column.title}
-          onClick={handleClick}
+          onPress={handleClick}
           onConfirmEdit={handleUpdateTitle}
         />
       ) : (

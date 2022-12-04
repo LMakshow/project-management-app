@@ -66,12 +66,12 @@ const PopoverAddBoard = (props: {
       </Row>
       <Grid.Container justify='space-between' alignContent='center'>
         <Grid>
-          <Button size='sm' light onClick={() => setIsOpen(!isOpen)}>
+          <Button size='sm' light onPress={() => setIsOpen(!isOpen)}>
             {t('Close')}
           </Button>
         </Grid>
         <Grid>
-          <Button size='sm' shadow color='default' onClick={handlerCreateBoard}>
+          <Button size='sm' shadow color='default' onPress={handlerCreateBoard}>
             {t('Create')}
           </Button>
         </Grid>

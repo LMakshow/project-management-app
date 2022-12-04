@@ -8,20 +8,20 @@ import CancelButton from '../Buttons/CancelButton'
  * 
  * @param props.editValue - default value for textarea
  * @param props.fullWidth - pass true if you need textarea to have 100% width
- * @param props.onClick - function after cancel edit
+ * @param props.onPress - function after cancel edit
  * @param props.onConfirmEdit - function after confirming edit
  */
 export default function TextareaEdit(props: {
   editValue: string
   fullWidth?: boolean
-  onClick: () => void
+  onPress: () => void
   onConfirmEdit: (value: string) => void
 }) {
   const { t } = useTranslation('common')
   const { value, bindings } = useInput(props.editValue);
   
   const updateValue = () => {
-    props.onClick();
+    props.onPress();
 
     if (value.trim()) {
       const newValue = value.trim()
@@ -43,10 +43,10 @@ export default function TextareaEdit(props: {
       </Row>
       <Row css={{justifyContent: 'end'}}>
         <Tooltip content={t('Cancel')} css={{ zIndex: 9999 }}>
-          <CancelButton onClick={props.onClick} />
+          <CancelButton onPress={props.onPress} />
         </Tooltip>
         <Tooltip content={t('Save')} css={{ zIndex: 9999 }}>
-          <SaveButton onClick={updateValue} />
+          <SaveButton onPress={updateValue} />
         </Tooltip>
       </Row>
     </Grid.Container>

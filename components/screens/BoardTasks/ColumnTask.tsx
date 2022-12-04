@@ -92,7 +92,7 @@ const ColumnTask = (props: TaskResponse) => {
             <InputEdit
               fullWidth
               editValue={props.title}
-              onClick={() => setIsEditTitle(!isEditTitle)}
+              onPress={() => setIsEditTitle(!isEditTitle)}
               onConfirmEdit={(title) => handleUpdateTask({ title: title })}
             />) : (<Tooltip content={t('Edit title')} css={{ zIndex: 9999 }}>
             <Text
@@ -110,7 +110,7 @@ const ColumnTask = (props: TaskResponse) => {
           {isEditDescription ? (<TextareaEdit
             fullWidth
             editValue={props.description}
-            onClick={() => setIsEditDescription(!isEditDescription)}
+            onPress={() => setIsEditDescription(!isEditDescription)}
             onConfirmEdit={(description) => handleUpdateTask({ description: description })}
           />) : (
             <Tooltip content={t('Edit description')} css={{ zIndex: 9999 }}>

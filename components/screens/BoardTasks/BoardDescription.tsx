@@ -29,7 +29,7 @@ export default function BoardDescription(props: { boardData: BoardResponse }) {
       {isEdit ? (
         <InputEdit
           editValue={props.boardData.description}
-          onClick={handleClick}
+          onPress={handleClick}
           onConfirmEdit={handleUpdateDescription}
         />
       ) : (
