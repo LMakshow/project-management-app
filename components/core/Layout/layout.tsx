@@ -4,7 +4,7 @@ import Head from 'next/head'
 import Footer from './Footer'
 import Navbar from './Navbar'
 
-export const siteTitle = 'Project Management App'
+export const siteTitle = 'Creative Management App'
 
 export default function Layout({ children, style }: { children: React.ReactNode, style?: CSSProperties }) {
   return (
@@ -17,9 +17,9 @@ export default function Layout({ children, style }: { children: React.ReactNode,
       <Head>
         <meta
           name='description'
-          content='A Kanban board app that helps a team or group of developers achieve their goals. There are Jira, Trello, and even Github Projects, but this app is custom made with love!'
+          content='Click. Manage. Agile! A digital project management tool to help visualize work, limit work-in-progress, and maximize efficiency'
         />
-        <meta property='og:image' content='/favicon.png' />
+        <meta property='og:image' content='/logo/logo-cma.png' />
         <meta name='og:title' content={siteTitle} />
         <link rel='icon' href='/favicon.svg' />
       </Head>
