@@ -1,0 +1,23 @@
+{
+  "unvalid-email": "Enter a valid email",
+  "unvalid-password": "Enter a valid password",
+  "signIn": "Welcome to",
+  "signUp": "Join",
+  "edit": "Edit profile at",
+  "Name": "Name",
+  "Email": "Email",
+  "Password": "Password",
+  "error": "Incorrect value",
+  "exist": "This profile alredy exist",
+  "demo-tooltip": "Sign in as TestUser to check the app",
+  "Demo": "Demo",
+  "Close": "Close",
+  "btnSignIn": "Sign In",
+  "btnSignUp": "Sign Up",
+  "btnEdit": "Edit",
+  "subtitle-signIn": "Don't have a profile?",
+  "subtitle-signUp": "Already with us?",
+  "registration": "Registration",
+  "enter": "Enter",
+  "Testuser-edit": "Can't edit demo TestUser profile. You need to sign up first"
+}
