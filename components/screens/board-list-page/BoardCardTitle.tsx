@@ -30,7 +30,7 @@ const BoardCardTitle: FC<BoardTitleProps> = (props) => {
         ? <InputEdit
           fullWidth
           editValue={props.title}
-          onClick={handleClick}
+          onPress={handleClick}
           onConfirmEdit={updateBoardTitle}
         />
         : <Tooltip content={t('Edit title')} css={{ zIndex: 10 }}>

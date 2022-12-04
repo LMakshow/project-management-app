@@ -28,7 +28,7 @@ export default function BoardTitle(props: { boardData: BoardResponse }) {
       {isEdit ? (
         <InputEdit
           editValue={props.boardData.title}
-          onClick={handleClick}
+          onPress={handleClick}
           onConfirmEdit={handleUpdateTitle}
         />
       ) : (

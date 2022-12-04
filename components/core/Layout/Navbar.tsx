@@ -174,7 +174,7 @@ export default function Header() {
                 rounded
                 color='primary'
                 icon={<IconExit fill='currentColor' />}
-                onClick={signOutAction}>
+                onPress={signOutAction}>
               </Button>
             </>
           ) : (
@@ -182,7 +182,7 @@ export default function Header() {
               <Button
                 auto
                 light
-                onClick={() => {
+                onPress={() => {
                   setSignUserAction('signIn')
                   toggleModal()
                 }}>
@@ -191,7 +191,7 @@ export default function Header() {
               <Button
                 auto
                 flat
-                onClick={() => {
+                onPress={() => {
                   setSignUserAction('signUp')
                   toggleModal()
                 }}>
@@ -251,7 +251,7 @@ export default function Header() {
                   flat
                   rounded
                   icon={<IconExit fill='currentColor' />}
-                  onClick={signOutAction}>
+                  onPress={signOutAction}>
                   <Text>{`${t('Sign Out')}`}</Text>
                 </Button>
               </Navbar.CollapseItem>
@@ -263,7 +263,7 @@ export default function Header() {
                   auto
                   light
                   css={{ ml: '$11' }}
-                  onClick={() => {
+                  onPress={() => {
                     setSignUserAction('signIn')
                     toggleModal()
                   }}>
@@ -275,7 +275,7 @@ export default function Header() {
                   auto
                   flat
                   css={{ ml: '$10' }}
-                  onClick={() => {
+                  onPress={() => {
                     setSignUserAction('signUp')
                     toggleModal()
                   }}>

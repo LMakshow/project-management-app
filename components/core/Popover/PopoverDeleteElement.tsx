@@ -7,7 +7,7 @@ import {
   NormalColors,
 } from '@nextui-org/react'
 import { useTranslation } from 'next-i18next'
-import { MouseEventHandler, useState } from 'react'
+import { useState } from 'react'
 import { IconDelete } from '../Icons/boardCard/icon_delete'
 
 /**
@@ -21,8 +21,8 @@ import { IconDelete } from '../Icons/boardCard/icon_delete'
 const PopoverDeleteElement = (props: {
   localeKeys: { text: string }
   btnColor?: NormalColors
-  action: MouseEventHandler<HTMLButtonElement> | undefined
-  actionTrigger?: MouseEventHandler<HTMLButtonElement> | undefined
+  action: () => Promise<void> | undefined
+  actionTrigger?: () => void | undefined
 }) => {
   const { t } = useTranslation('common')
   const [isOpen, setIsOpen] = useState(false)
@@ -34,9 +34,10 @@ const PopoverDeleteElement = (props: {
     <Popover isOpen={isOpen} onOpenChange={setIsOpen}>
       <Popover.Trigger>
         <Button
-          onClick={props.actionTrigger}
+          onPress={props.actionTrigger}
           color={props.btnColor || 'error'}
           auto
+          css={{ w: 40, flexShrink: 0 }}
           flat
           icon={<IconDelete fill='currentColor' />}></Button>
       </Popover.Trigger>
@@ -61,12 +62,12 @@ const PopoverDeleteElement = (props: {
           </Text>
           <Grid.Container justify='space-around' alignContent='center'>
             <Grid>
-              <Button auto light color='default' onClick={handleClick}>
+              <Button auto light color='default' onPress={handleClick}>
                 {t('Close')}
               </Button>
             </Grid>
             <Grid>
-              <Button auto shadow color='error' onClick={props.action}>
+              <Button auto shadow color='error' onPress={props.action}>
                 {t('Delete')}
               </Button>
             </Grid>

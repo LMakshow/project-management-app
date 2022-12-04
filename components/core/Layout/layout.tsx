@@ -1,4 +1,4 @@
-import { CSS } from '@nextui-org/react'
+import { CSS, useTheme } from '@nextui-org/react'
 import { CSSProperties } from '@nextui-org/react/types/theme'
 import Head from 'next/head'
 import Footer from './Footer'
@@ -7,12 +7,14 @@ import Navbar from './Navbar'
 export const siteTitle = 'Creative Management App'
 
 export default function Layout({ children, style }: { children: React.ReactNode, style?: CSSProperties }) {
+  const { theme } = useTheme();
   return (
     <div
       style={{
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
+        backgroundColor: theme?.colors.background.value
       }}>
       <Head>
         <meta

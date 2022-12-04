@@ -179,7 +179,7 @@ export default function Board() {
             <Button
               color='secondary'
               css={{ my: '6px' }}
-              onClick={() => router.push('/boards')}
+              onPress={() => router.push('/boards')}
               auto
               flat
               icon={<IconBack fill='currentColor' />}>

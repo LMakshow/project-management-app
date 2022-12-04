@@ -120,12 +120,14 @@ const BoardCard = (props: BoardCardProps) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
+          gap: '$4',
         }}>
         <Button
-          onClick={() => {
+          onPress={() => {
             router.push(`/board/${board._id}`)
             closeEditInputs()
           }}
+          css={{ minWidth: 'auto', maxWidth: '$52', flex: 1 }}
           color='primary'
           flat>
           {t('Open Board')}
