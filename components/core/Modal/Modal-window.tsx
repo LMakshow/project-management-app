@@ -242,7 +242,7 @@ const ModalWindow = ({ isShowing, hide, action, setAction }: TModalProps) => {
                     color='primary'
                     auto
                     css={{ padding: '0' }}
-                    onClick={() => setAction('signUp')}>
+                    onPress={() => setAction('signUp')}>
                     {t('registration')}
                   </Button>
                 </>
@@ -254,7 +254,7 @@ const ModalWindow = ({ isShowing, hide, action, setAction }: TModalProps) => {
                     color='primary'
                     auto
                     css={{ padding: '0' }}
-                    onClick={() => setAction('signIn')}>
+                    onPress={() => setAction('signIn')}>
                     {t('enter')}
                   </Button>
                 </>
@@ -264,20 +264,20 @@ const ModalWindow = ({ isShowing, hide, action, setAction }: TModalProps) => {
 
           <Tooltip content={t('demo-tooltip')} css={{ zIndex: 9999 }}>
             {action !== 'edit' && (
-              <Button auto flat onClick={handleSignInDemo}>
+              <Button auto flat onPress={handleSignInDemo}>
                 {t('Demo')}
               </Button>
             )}
           </Tooltip>
           <Spacer css={{ fg: 1 }} />
-          <Button auto flat color='error' onClick={hide}>
+          <Button auto flat color='error' onPress={hide}>
             {t('Close')}
           </Button>
           {action === 'signIn' ? (
             <Button
               auto
               type='submit'
-              onClick={handleSignIn}
+              onPress={handleSignIn}
               disabled={
                 validateEmail(loginValue) && validatePassword(passwordValue)
                   ? false
@@ -289,7 +289,7 @@ const ModalWindow = ({ isShowing, hide, action, setAction }: TModalProps) => {
             <Button
               auto
               type='submit'
-              onClick={handleSignUp}
+              onPress={handleSignUp}
               disabled={
                 validateEmail(loginValue) &&
                 validatePassword(passwordValue) &&
@@ -306,7 +306,7 @@ const ModalWindow = ({ isShowing, hide, action, setAction }: TModalProps) => {
                 </Button>
             </Tooltip>
           ) : (
-            <Button auto type='submit' onClick={handleEdit}>
+            <Button auto type='submit' onPress={handleEdit}>
               {t('btnEdit')}
             </Button>
           )}

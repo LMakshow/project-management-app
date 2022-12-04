@@ -122,7 +122,7 @@ const BoardCard = (props: BoardCardProps) => {
           justifyContent: 'space-between',
         }}>
         <Button
-          onClick={() => {
+          onPress={() => {
             router.push(`/board/${board._id}`)
             closeEditInputs()
           }}

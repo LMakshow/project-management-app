@@ -1,7 +1,7 @@
 import { IconCancel } from '../Icons/boardCard/icon_cancel'
 import { Button, theme } from '@nextui-org/react'
 
-const CancelButton = ({ onClick }: { onClick: () => void }) => {
+const CancelButton = ({ onPress }: { onPress: () => void }) => {
   return (
     <Button
       auto
@@ -10,7 +10,7 @@ const CancelButton = ({ onClick }: { onClick: () => void }) => {
       css={{
         px: '5px'
       }}
-      onClick={onClick}>
+      onPress={onPress}>
       <IconCancel fill={theme?.colors?.primary?.value} />
     </Button>
   )

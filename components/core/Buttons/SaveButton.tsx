@@ -1,9 +1,8 @@
-
 import { Button, theme } from '@nextui-org/react';
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { IconDone } from '../Icons/boardCard/icon_done';
 
-const SaveButton:FC<{onClick: () => void}> = ({ onClick: onClick }) => {
+const SaveButton:FC<{onPress: () => void}> = ({ onPress: onPress }) => {
 
   return <Button
     auto
@@ -13,7 +12,7 @@ const SaveButton:FC<{onClick: () => void}> = ({ onClick: onClick }) => {
     css={{
       px: '0'
     }}
-  onClick={onClick}>
+  onPress={onPress}>
     <IconDone fill={theme?.colors?.success?.value}/>
   </Button>
 }

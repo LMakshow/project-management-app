@@ -49,7 +49,7 @@ const ProfileContent = () => {
                   right: '0',
                 },
               }}
-              onClick={toggleModal}
+              onPress={toggleModal}
             />
           </li>
 
