@@ -37,6 +37,7 @@ const PopoverDeleteElement = (props: {
           onPress={props.actionTrigger}
           color={props.btnColor || 'error'}
           auto
+          css={{ w: 40, flexShrink: 0 }}
           flat
           icon={<IconDelete fill='currentColor' />}></Button>
       </Popover.Trigger>
