@@ -11,6 +11,7 @@ import ModalWindow from '../../../core/Modal/Modal-window'
 import styles from './hero.module.scss'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import Link from 'next/link'
 
 const Hero = () => {
   const router = useRouter()
@@ -44,22 +45,29 @@ const Hero = () => {
       maxWidth: '549px',
       marginBottom: '50px',
     },
+    btnContainer: {
+      display: 'flex',
+      flexWrap: 'wrap' as const,
+      justifyContent: 'center',
+      gap: 20,
+    },
     button: {
       fontFamily: '"Inter", cursive',
       justifySelf: 'center',
-      background: '#043B7C',
       borderRadius: '50px',
-      padding: '29px 75px',
+      padding: '26px 70px',
       fontWeight: '500',
-      width: '300px',
-      fontSize: '24px',
-      lineHeight: '29px',
-      '&:hover': {
-        background: '#346aa8',
-      },
+      width: '240px',
+      fontSize: '20px',
+      lineHeight: '24px',
       '@smMax': {
         margin: '0 auto',
-        maxWidth: '300px',
+      },
+    },
+    btnStart: {
+      background: '#043B7C',
+      '&:hover': {
+        background: '#346aa8',
       },
     },
   }
@@ -80,9 +88,21 @@ const Hero = () => {
             {t('heroTitle')}
           </Text>
           <Text css={heroStyles.text}>{t(`heroText`)}</Text>
-          <Button css={heroStyles.button} onPress={handleStartButton}>
-            {t('heroBtn')}
-          </Button>
+          <div style={heroStyles.btnContainer}>
+            <Button
+              css={{ ...heroStyles.button, ...heroStyles.btnStart }}
+              onPress={handleStartButton}>
+              {t('heroBtn')}
+            </Button>
+            <Link href='https://youtu.be/djB7RI5Cuc4'>
+              <Button
+                css={heroStyles.button}
+                flat
+                bordered>
+                {t('heroBtnVideo')}
+              </Button>
+            </Link>
+          </div>
         </Grid>
         <Grid sm={7}>
           <Image
