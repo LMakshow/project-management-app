@@ -3,9 +3,9 @@ import { IconGithub } from '../Icons/footer/icon_github';
 import { IconRSS } from '../Icons/footer/icon_rss';
 
 const Footer = () => {
-  const { isDark, theme } = useTheme();
+  const { isDark } = useTheme();
 
-  return <Card css={{ background: `${isDark ? '$black' : '$white'}`, borderRadius: 0 }}>
+  return <Card css={{ borderRadius: 0 }}>
     <Container lg>
       <Grid.Container gap={2} justify="space-between" alignItems="center"
                       alignContent="center">
