@@ -54,8 +54,9 @@ const Hero = () => {
     button: {
       fontFamily: '"Inter", cursive',
       justifySelf: 'center',
+      height: '52px',
       borderRadius: '50px',
-      padding: '26px 70px',
+      padding: '22px 70px',
       fontWeight: '500',
       width: '240px',
       fontSize: '20px',
