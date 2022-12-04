@@ -45,7 +45,6 @@ const BoardCardDescription: FC<BoardDescriptionProps> = (props) => {
               cursor: 'pointer',
               minHeight: '80px',
               overflow: 'auto',
-              minWidth: '280px',
               maxWidth: '500px',
               '@xs': {
                 minWidth: '206px',

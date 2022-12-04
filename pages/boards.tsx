@@ -5,7 +5,7 @@ import {
   Popover,
   Row,
   Spacer,
-  Text
+  Text,
 } from '@nextui-org/react'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
@@ -20,10 +20,14 @@ import Search from '../components/core/Utilities/Search'
 import {
   useGetBoardsQuery,
   useGetBoardsSetMutation,
-  useSearchTaskMutation
+  useSearchTaskMutation,
 } from '../features/boards/boardsApi'
 import { useAppSelector, useDebounce } from '../features/hooks'
-import { BoardResponse, CustomError, TaskResponse } from '../components/core/Utilities/interfaces'
+import {
+  BoardResponse,
+  CustomError,
+  TaskResponse,
+} from '../components/core/Utilities/interfaces'
 
 export const getStaticProps = async ({ locale }: { locale: 'en' | 'ru' }) => ({
   props: {
@@ -117,7 +121,15 @@ export default function Boards() {
         <Row wrap='wrap' css={{ display: 'flex', alignItems: 'center' }}>
           {boardList ? (
             <>
-              <Text h2>{t('Boards of', { user: userName })}</Text>
+              <Text
+                h2
+                css={{
+                  '@smMax': {
+                    mb: 20,
+                  },
+                }}>
+                {t('Boards of', { user: userName })}
+              </Text>
               <Spacer x={1} css={{ mr: 'auto' }} />
               {(isBoardLoading || isBoardFetching || isBoardUpdating) && (
                 <>
